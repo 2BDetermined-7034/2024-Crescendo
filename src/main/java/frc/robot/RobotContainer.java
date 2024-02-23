@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.vision.PhotonVision;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 import java.io.File;
@@ -34,26 +33,12 @@ public class RobotContainer {
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final CommandXboxController operatorController = new CommandXboxController(1);
-    final PS5Controller driverController = new PS5Controller(0);
-
-    // Vision
-    final static PhotonVision shootercam = new PhotonVision("greencasecam", new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)));
-    final static PhotonVision intakecam = new PhotonVision("whitecasecam", new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)));
-
-
-    SendableChooser autoSelector;
-    /**
+    final PS5Controller driverController = new PS5Controller(0);/**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
-
-        autoSelector = new SendableChooser<>();
-        autoSelector.setDefaultOption("Do Nothing", new WaitCommand(1));
-
-        SmartDashboard.putData(autoSelector);
-
         // Applies deadbands and inverts controls because joysticks
         // are back-right positive while robot
         // controls are front-left positive
