@@ -2,6 +2,7 @@ package frc.robot.subsystems.sensors;
 
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.ConfigurationFailedException;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 public class LaserCANSensor {
 	private double pastWeight, currentWeight;
@@ -25,7 +26,7 @@ public class LaserCANSensor {
 			laser.setRangingMode(LaserCan.RangingMode.SHORT);
 			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, dimension, dimension));
 		} catch (Exception e) {
-			System.err.println("Config failed");
+			DriverStation.reportError("Config failed", true);
 		}
 	}
 
@@ -33,7 +34,7 @@ public class LaserCANSensor {
 		try {
 			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(x, y, dimension, dimension));
 		} catch (Exception e) {
-			System.err.println("LaserCAN Error: ROI configuration failed");
+			DriverStation.reportError("LaserCAN Error: ROI configuration failed", true);
 		}
 	}
 
@@ -41,7 +42,7 @@ public class LaserCANSensor {
 		try {
 			laser.setTimingBudget(timingBudget);
 		} catch (Exception e) {
-			System.err.println("LaserCAN Error: TimingBudget configuration failed");
+			DriverStation.reportError("LaserCAN Error: TimingBudget configuration failed",true);
 		}
 	}
 
@@ -49,7 +50,7 @@ public class LaserCANSensor {
 		try {
 			laser.setRangingMode(rangingMode);
 		} catch (Exception e) {
-			System.err.println("LaserCAN Error: Ranging mode configuration failed");
+			DriverStation.reportError("LaserCAN Error: Ranging mode configuration failed", true);
 		}
 	}
 
@@ -64,19 +65,19 @@ public class LaserCANSensor {
 			case LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT:
 				break;
 			case LaserCan.LASERCAN_STATUS_NOISE_ISSUE:
-				System.err.println("LaserCAN Error: Noise Issue (Consider increasing timing budget)");
+				DriverStation.reportError("LaserCAN Error: Noise Issue (Consider increasing timing budget)", true);
 				break;
 			case LaserCan.LASERCAN_STATUS_WEAK_SIGNAL:
-				System.err.println("LaserCAN Error: Could not find target");
+				DriverStation.reportError("LaserCAN Error: Could not find target", true);
 				break;
 			case LaserCan.LASERCAN_STATUS_OUT_OF_BOUNDS:
-				System.err.println("LaserCAN Error: Target is out of range (Could be overly reflective)");
+				DriverStation.reportError("LaserCAN Error: Target is out of range (Could be overly reflective)", true);
 				break;
 			case LaserCan.LASERCAN_STATUS_WRAPAROUND:
-				System.err.println("LaserCAN Error: Value read may have wrapped around");
+				DriverStation.reportError("LaserCAN Error: Value read may have wrapped around", true);
 				break;
 			default:
-				System.err.println("LaserCAN Error: Unknown Error");
+				DriverStation.reportError("LaserCAN Error: Unknown Error", true);
 				break;
 		}
 		return measurement;
