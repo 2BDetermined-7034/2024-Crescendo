@@ -63,7 +63,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
@@ -76,6 +76,7 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
     swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     setupPathPlanner();
+    swerveDrive.setOdometryPeriod(1);
   }
 
   /**
@@ -190,8 +191,8 @@ public class SwerveSubsystem extends SubsystemBase
   {
     // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
     return run(() -> {
-      double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
-      double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
+      double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
+      double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
       // Make the robot move
       driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(xInput, yInput,
               headingX.getAsDouble(),

@@ -26,7 +26,7 @@ public class Robot extends TimedRobot
 
   private RobotContainer m_robotContainer;
 
-  private Timer disabledTimer;
+  //private Timer disabledTimer;
 
   public Robot()
   {
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
-    disabledTimer = new Timer();
+    //disabledTimer = new Timer();
   }
 
   /**
@@ -76,19 +76,21 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
-    m_robotContainer.setMotorBrake(true);
-    disabledTimer.reset();
-    disabledTimer.start();
+    //m_robotContainer.setMotorBrake(true);
+    //disabledTimer.reset();
+    //disabledTimer.start();
   }
 
   @Override
   public void disabledPeriodic()
   {
+    /*
     if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME))
     {
       m_robotContainer.setMotorBrake(false);
       disabledTimer.stop();
     }
+     */
   }
 
   /**

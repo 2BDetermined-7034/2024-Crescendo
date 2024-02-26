@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 import java.io.File;
@@ -29,28 +30,42 @@ public class RobotContainer {
 
     // The robot's subsystems and commands are defined here...
     private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-            "swerve/neo"));
+            "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final CommandXboxController operatorController = new CommandXboxController(1);
+    final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);/**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
+
+		/*
+		This Command uses both x and y from right analogue stick to control desired angle instead of angular rotation
+		 */
         // Applies deadbands and inverts controls because joysticks
         // are back-right positive while robot
         // controls are front-left positive
         // left stick controls translation
         // right stick controls the desired angle NOT angular rotation
         Command driveFieldOrientedDirectAngle = swerve.driveCommand(
-                () -> -MathUtil.applyDeadband(operatorController.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-                () -> -MathUtil.applyDeadband(operatorController.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-                () -> -operatorController.getRightX(),
-                () -> -operatorController.getRightY());
+                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
+                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
+                () -> -driverController.getRightX(),
+                () -> -driverController.getRightY());
 
-        swerve.setDefaultCommand(driveFieldOrientedDirectAngle);
+        Command driveFieldOrientedTeleop = new TeleopDrive(swerve,
+                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
+                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
+                () -> -driverController.getRightX(),
+                () -> true);
+
+
+
+
+        swerve.setDefaultCommand(driveFieldOrientedTeleop);
+
     }
 
     /**
