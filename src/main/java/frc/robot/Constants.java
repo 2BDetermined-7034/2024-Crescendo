@@ -19,6 +19,8 @@ import swervelib.math.Matter;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+	public final static String CANBUS_NAME = "drivebase";
 	public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
 	public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
 	public static final double LOOP_TIME = 0.13; //s, 20ms + 110ms sprk max velocity lag
@@ -62,11 +64,15 @@ public final class Constants {
 	public static final class Climb {
 		public static final int upperKrakenID = 10;
 		public static final int lowerKrakenID = 9;
+
+		public static final double hoistUpPosition = 0.0;
+		public static final double hoistDownPosition = 0.0;
 	}
 
 	public static final class DrivebaseConstants {
 
 		// Hold time on motor brakes when disabled
+
 		public static final double WHEEL_LOCK_TIME = 10; // seconds
 	}
 
