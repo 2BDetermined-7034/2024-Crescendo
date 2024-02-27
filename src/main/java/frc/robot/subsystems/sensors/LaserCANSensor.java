@@ -1,23 +1,32 @@
 package frc.robot.subsystems.sensors;
 
 import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.ConfigurationFailedException;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
+
 public class LaserCANSensor {
 	private double pastWeight, currentWeight;
 	private LaserCan laser;
 	private double previousDistance;
 
 	/**
-	 *
-	 * @param pastDistanceWeight
 	 * @param canID
+	 * @param pastDistanceWeight
 	 * @param dimension
-	 *
 	 */
+	public LaserCANSensor(int canID) {
+		setPastDistanceWeight(0.9);
 
-	public LaserCANSensor(double pastDistanceWeight, int canID, int dimension) {
+		laser = new LaserCan(canID);
+		try {
+			laser.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+			laser.setRangingMode(LaserCan.RangingMode.SHORT);
+			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 4, 4));
+		} catch (Exception e) {
+			DriverStation.reportError("Config failed", true);
+		}
+	}
+
+	public LaserCANSensor(int canID, double pastDistanceWeight, int dimension) {
 		setPastDistanceWeight(pastDistanceWeight);
 
 		laser = new LaserCan(canID);

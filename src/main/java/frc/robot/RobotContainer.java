@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 import java.io.File;
@@ -29,7 +31,12 @@ public class RobotContainer {
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final PS5Controller operatorController = new PS5Controller(1);
-    final PS5Controller driverController = new PS5Controller(0);/**
+    final PS5Controller driverController = new PS5Controller(0);
+
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+
+    /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
@@ -70,6 +77,7 @@ public class RobotContainer {
     private void configureBindings() {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
+        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
     }
 
     /**
