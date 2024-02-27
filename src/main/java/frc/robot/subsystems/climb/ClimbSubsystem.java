@@ -14,7 +14,7 @@ public class ClimbSubsystem extends SubsystemBase {
 	protected TalonFX lowerMotor, upperMotor;
 	protected PositionVoltage positionVoltage;
 	protected double targetPosition;
-	double velocity;
+	double overrideVelocity;
 	public ClimbSubsystem() {
 		lowerMotor = new TalonFX(Constants.Climb.lowerKrakenID, Constants.CANBUS_NAME);
 		upperMotor = new TalonFX(Constants.Climb.upperKrakenID, Constants.CANBUS_NAME);
@@ -22,33 +22,22 @@ public class ClimbSubsystem extends SubsystemBase {
 		lowerMotor.setNeutralMode(NeutralModeValue.Brake);
 		upperMotor.setNeutralMode(NeutralModeValue.Brake);
 
-//		Slot0Configs motorConfig = new Slot0Configs();
-//		motorConfig.kP = 1.0;
-//		motorConfig.kI = 0.0;
-//		motorConfig.kD = 0.0;
-//		motorConfig.kS = 0.2;
-//
-//		upperMotor.getConfigurator().apply(motorConfig);
+		Slot0Configs motorConfig = new Slot0Configs();
+		motorConfig.kP = 1.0;
+		motorConfig.kI = 0.0;
+		motorConfig.kD = 0.0;
+		motorConfig.kS = 0.2;
 
-//		Follower lowerMotorFollower = new Follower(Constants.Climb.upperKrakenID, false);
-//		lowerMotor.setControl(lowerMotorFollower);
+		upperMotor.getConfigurator().apply(motorConfig);
+
+		Follower lowerMotorFollower = new Follower(Constants.Climb.upperKrakenID, false);
+		lowerMotor.setControl(lowerMotorFollower);
 
 		positionVoltage = new PositionVoltage(0);
 
-//		upperMotor.setPosition(0.0);
+		upperMotor.setPosition(0.0);
 
-
-//		TalonFXConfiguration leftConfiguration = new TalonFXConfiguration();
-//		TalonFXConfiguration rightConfiguration = new TalonFXConfiguration();
-//
-//		/* User can optionally change the configs or leave it alone to perform a factory default */
-//		leftConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-//		rightConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-//
-//		upperMotor.getConfigurator().apply(leftConfiguration);
-//		lowerMotor.getConfigurator().apply(leftConfiguration);
-//
-//		/* Set up followers to follow leaders */
+		overrideVelocity = 0;
 	}
 
 	@Override
@@ -56,6 +45,12 @@ public class ClimbSubsystem extends SubsystemBase {
 //		positionVoltage.Position = targetPosition;
 //		upperMotor.setControl(positionVoltage);
 		lowerMotor.setControl(new Follower(upperMotor.getDeviceID(), false));
+		if(getMotorCurrent() > Constants.Climb.currentLimit){
+			lowerMotor.set(0);
+			upperMotor.set(0);
+		} else {
+			upperMotor.set(overrideVelocity);
+		}
 	}
 
 	/**
@@ -73,6 +68,14 @@ public class ClimbSubsystem extends SubsystemBase {
 	public void setSpeed(double speed) {
 		upperMotor.set(speed);
 		lowerMotor.set(speed);
+	}
+
+	/**
+	 * Returns motor current from upper (higher geared) kraken)
+	 * @return
+	 */
+	public double getMotorCurrent() {
+		return upperMotor.getStatorCurrent().getValue();
 	}
 
 }

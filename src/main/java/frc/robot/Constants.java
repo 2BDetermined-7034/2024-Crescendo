@@ -67,6 +67,7 @@ public final class Constants {
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
+		public static final double currentLimit = 50.0;
 	}
 
 	public static final class DrivebaseConstants {
