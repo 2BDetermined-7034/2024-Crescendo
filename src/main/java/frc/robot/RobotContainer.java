@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.shooter.ShooterCommand;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 import java.io.File;
@@ -35,6 +37,9 @@ public class RobotContainer {
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,6 +83,7 @@ public class RobotContainer {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
         new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getSquareButton).toggleOnTrue(shooterCommand);
     }
 
     /**

@@ -11,6 +11,8 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import static frc.robot.Constants.*;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -41,6 +43,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
 		this.highGearNeo = new CANSparkMax(Shooter.neo550HighGearID, CANSparkLowLevel.MotorType.kBrushless);
 
+		angleTalon.setInverted(false);
+		lowGearNeo.setInverted(true);
+		highGearNeo.setInverted(true);
+
 		launchTalon.setNeutralMode(NeutralModeValue.Coast);
 		angleTalon.setNeutralMode(NeutralModeValue.Brake);
 		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
@@ -54,21 +60,34 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
 
-		anglePositionController = new PositionVoltage(0);
+
+
+
+// robot init, set slot 0 gains
+		var launchMotorPID = new Slot0Configs();
+		launchMotorPID.kV = 0.12;
+		launchMotorPID.kP = 0.11;
+		launchMotorPID.kI = 0.48;
+		launchMotorPID.kD = 0.01;
+		launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
+
+
+		angleTalon.setPosition(angleDegreesToRotations(Shooter.angleBackHardstop));
+
+		anglePositionController = new PositionVoltage(angleDegreesToRotations(Shooter.angleBackHardstop));
 		launchVelocityController = new VelocityVoltage(0);
 
 		//init encoder to 0 position on boot
-		angleTalon.setPosition(0);
 	}
 
 	public void periodic() {
-		anglePositionController.Position = MathUtil.clamp(angleMotorPosition, Shooter.angleBackHardstop, Shooter.angleFrontHardstop);
+		anglePositionController.Position = angleMotorPosition;
 		angleTalon.setControl(anglePositionController);
 
-		launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, 0, 0);
+		launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
 		launchTalon.setControl(launchVelocityController);
 
-
+		logging();
 	}
 
 	private void logging() {
@@ -76,6 +95,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Angle Position Rotations", getAnglePositionRotations());
 		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
 		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
+		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
+		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
+		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
+
 	}
 
 	/**
@@ -130,7 +153,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @return
 	 */
 	public double angleDegreesToRotations(double degrees) {
-		return (degrees - 63.0) / (Shooter.angleGearRatio * 360);
+		return (degrees - Shooter.angleBackHardstop) / (Shooter.angleGearRatio * 360);
 	}
 
 
@@ -140,6 +163,22 @@ public class ShooterSubsystem extends SubsystemBase {
 	 */
 	public void setAngleTalonPositionDegrees(double degrees){
 		angleMotorPosition = angleDegreesToRotations(MathUtil.clamp(degrees, Shooter.angleFrontHardstop, Shooter.angleBackHardstop));
+	}
+
+	/**
+	 * Dont make this positive
+	 * @param rotations
+	 */
+	public void setAngleTalonPositionRotations(double rotations) {
+		angleMotorPosition = rotations;
+	}
+
+	/**
+	 * sets angle kraken speed [-1, 1]
+	 * @param speed
+	 */
+	public void setAngleTalon(double speed) {
+		angleTalon.set(speed);
 	}
 
 	/**
