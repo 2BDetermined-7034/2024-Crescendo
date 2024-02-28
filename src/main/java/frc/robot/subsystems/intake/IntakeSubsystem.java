@@ -1,6 +1,5 @@
 package frc.robot.subsystems.intake;
 
-import au.grapplerobotics.LaserCan;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
@@ -8,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.sensors.LaserCANSensor;
-import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class IntakeSubsystem extends SubsystemBase {
 	final private CANSparkMax intakeMotorUpper;
@@ -27,10 +25,10 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
 
 	public void run(double speedLower, double speedUpper) {
-		Constants.Shooter.isLaserIntakeTriggered = laserIntake.getWeightedDistance() >= 70.0;
-		Constants.Shooter.isLaserShooterTriggered = laserShooter.getWeightedDistance() >= 70.0;
-		if (!(Constants.Shooter.isLaserIntakeTriggered && Constants.Shooter.isLaserShooterTriggered)) {
-			if (Constants.Shooter.isShooterAtHome) {
+		RobotContainer.isLaserIntakeTriggered = laserIntake.getWeightedDistance() >= 70.0;
+		RobotContainer.isLaserShooterTriggered = laserShooter.getWeightedDistance() >= 70.0;
+		if (!(RobotContainer.isLaserIntakeTriggered && RobotContainer.isLaserShooterTriggered)) {
+			if (RobotContainer.isShooterAtHome) {
 				intakeMotorUpper.set(speedUpper);
 			}
 			intakeMotorLower.set(speedLower);

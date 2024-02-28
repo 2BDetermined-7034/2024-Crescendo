@@ -28,6 +28,9 @@ import java.io.File;
  */
 public class RobotContainer {
 
+    public static boolean isShooterAtHome;
+    public static boolean isLaserIntakeTriggered;
+    public static boolean isLaserShooterTriggered;
     // The robot's subsystems and commands are defined here...
     private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/kraken"));

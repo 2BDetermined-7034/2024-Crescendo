@@ -2,6 +2,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
@@ -20,8 +21,8 @@ public class IntakeCommand extends Command {
 	@Override
 	public void execute() {
 		intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
-		if (!(!Constants.Shooter.isLaserIntakeTriggered && Constants.Shooter.isLaserShooterTriggered)) {
-			if (Constants.Shooter.isShooterAtHome) {
+		if (!(!RobotContainer.isLaserIntakeTriggered && RobotContainer.isLaserShooterTriggered)) {
+			if (RobotContainer.isShooterAtHome) {
 				shooter.setNeoSpeeds(0.5);
 			} else {
 				shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
