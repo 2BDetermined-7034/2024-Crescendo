@@ -14,7 +14,11 @@ public class ClimbUpCommand extends Command {
 	@Override
 	public void execute() {
 //		climb.setPosition(Constants.Climb.hoistUpPosition);
-		climb.setOverrideVelocity(-0.1);
+		climb.setOverrideVelocity(-0.4);
+	}
+
+	public boolean isFinished(){
+		return climb.atCurrentLimit();
 	}
 
 	@Override

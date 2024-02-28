@@ -4,7 +4,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,9 +17,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
 	public ClimbSubsystem() {
 		lowerMotor = new TalonFX(Constants.Climb.lowerKrakenID, Constants.CANBUS_NAME);
-		upperMotor = new TalonFX(Constants.Climb.upperKrakenID, Constants.CANBUS_NAME);
+		upperMotor = new TalonFX(Constants.Climb.upperFalconID, Constants.CANBUS_NAME);
 
-		lowerMotor.setNeutralMode(NeutralModeValue.Brake);
+		lowerMotor.setNeutralMode(NeutralModeValue.Brake); // TODO SET TO BRAKE
 		upperMotor.setNeutralMode(NeutralModeValue.Brake);
 
 		Slot0Configs motorConfig = new Slot0Configs();
@@ -30,9 +30,11 @@ public class ClimbSubsystem extends SubsystemBase {
 
 		upperMotor.getConfigurator().apply(motorConfig);
 
-		lowerMotorFollower = new Follower(Constants.Climb.upperKrakenID, false);
+		lowerMotorFollower = new Follower(Constants.Climb.upperFalconID, true);
 
 		positionVoltage = new PositionVoltage(0);
+
+		upperMotor.setInverted(true);
 
 		upperMotor.setPosition(0.0);
 		lowerMotor.setPosition(0.0);
@@ -41,6 +43,13 @@ public class ClimbSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		lowerMotor.setControl(lowerMotorFollower);
+		logging();
+	}
+
+	public void logging() {
+		SmartDashboard.putNumber("Upper Falcon Current", upperMotor.getStatorCurrent().getValue());
+		SmartDashboard.putNumber("Upper Falcon Rotations", upperMotor.getPosition().getValue());
+		SmartDashboard.putNumber("Lower Kraken Encoder", lowerMotor.getPosition().getValue());
 	}
 
 	/**
@@ -58,6 +67,7 @@ public class ClimbSubsystem extends SubsystemBase {
 	 */
 	public void setOverrideVelocity(double speed) {
 		upperMotor.set(speed);
+		//lowerMotor.set(speed);
 		manualOverrideActive = speed != 0;
 	}
 

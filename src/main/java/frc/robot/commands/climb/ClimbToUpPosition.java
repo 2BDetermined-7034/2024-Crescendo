@@ -18,7 +18,7 @@ public class ClimbToUpPosition extends Command {
 
 	@Override
 	public boolean isFinished(){
-		return !climb.useClosedLoop();
+		return climb.atCurrentLimit();
 	}
 
 	@Override
