@@ -3,22 +3,30 @@ package frc.robot.commands.climb;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.climb.ClimbSubsystem;
 
-public class ClimbUpCommand extends Command {
+public class ClimbToUpPosition extends Command {
 	protected ClimbSubsystem climb;
 
-	public ClimbUpCommand(ClimbSubsystem climb) {
+	public ClimbToUpPosition(ClimbSubsystem climb) {
 		this.climb = climb;
 		addRequirements(climb);
 	}
 
 	@Override
 	public void execute() {
-//		climb.setPosition(Constants.Climb.hoistUpPosition);
-		climb.setOverrideVelocity(-0.1);
+		climb.setPosition(0.0);
+	}
+
+	@Override
+	public boolean isFinished(){
+		return !climb.useClosedLoop();
 	}
 
 	@Override
 	public void end(boolean interrupted) {
-		climb.setOverrideVelocity(0.0);
+		if(climb.atCurrentLimit()){
+			climb.coast();
+		} else {
+			climb.setPosition(climb.getPosition());
+		}
 	}
 }

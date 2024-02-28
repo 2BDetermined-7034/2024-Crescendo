@@ -43,6 +43,11 @@ public final class Constants {
 		public static final double TURN_CONSTANT = 6;
 	}
 
+	public static final class Vision {
+		public static String intakeColorCam = "4kcam1";
+		public static String shooterMonoCam = "whitecasecam";
+	}
+
 	public static final class Shooter {
 		public static final int launchKrakenID = 12;
 		public static final int angleFalconID = 11;
@@ -68,6 +73,11 @@ public final class Constants {
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
 		public static final double currentLimit = 50.0;
+
+		public static final double kP = 0.1;
+		public static final double kI = 0;
+		public static final double kD = 0;
+		public static final double kS = 0.2;
 	}
 
 	public static final class DrivebaseConstants {
