@@ -53,10 +53,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
 		Slot0Configs angleMotorPID = new Slot0Configs();
-		angleMotorPID.kP = 1;
+		angleMotorPID.kP = 3;
 		angleMotorPID.kI = 0;
 		angleMotorPID.kD = 0;
-		angleMotorPID.kS = 0.24;
+//		angleMotorPID.kS = 0.24;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
 
