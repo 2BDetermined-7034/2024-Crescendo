@@ -35,8 +35,8 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
-    private LaserCANSensor laserIntake = new LaserCANSensor(256); //Placeholder CAN id (On rio CAN)
-    private LaserCANSensor laserShooter = new LaserCANSensor(257); //Placeholder CAN ide
+    private LaserCANSensor laserIntake = new LaserCANSensor(1); //Placeholder CAN id (On rio CAN)
+    private LaserCANSensor laserShooter = new LaserCANSensor(0); //Placeholder CAN ide
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
