@@ -9,7 +9,7 @@ public class ShooterCommand extends Command {
 
 	public ShooterCommand(ShooterSubsystem shooter) {
 		this.shooter = shooter;
-		addRequirements(shooter);
+		addRequirements(this.shooter);
 	}
 
 	@Override
@@ -17,10 +17,8 @@ public class ShooterCommand extends Command {
 		double velocitySetpoint = 50;
 		shooter.setLaunchTalon(velocitySetpoint);
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - 2) {
+		if (shooter.getLaunchMotorVelocity() > velocitySetpoint - 2.0) {
 			shooter.setNeoSpeeds(0.5);
-
-
 		}
 	}
 

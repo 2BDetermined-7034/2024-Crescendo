@@ -15,6 +15,7 @@ import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.ShooterCommand;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
@@ -34,12 +35,13 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
-
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    private LaserCANSensor laserIntake = new LaserCANSensor(256); //Placeholder CAN id (On rio CAN)
+    private LaserCANSensor laserShooter = new LaserCANSensor(257); //Placeholder CAN ide
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(laserIntake, laserShooter);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

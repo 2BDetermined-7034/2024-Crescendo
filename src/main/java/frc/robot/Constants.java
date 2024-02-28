@@ -52,6 +52,9 @@ public final class Constants {
 		public static final double angleGearRatio = 30d / 50d;
 		public static final double angleFrontHardstop = -74.5;
 		public static final double angleBackHardstop = 63.0;
+		public static boolean isShooterAtHome;
+		public static boolean isLaserIntakeTriggered;
+		public static boolean isLaserShooterTriggered;
 	}
 	public static final class Intake {
 		public static final int lowerNeoID = 13;

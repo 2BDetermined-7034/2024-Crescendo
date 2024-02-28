@@ -87,18 +87,19 @@ public class ShooterSubsystem extends SubsystemBase {
 		launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
 		launchTalon.setControl(launchVelocityController);
 
+		Shooter.isShooterAtHome = angleRotationsToDegrees(angleTalon.getPosition().getValue()) > (Shooter.angleBackHardstop - 2.0);
+
 		logging();
 	}
 
 	private void logging() {
-
 		SmartDashboard.putNumber("Angle Position Rotations", getAnglePositionRotations());
 		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
 		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
 		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
-
+		SmartDashboard.putBoolean("Is shooter at home?", Shooter.isShooterAtHome);
 	}
 
 	/**
