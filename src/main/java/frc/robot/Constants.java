@@ -55,8 +55,14 @@ public final class Constants {
 		public static final int neo550HighGearID = 11;
 		public static final int neo55HighGearRatio = 4;
 		public static final int neo550LowGearRatio = 1;
+		/**
+		 * Velocity Setpoint for the Shooter
+		 */
 		public static final double shooterVelSetpoint = 50;
-		public static final double shooterVelTolerance = 30;
+		/**
+		 * Difference from setpoint at which indexing motor runs for shooterCommand
+		 */
+		public static final double shooterVelTolerance = 2;
 
 		public static final double angleGearRatio = 30d / 50d;
 		public static final double angleFrontHardstop = -74.5;

@@ -94,6 +94,7 @@ public class RobotContainer {
                 () -> -driverController.getRightX(),
                 () -> true);
 
+
         swerve.setDefaultCommand(driveFieldOrientedTeleop);
 
     }
@@ -123,6 +124,9 @@ public class RobotContainer {
         new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
         new Trigger(operatorController::getL1Button).toggleOnTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
         new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
+        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
+        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
+
     }
 
     /**
