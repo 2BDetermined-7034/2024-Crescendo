@@ -4,12 +4,16 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climb.ClimbDownCommand;
@@ -35,6 +39,8 @@ import java.io.File;
 public class RobotContainer {
 
     // The robot's subsystems and commands are defined here...
+    private final SendableChooser<Command> autoChooser;
+
     private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/kraken"));
 
@@ -58,6 +64,14 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
+
+        //Add Auto Options
+        autoChooser = new SendableChooser<>();
+        for(String s : AutoBuilder.getAllAutoNames()) {
+            autoChooser.addOption(s, new PathPlannerAuto(s));
+        }
+        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+
 
 		/*
 		This Command uses both x and y from right analogue stick to control desired angle instead of angular rotation
