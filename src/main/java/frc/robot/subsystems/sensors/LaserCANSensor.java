@@ -70,6 +70,9 @@ public class LaserCANSensor {
 
 	public LaserCan.Measurement getMeasurement() {
 		LaserCan.Measurement measurement = laser.getMeasurement();
+		if (measurement == null) {
+			return new LaserCan.Measurement(-1, 0, 0, false, 0, new LaserCan.RegionOfInterest(0, 0, 0, 0));
+		}
 		switch (measurement.status) {
 			case LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT:
 				break;

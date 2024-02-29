@@ -1,5 +1,6 @@
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -20,14 +21,14 @@ public class IntakeCommand extends Command {
 
 	@Override
 	public void execute() {
-		intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
-		if (!(!RobotContainer.isLaserIntakeTriggered && RobotContainer.isLaserShooterTriggered)) {
-			if (RobotContainer.isShooterAtHome) {
-				shooter.setNeoSpeeds(0.5);
-			} else {
-				shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-			}
-		}
+		SmartDashboard.putNumber("al;skdjfafjl;askjdf", 1);
+		intake.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+//		if (!(!RobotContainer.isLaserIntakeTriggered && RobotContainer.isLaserShooterTriggered)) {
+//
+//			} else {
+//				shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
+//			}
+//		}
 	}
 
 	@Override
