@@ -20,13 +20,13 @@ public class BetterIntakeCommand extends Command {
 	public void execute(){
 		intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
 		shooter.setNeoSpeeds(0.5);
-		shooter.runShooterVelocity(-0.05);
+		shooter.runLaunchPercent(-0.05);
 	}
 
 	@Override
 	public void end(boolean interrupted){
 		intake.run(0, 0);
 		shooter.setNeoSpeeds(0);
-		shooter.runShooterVelocity(0);
+		shooter.runLaunchPercent(0);
 	}
 }

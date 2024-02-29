@@ -86,6 +86,7 @@ public final class Constants {
 		public static final double kI = 0;
 		public static final double kD = 0;
 		public static final double kS = 0.2;
+		public static final double climbAmpPosition = 0.0;
 	}
 
 	public static final class DrivebaseConstants {

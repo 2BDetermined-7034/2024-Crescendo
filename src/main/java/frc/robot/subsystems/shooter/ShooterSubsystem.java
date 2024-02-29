@@ -12,8 +12,6 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import pabeles.concurrency.ConcurrencyOps;
 
 import static frc.robot.Constants.*;
 
@@ -24,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final CANSparkMax highGearNeo;
 	private final PositionVoltage anglePositionController;
 	private final VelocityVoltage launchVelocityController;
-	private double shooterVelocity;
+	private double shooterPercent;
 
 	/**
 	 * periodically assigned to the setpoint of the positionvoltage controller
@@ -62,7 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
 //		angleMotorPID.kS = 0.24;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
-		shooterVelocity = 0;
+		shooterPercent = 0;
 
 
 
@@ -88,16 +86,13 @@ public class ShooterSubsystem extends SubsystemBase {
 		anglePositionController.Position = angleMotorPosition;
 		angleTalon.setControl(anglePositionController);
 
-		if(shooterVelocity != 0){
-			launchTalon.set(shooterVelocity);
-		} else {
-			if(launchMotorVelocity == 0) {
-				launchTalon.setControl(new NeutralOut());
-
-			} else {
-			launchTalon.setControl(launchVelocityController);
+		if(shooterPercent != 0){
+			launchTalon.set(shooterPercent);
+		} else if(launchMotorVelocity != 0){
 			launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
-			}
+			launchTalon.setControl(launchVelocityController);
+		} else {
+			launchTalon.setControl(new NeutralOut());
 		}
 
 		logging();
@@ -157,8 +152,8 @@ public class ShooterSubsystem extends SubsystemBase {
 		return rotations * Shooter.angleGearRatio * (360 / 1) + Shooter.angleBackHardstop;
 	}
 
-	public void runShooterVelocity(double velocity){
-		shooterVelocity = velocity;
+	public void runLaunchPercent(double percent){
+		shooterPercent = percent;
 	}
 
 	/**

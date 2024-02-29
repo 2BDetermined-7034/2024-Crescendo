@@ -1,7 +1,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -21,13 +20,11 @@ public class BetterIntakeReverse extends Command {
 	public void execute(){
 		intake.run(-Constants.Intake.upperIntakeSpeed, -Constants.Intake.lowerIntakeSpeed);
 		shooter.setNeoSpeeds(-0.5);
-//		shooter.runShooterVelocity(-0.05);
 	}
 
 	@Override
 	public void end(boolean interrupted){
 		intake.run(0, 0);
 		shooter.setNeoSpeeds(0);
-		shooter.runShooterVelocity(0);
 	}
 }

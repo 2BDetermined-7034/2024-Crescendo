@@ -14,19 +14,11 @@ public class ShooterReset extends Command {
 
 	@Override
 	public void execute() {
-//		double velocitySetpoint = 50;
-//		shooter.setLaunchTalon(velocitySetpoint);
-//		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-//		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - 2) {
-//			shooter.setNeoSpeeds(0.5);
-//		}
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 	}
 
 	@Override
 	public void end(boolean interrupted) {
-//		shooter.setAngleTalonPositionDegrees(63);
-//		shooter.setLaunchTalon(0);
-//		shooter.setNeoSpeeds(0.0);
+
 	}
 }

@@ -10,7 +10,7 @@ public class IntakeCommand extends Command {
 
 	public IntakeCommand(IntakeSubsystem intake) {
 		this.intake = intake;
-		addRequirements();
+		addRequirements(intake);
 	}
 
 	@Override
