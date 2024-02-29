@@ -46,6 +46,9 @@ public class ClimbSubsystem extends SubsystemBase {
 		logging();
 	}
 
+	/**
+	 * SmartDashBoard Logging
+	 */
 	public void logging() {
 		SmartDashboard.putNumber("Upper Falcon Current", upperMotor.getStatorCurrent().getValue());
 		SmartDashboard.putNumber("Upper Falcon Rotations", upperMotor.getPosition().getValue());
@@ -79,6 +82,10 @@ public class ClimbSubsystem extends SubsystemBase {
 		return upperMotor.getStatorCurrent().getValue();
 	}
 
+	/**
+	 * Returns whether the higher geared climb motor current is above the threshold for the limit switch
+	 * @return At Current Limit
+	 */
 	public boolean atCurrentLimit() {
 		return getMotorCurrent() > Constants.Climb.currentLimit;
 	}
@@ -86,11 +93,26 @@ public class ClimbSubsystem extends SubsystemBase {
 		return !atCurrentLimit() && !manualOverrideActive;
 	}
 
+	/**
+	 * Gets the current position of the higher geared Talon on the Climb in Rotations
+	 * May be Inverted
+	 * @return climb motor position in rotations
+	 */
 	public double getPosition(){
 		return upperMotor.getPosition().getValue();
 	}
 
+	/**
+	 * Sets motors to the climb to coast
+	 */
 	public void coast(){
 		upperMotor.setControl(new CoastOut());
+	}
+
+	/**
+	 * Do not use this irresponsibly
+	 */
+	public void resetClimbZero() {
+		upperMotor.setPosition(0);
 	}
 }
