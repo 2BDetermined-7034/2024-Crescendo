@@ -22,6 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final CANSparkMax highGearNeo;
 	private final PositionVoltage anglePositionController;
 	private final VelocityVoltage launchVelocityController;
+	private double shooterVelocity;
 
 	/**
 	 * periodically assigned to the setpoint of the positionvoltage controller
@@ -59,6 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
 //		angleMotorPID.kS = 0.24;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
+		shooterVelocity = 0;
 
 
 
@@ -84,8 +86,12 @@ public class ShooterSubsystem extends SubsystemBase {
 		anglePositionController.Position = angleMotorPosition;
 		angleTalon.setControl(anglePositionController);
 
-		launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
-		launchTalon.setControl(launchVelocityController);
+		if(shooterVelocity != 0){
+			launchTalon.set(shooterVelocity);
+		} else {
+			launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
+			launchTalon.setControl(launchVelocityController);
+		}
 
 		logging();
 	}
@@ -145,6 +151,9 @@ public class ShooterSubsystem extends SubsystemBase {
 		return rotations * Shooter.angleGearRatio * (360 / 1) + Shooter.angleBackHardstop;
 	}
 
+	public void runShooterVelocity(double velocity){
+		shooterVelocity = velocity;
+	}
 
 	/**
 	 * Converts from degrees relative to the horizon to rotations of the angle Kraken relative to the hardstop.

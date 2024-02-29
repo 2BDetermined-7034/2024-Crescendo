@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
+import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.ShooterCommand;
 import frc.robot.commands.shooter.SourceIntake;
@@ -91,12 +93,16 @@ public class RobotContainer {
     private void configureBindings() {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
-        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
-        new Trigger(driverController::getSquareButton).toggleOnTrue(shooterCommand);
+//        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getTriangleButton).toggleOnTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
+        new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
 
         new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
-        new Trigger(driverController::getCrossButton).whileTrue(sourceIntake);
+        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
+//        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
+
     }
 
     /**
