@@ -4,23 +4,21 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.BetterIntakeCommand;
+import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.ShooterCommand;
+import frc.robot.commands.shooter.ShooterReset;
 import frc.robot.commands.shooter.SourceIntake;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
@@ -28,7 +26,6 @@ import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-import javax.xml.transform.Source;
 import java.io.File;
 
 /**
@@ -39,7 +36,7 @@ import java.io.File;
 public class RobotContainer {
 
     // The robot's subsystems and commands are defined here...
-    private final SendableChooser<Command> autoChooser;
+    //aprivate final SendableChooser<Command> autoChooser;
 
     private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/kraken"));
@@ -62,16 +59,20 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // Configure the trigger bindings
-        configureBindings();
 
         //Add Auto Options
-        autoChooser = new SendableChooser<>();
-        for(String s : AutoBuilder.getAllAutoNames()) {
-            autoChooser.addOption(s, new PathPlannerAuto(s));
-        }
-        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+//        autoChooser = new SendableChooser<>();
+//        for(String s : AutoBuilder.getAllAutoNames()) {
+//            autoChooser.addOption(s, new PathPlannerAuto(s));
+//        }
+//        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
+        // Register Named Commands
+
+
+
+        // Configure the trigger bindings
+        configureBindings();
 
 		/*
 		This Command uses both x and y from right analogue stick to control desired angle instead of angular rotation
@@ -114,9 +115,14 @@ public class RobotContainer {
         new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
+
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
+        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
+        new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
+        new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
+        new Trigger(operatorController::getL1Button).toggleOnTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
+        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
     }
 
     /**
@@ -125,8 +131,9 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return swerve.getAutonomousCommand("New Auto");
+        //return swerve.getAutonomousCommand("New Auto");
+//        return autoChooser.getSelected();
+        return null;
     }
 
     public void setDriveMode() {

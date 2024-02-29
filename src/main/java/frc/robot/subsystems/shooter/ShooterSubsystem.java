@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -12,6 +13,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import pabeles.concurrency.ConcurrencyOps;
 
 import static frc.robot.Constants.*;
 
@@ -89,22 +91,26 @@ public class ShooterSubsystem extends SubsystemBase {
 		if(shooterVelocity != 0){
 			launchTalon.set(shooterVelocity);
 		} else {
-			launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
+			if(launchMotorVelocity == 0) {
+				launchTalon.setControl(new NeutralOut());
+
+			} else {
 			launchTalon.setControl(launchVelocityController);
+			launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
+			}
 		}
 
 		logging();
 	}
 
 	private void logging() {
-
 		SmartDashboard.putNumber("Angle Position Rotations", getAnglePositionRotations());
 		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
 		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
 		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
-
+		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
 	}
 
 	/**

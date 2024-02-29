@@ -20,11 +20,13 @@ public class SourceIntake extends Command {
 //		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - 2) {
 //			shooter.setNeoSpeeds(0.5);
 //		}
+		shooter.setNeoSpeeds(-0.5);
 	}
 
 	@Override
 	public void end(boolean interrupted) {
 		shooter.setLaunchTalon(0);
 		//shooter.setNeoSpeeds(0.0);
+		shooter.setNeoSpeeds(0);
 	}
 }

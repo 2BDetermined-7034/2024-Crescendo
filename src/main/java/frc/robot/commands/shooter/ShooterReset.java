@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
-public class ShooterTest extends Command {
+public class ShooterReset extends Command {
 	protected ShooterSubsystem shooter;
 
-	public ShooterTest(ShooterSubsystem shooter) {
+	public ShooterReset(ShooterSubsystem shooter) {
 		this.shooter = shooter;
 		addRequirements(shooter);
 	}
@@ -20,13 +20,13 @@ public class ShooterTest extends Command {
 //		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - 2) {
 //			shooter.setNeoSpeeds(0.5);
 //		}
-		shooter.setAngleTalonPositionDegrees(63);
+		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 	}
 
 	@Override
 	public void end(boolean interrupted) {
-		shooter.setAngleTalonPositionDegrees(63);
-		shooter.setLaunchTalon(0);
-		shooter.setNeoSpeeds(0.0);
+//		shooter.setAngleTalonPositionDegrees(63);
+//		shooter.setLaunchTalon(0);
+//		shooter.setNeoSpeeds(0.0);
 	}
 }

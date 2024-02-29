@@ -14,10 +14,10 @@ public class ShooterCommand extends Command {
 
 	@Override
 	public void execute() {
-		double velocitySetpoint = 50;
+		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
 		shooter.setLaunchTalon(velocitySetpoint);
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - 2) {
+		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
 			shooter.setNeoSpeeds(0.5);
 		}
 	}

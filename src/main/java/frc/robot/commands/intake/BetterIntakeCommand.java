@@ -13,14 +13,14 @@ public class BetterIntakeCommand extends Command {
 	public BetterIntakeCommand(IntakeSubsystem intake, ShooterSubsystem shooter) {
 		this.intake = intake;
 		this.shooter = shooter;
-		addRequirements();
+		addRequirements(intake, shooter);
 	}
 
 	@Override
 	public void execute(){
 		intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
 		shooter.setNeoSpeeds(0.5);
-		shooter.runShooterVelocity(-0.1);
+		shooter.runShooterVelocity(-0.05);
 	}
 
 	@Override
