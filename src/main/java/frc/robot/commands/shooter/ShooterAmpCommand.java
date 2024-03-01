@@ -5,20 +5,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
-public class ShooterCommand extends Command {
+public class ShooterAmpCommand extends Command {
 	protected ShooterSubsystem shooter;
 
-	public ShooterCommand(ShooterSubsystem shooter) {
+	public ShooterAmpCommand(ShooterSubsystem shooter) {
 		this.shooter = shooter;
 		addRequirements(shooter);
 	}
 
 	@Override
 	public void execute() {
-		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
+		double velocitySetpoint = 5;
 		shooter.setLaunchTalon(velocitySetpoint);
 		//shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
+		shooter.setAngleTalonPositionDegrees(-20);
 		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
 			shooter.setNeoSpeeds(0.5);
 		}
