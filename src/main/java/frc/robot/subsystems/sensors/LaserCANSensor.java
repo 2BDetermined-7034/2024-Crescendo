@@ -7,16 +7,10 @@ public class LaserCANSensor {
 	private double pastWeight, currentWeight;
 	private LaserCan laser;
 	private double previousDistance;
-
-	/**
-	 * @param canID
-	 * @param pastDistanceWeight
-	 * @param dimension
-	 */
+	private int canID;
 	public LaserCANSensor(int canID) {
-		setPastDistanceWeight(0.9);
-
 		laser = new LaserCan(canID);
+		this.canID= canID;
 		try {
 			laser.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
 			laser.setRangingMode(LaserCan.RangingMode.SHORT);
@@ -71,6 +65,7 @@ public class LaserCANSensor {
 	public LaserCan.Measurement getMeasurement() {
 		LaserCan.Measurement measurement = laser.getMeasurement();
 		if (measurement == null) {
+			laser = new LaserCan(canID);
 			return new LaserCan.Measurement(-1, 0, 0, false, 0, new LaserCan.RegionOfInterest(0, 0, 0, 0));
 		}
 		switch (measurement.status) {
