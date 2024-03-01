@@ -21,6 +21,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 //import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.subsystems.vision.Photonvision;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -320,7 +322,7 @@ public class SwerveSubsystem extends SubsystemBase
 //   * @param prevEstimatedRobotPose Current robot pose
 //   * @return The estimated robot pose
 //   */
-//  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(PhotonVision camera, Pose2d prevEstimatedRobotPose) {
+//  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Photonvision camera, Pose2d prevEstimatedRobotPose) {
 //    camera.getPoseEstimator().setReferencePose(prevEstimatedRobotPose);
 //    return camera.getPoseEstimator().update();
 //  }
@@ -329,7 +331,7 @@ public class SwerveSubsystem extends SubsystemBase
 //   * A method to take in the PhotonVision camera instance, and then add the apriltag vision measurements to swerve.
 //   * @param camera New PhotonVision instance with the new camera name
 //   */
-//  private void processCamera(PhotonVision camera) {
+//  private void processCamera(Photonvision camera) {
 //    if(camera.hasTargets()) {
 //      Optional<EstimatedRobotPose> estimatedPose = getEstimatedGlobalPose(camera, getPose());
 //
@@ -337,8 +339,8 @@ public class SwerveSubsystem extends SubsystemBase
 //        Pose2d robotPose2d = estimatedPose.get().estimatedPose.toPose2d();
 //        double distance = camera.getBestTarget().getBestCameraToTarget().getTranslation().getNorm();
 //
-//        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
-//        swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getOdometryHeading()), estimatedPose.get().timestampSeconds);
+////        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
+////        swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getOdometryHeading()), estimatedPose.get().timestampSeconds);
 //      }
 //    }
 //  }

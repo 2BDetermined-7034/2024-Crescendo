@@ -17,6 +17,7 @@ import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.shooter.ShooterAmpCommand;
 import frc.robot.commands.shooter.ShooterCommand;
 import frc.robot.commands.shooter.ShooterReset;
 import frc.robot.commands.shooter.SourceIntake;
@@ -51,6 +52,7 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
+    private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
@@ -122,6 +124,7 @@ public class RobotContainer {
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
         new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
         new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
+        new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
         new Trigger(operatorController::getL1Button).toggleOnTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
         new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
         new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));

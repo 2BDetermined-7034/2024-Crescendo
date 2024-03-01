@@ -64,8 +64,8 @@ public final class Constants {
 		 */
 		public static final double shooterVelTolerance = 2;
 
-		public static final double angleGearRatio = 30d / 50d;
-		public static final double angleFrontHardstop = -74.5;
+		public static final double angleGearRatio = 1d / 12.72d;
+		public static final double angleFrontHardstop = -60;
 		public static final double angleBackHardstop = 63.0;
 	}
 	public static final class Intake {
@@ -80,13 +80,17 @@ public final class Constants {
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
-		public static final double currentLimit = 90.0;
+		public static final double currentLimit = 40;
 
 		public static final double kP = 0.1;
 		public static final double kI = 0;
 		public static final double kD = 0;
 		public static final double kS = 0.2;
-		public static final double climbAmpPosition = 0.0;
+
+		/**
+		 * Upper Kraken Motor Rotations for Climb Amp Position Control
+		 */
+		public static final double climbAmpPosition = -177;
 	}
 
 	public static final class DrivebaseConstants {
