@@ -121,8 +121,9 @@ public class RobotContainer {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
 //        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
-        new Trigger(driverController::getTriangleButton).toggleOnTrue(betterIntakeCommand);
+        new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
+
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
