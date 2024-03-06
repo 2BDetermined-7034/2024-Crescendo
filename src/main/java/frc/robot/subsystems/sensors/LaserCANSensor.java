@@ -2,103 +2,40 @@ package frc.robot.subsystems.sensors;
 
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LaserCANSensor {
-	private double pastWeight, currentWeight;
-	private LaserCan laser;
-	private double previousDistance;
+public class LaserCANSensor extends SubsystemBase {
+	private LaserCan lc;
+	private int canID;
+	private int latestDistance = 0;
+
+	public LaserCANSensor(int canID) {
+		lc = new LaserCan(canID);
+		this.canID = canID;
+	}
+
+	@Override
+	public void periodic() {
+		LaserCan.Measurement measurement = lc.getMeasurement();
+		if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+			//System.out.println("The target is " + measurement.distance_mm + "mm away!");
+			SmartDashboard.putNumber(String.format("Lasercan %d Distance mm ", canID), measurement.distance_mm);
+			latestDistance = measurement.distance_mm;
+		} else {
+			//System.out.println("Oh no! The target is out of range, or we can't get a reliable measurement!");
+			// You can still use distance_mm in here, if you're ok tolerating a clamped value or an unreliable measurement.
+		}
+	}
 
 	/**
-	 * @param canID
-	 * @param pastDistanceWeight
-	 * @param dimension
+	 * Returns the latest accurate measurement in mm
+	 * @return
 	 */
-	public LaserCANSensor(int canID) {
-		setPastDistanceWeight(0.9);
-
-		laser = new LaserCan(canID);
-		try {
-			laser.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-			laser.setRangingMode(LaserCan.RangingMode.SHORT);
-			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 4, 4));
-		} catch (Exception e) {
-			DriverStation.reportError("Config failed", true);
-		}
+	public int getLatestMeasurement() {
+		return latestDistance;
 	}
 
-	public LaserCANSensor(int canID, double pastDistanceWeight, int dimension) {
-		setPastDistanceWeight(pastDistanceWeight);
-
-		laser = new LaserCan(canID);
-		try {
-			laser.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-			laser.setRangingMode(LaserCan.RangingMode.SHORT);
-			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, dimension, dimension));
-		} catch (Exception e) {
-			DriverStation.reportError("Config failed", true);
-		}
-	}
-
-	public void setRegionOfInterest(int x, int y, int dimension) {
-		try {
-			laser.setRegionOfInterest(new LaserCan.RegionOfInterest(x, y, dimension, dimension));
-		} catch (Exception e) {
-			DriverStation.reportError("LaserCAN Error: ROI configuration failed", true);
-		}
-	}
-
-	public void setTimingBudget(LaserCan.TimingBudget timingBudget) {
-		try {
-			laser.setTimingBudget(timingBudget);
-		} catch (Exception e) {
-			DriverStation.reportError("LaserCAN Error: TimingBudget configuration failed",true);
-		}
-	}
-
-	public void setRangingMode(LaserCan.RangingMode rangingMode) {
-		try {
-			laser.setRangingMode(rangingMode);
-		} catch (Exception e) {
-			DriverStation.reportError("LaserCAN Error: Ranging mode configuration failed", true);
-		}
-	}
-
-	public void setPastDistanceWeight(double pastDistanceWeight) {
-		this.pastWeight = Math.min(Math.max(pastDistanceWeight, 0.0), 1.0);
-		this.currentWeight = 1.0 - pastWeight;
-	}
-
-	public LaserCan.Measurement getMeasurement() {
-		LaserCan.Measurement measurement = laser.getMeasurement();
-		switch (measurement.status) {
-			case LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT:
-				break;
-			case LaserCan.LASERCAN_STATUS_NOISE_ISSUE:
-				DriverStation.reportError("LaserCAN Error: Noise Issue (Consider increasing timing budget)", true);
-				break;
-			case LaserCan.LASERCAN_STATUS_WEAK_SIGNAL:
-				DriverStation.reportError("LaserCAN Error: Could not find target", true);
-				break;
-			case LaserCan.LASERCAN_STATUS_OUT_OF_BOUNDS:
-				DriverStation.reportError("LaserCAN Error: Target is out of range (Could be overly reflective)", true);
-				break;
-			case LaserCan.LASERCAN_STATUS_WRAPAROUND:
-				DriverStation.reportError("LaserCAN Error: Value read may have wrapped around", true);
-				break;
-			default:
-				DriverStation.reportError("LaserCAN Error: Unknown Error", true);
-				break;
-		}
-		return measurement;
-	}
-	public double getWeightedDistance() {
-		LaserCan.Measurement measurement = getMeasurement();
-		if (measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-			return previousDistance = previousDistance * pastWeight + (double)measurement.distance_mm * currentWeight;
-		}
-
-		return -1.0;
-	}
 
 }
 

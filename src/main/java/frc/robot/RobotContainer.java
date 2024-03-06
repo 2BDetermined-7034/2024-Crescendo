@@ -29,6 +29,7 @@ import frc.robot.commands.shooter.*;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
@@ -57,6 +58,7 @@ public class RobotContainer {
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final LaserCANSensor laserCANSensor = new LaserCANSensor(0);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
