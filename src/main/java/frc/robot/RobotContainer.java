@@ -4,11 +4,12 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.databind.util.Named;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,10 +33,9 @@ import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.vision.Photonvision;
 
-import javax.xml.transform.Source;
 import java.io.File;
-import java.nio.file.Path;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -53,6 +53,9 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
+
+    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
+
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
@@ -143,6 +146,8 @@ public class RobotContainer {
         new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
 
     }
+
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

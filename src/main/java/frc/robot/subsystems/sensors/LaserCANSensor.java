@@ -30,7 +30,7 @@ public class LaserCANSensor extends SubsystemBase {
 
 	/**
 	 * Returns the latest accurate measurement in mm
-	 * @return
+	 * @return distance (mm)
 	 */
 	public int getLatestMeasurement() {
 		return latestDistance;

@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -44,8 +46,9 @@ public final class Constants {
 	}
 
 	public static final class Vision {
-		public static String intakeColorCam = "4kcam1";
-		public static String shooterMonoCam = "whitecasecam";
+		public static final String intakeColorCam = "4kcam1";
+		public static final String shooterMonoCam = "whitecasecam";
+		public static final Transform3d shooterCamToRobotTransfrom = new Transform3d(new Translation3d(0.175, -0.175, 0.6), new Rotation3d(0,Math.toRadians(23),Math.toRadians(180)));
 	}
 
 	public static final class Shooter {

@@ -31,6 +31,9 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.vision.Photonvision;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
@@ -314,38 +317,39 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.drive(velocity);
   }
 
-//  /**
-//   * Calculate the estimate pose of the robot
-//   * @param camera PhotonVision subsystem instance with the camera name
-//   * @param prevEstimatedRobotPose Current robot pose
-//   * @return The estimated robot pose
-//   */
-//  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Photonvision camera, Pose2d prevEstimatedRobotPose) {
-//    camera.getPoseEstimator().setReferencePose(prevEstimatedRobotPose);
-//    return camera.getPoseEstimator().update();
-//  }
-//
-//  /**
-//   * A method to take in the PhotonVision camera instance, and then add the apriltag vision measurements to swerve.
-//   * @param camera New PhotonVision instance with the new camera name
-//   */
-//  private void processCamera(Photonvision camera) {
-//    if(camera.hasTargets()) {
-//      Optional<EstimatedRobotPose> estimatedPose = getEstimatedGlobalPose(camera, getPose());
-//
-//      if(estimatedPose.isPresent()) {
-//        Pose2d robotPose2d = estimatedPose.get().estimatedPose.toPose2d();
-//        double distance = camera.getBestTarget().getBestCameraToTarget().getTranslation().getNorm();
-//
-////        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
-////        swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getOdometryHeading()), estimatedPose.get().timestampSeconds);
-//      }
-//    }
-//  }
+  /**
+   * Calculate the estimate pose of the robotad
+   * @param camera PhotonVision subsystem instance with the camera name
+   * @param prevEstimatedRobotPose Current robot pose
+   * @return The estimated robot pose
+   */
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Photonvision camera, Pose2d prevEstimatedRobotPose) {
+    camera.getPoseEstimator().setReferencePose(prevEstimatedRobotPose);
+    return camera.getPoseEstimator().update();
+  }
+
+  /**
+   * A method to take in the PhotonVision camera instance, and then add the apriltag vision measurements to swerve.
+   * @param camera New PhotonVision instance with the new camera name
+   */
+  private void processCamera(Photonvision camera) {
+    if(camera.hasTargets()) {
+      Optional<EstimatedRobotPose> estimatedPose = getEstimatedGlobalPose(camera, getPose());
+
+      if(estimatedPose.isPresent()) {
+        Pose2d robotPose2d = estimatedPose.get().estimatedPose.toPose2d();
+        double distance = camera.getBestTarget().getBestCameraToTarget().getTranslation().getNorm();
+
+        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
+        swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getYaw()), estimatedPose.get().timestampSeconds);
+      }
+    }
+  }
 
   @Override
   public void periodic()
   {
+    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
   }
 
