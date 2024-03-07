@@ -101,6 +101,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
+    RobotContainer.photonvision.setDriverMode(true);
     m_robotContainer.setMotorBrake(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -109,7 +110,6 @@ public class Robot extends TimedRobot
     {
       m_autonomousCommand.schedule();
     }
-    RobotContainer.photonvision.setDriverMode(true);
   }
 
   /**
@@ -127,13 +127,14 @@ public class Robot extends TimedRobot
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    RobotContainer.photonvision.setDriverMode(false);
+
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    RobotContainer.photonvision.setDriverMode(false);
   }
 
   /**
