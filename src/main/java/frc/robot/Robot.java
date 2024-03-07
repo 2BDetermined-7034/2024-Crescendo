@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import java.io.File;
 import java.io.IOException;
+
+import frc.robot.subsystems.vision.Photonvision;
 import swervelib.parser.SwerveParser;
 
 /**
@@ -107,6 +109,7 @@ public class Robot extends TimedRobot
     {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.photonvision.setDriverMode(true);
   }
 
   /**
@@ -130,6 +133,7 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
+    RobotContainer.photonvision.setDriverMode(false);
   }
 
   /**
