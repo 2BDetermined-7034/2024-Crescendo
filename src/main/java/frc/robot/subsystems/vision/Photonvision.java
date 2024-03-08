@@ -2,9 +2,11 @@ package frc.robot.subsystems.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -12,6 +14,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class Photonvision extends SubsystemBase {
 	private PhotonPipelineResult pipelineResult;
@@ -79,6 +82,9 @@ public class Photonvision extends SubsystemBase {
 	@Override
 	public void periodic() {
 		pipelineResult = camera.getLatestResult();
+	}
+	public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+		return getPoseEstimator().update();
 	}
 
 }

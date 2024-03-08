@@ -27,6 +27,7 @@ import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
+import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -62,7 +63,7 @@ public class RobotContainer {
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final LaserCANSensor laserCANSensor = new LaserCANSensor(0);
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
@@ -128,6 +129,7 @@ public class RobotContainer {
 //        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
+        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
 
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
