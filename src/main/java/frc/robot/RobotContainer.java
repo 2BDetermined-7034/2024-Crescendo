@@ -75,13 +75,15 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("One piece mid", new PathPlannerAuto("1PieceMid"));
-        autoChooser.addOption("One piece amp", new PathPlannerAuto("1PieceAmp"));
-        autoChooser.addOption("One piece source", new PathPlannerAuto("1PieceSource"));
-        autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
-        autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid", new PathPlannerAuto("3PieceMid"));
+        // PathPlanner Autos
+        autoChooser.addOption("One piece mid", swerve.getAutonomousCommand("1PieceMid"));
+        autoChooser.addOption("One piece amp", swerve.getAutonomousCommand("1PieceAmp"));
+        autoChooser.addOption("One piece source", swerve.getAutonomousCommand("1PieceSource"));
+        autoChooser.addOption("Two piece mid", swerve.getAutonomousCommand("2PieceMid"));
+        autoChooser.addOption("Two piece amp", swerve.getAutonomousCommand("2PieceAmp"));
+        autoChooser.addOption("Two piece mid podium shot", swerve.getAutonomousCommand("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid", swerve.getAutonomousCommand("3PieceMid"));
+
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
