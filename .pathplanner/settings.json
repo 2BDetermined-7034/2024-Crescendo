@@ -8,7 +8,8 @@
     "3PC"
   ],
   "autoFolders": [
-    "1PC"
+    "1PC",
+    "2PC"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
