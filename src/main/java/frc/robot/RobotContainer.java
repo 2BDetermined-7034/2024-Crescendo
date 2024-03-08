@@ -81,6 +81,7 @@ public class RobotContainer {
         autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
         autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
         autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid", new PathPlannerAuto("3PieceMid"));
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 

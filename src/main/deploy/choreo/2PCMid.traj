@@ -217,24 +217,5 @@
       "timestamp": 1.8093616781113997
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0.9911867601407642,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": ""
-        }
-      }
-    },
-    {
-      "timestamp": 0.9911867630498363,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Stop Intake"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }
