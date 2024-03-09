@@ -71,12 +71,18 @@ public class Photonvision extends SubsystemBase {
 		return pipelineResult.targets;
 	}
 
+
+
 	/**
 	 *
 	 * @return Returns the best target in PhotonPipelineResult
 	 */
 	public PhotonTrackedTarget getBestTarget() {
 		return pipelineResult.getBestTarget();
+	}
+
+	public void setDriverMode(boolean driverMode) {
+		camera.setDriverMode(driverMode);
 	}
 
 	@Override
