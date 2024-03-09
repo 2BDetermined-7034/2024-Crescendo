@@ -13,8 +13,8 @@
     "3PC",
     "4PC"
   ],
-  "defaultMaxVel": 2.0,
-  "defaultMaxAccel": 2.0,
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 2.001,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5

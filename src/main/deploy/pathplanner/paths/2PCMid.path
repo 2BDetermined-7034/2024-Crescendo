@@ -16,28 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.0777770571233,
-        "y": 5.539225686154654
+        "x": 4.11,
+        "y": 5.54
       },
       "prevControl": {
-        "x": 3.279213384590284,
-        "y": 5.50921666750609
-      },
-      "nextControl": {
-        "x": 4.876340729656313,
-        "y": 5.569234704803218
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.3491521419562087,
-        "y": 5.539225686154654
-      },
-      "prevControl": {
-        "x": 2.349152141956214,
-        "y": 5.539225686154654
+        "x": 3.48201587562874,
+        "y": 5.54
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Auto Intake",
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.2,
       "command": {
         "type": "parallel",
         "data": {
@@ -66,7 +50,7 @@
     },
     {
       "name": "Stop Intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -83,8 +67,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 2.001,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -99,5 +83,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

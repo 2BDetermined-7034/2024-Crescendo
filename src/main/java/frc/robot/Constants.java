@@ -89,8 +89,8 @@ public final class Constants {
 	public static final class Intake {
 		public static final int lowerNeoID = 13;
 		public static final int upperNeoID = 12;
-		public static final double lowerIntakeSpeed = 0.5;
-		public static final double upperIntakeSpeed = 0.5;
+		public static final double lowerIntakeSpeed = 0.75;
+		public static final double upperIntakeSpeed = 0.75;
 	}
 	public static final class Climb {
 		public static final int upperFalconID = 9;

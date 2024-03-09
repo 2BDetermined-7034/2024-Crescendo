@@ -70,7 +70,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
 		launchMotorPID.kP = 0.11;
-		launchMotorPID.kI = 0.48;
+		launchMotorPID.kI = 0.0;
 		launchMotorPID.kD = 0.01;
 		launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
@@ -107,6 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
+		SmartDashboard.putNumber("Kicker Roller", highGearNeo.getAppliedOutput());
 	}
 
 	/**

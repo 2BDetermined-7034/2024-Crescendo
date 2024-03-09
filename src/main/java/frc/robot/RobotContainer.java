@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
@@ -88,10 +89,7 @@ public class RobotContainer {
         autoChooser.addOption("Two piece mid", swerve.getAutonomousCommand("2PieceMid"));
         autoChooser.addOption("Two piece amp", swerve.getAutonomousCommand("2PieceAmp"));
         autoChooser.addOption("Two piece mid podium shot", swerve.getAutonomousCommand("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid", swerve.getAutonomousCommand("Choreo3PieceTheoretical"));
-        autoChooser.addOption("Three piece mid center", swerve.getAutonomousCommand("Copy of Choreo3PieceTheoretical"));
-        autoChooser.addOption("Four piece mid", swerve.getAutonomousCommand("Choreo4PieceTheoretical"));
-        autoChooser.addOption("Four piece mid test", swerve.getAutonomousCommand("Choreo4PieceTheoreticalTest"));
+        autoChooser.addOption("3PieceMid", swerve.getAutonomousCommand("3PieceMid"));
 
 
 
@@ -143,7 +141,7 @@ public class RobotContainer {
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
+        new Trigger(driverController::getCrossButton).whileTrue(betterIntakeCommand);
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
@@ -178,8 +176,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("Shoot 25 Angle", new ShooterCommandToAngle(shooterSubsystem, 25));
-        NamedCommands.registerCommand("Disable Vision", new InstantCommand(() -> photonvision.setDriverMode(true)));
-        NamedCommands.registerCommand("Enable Vision", new InstantCommand(() -> photonvision.setDriverMode(false)));
+        NamedCommands.registerCommand("Vision Align", new RotateToTag(swerve));
+        NamedCommands.registerCommand("Source Intake", sourceIntake);
     }
 
     public void setMotorBrake(boolean brake) {
