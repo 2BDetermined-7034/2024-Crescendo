@@ -82,7 +82,12 @@ public class RobotContainer {
         autoChooser.addOption("Two piece mid", swerve.getAutonomousCommand("2PieceMid"));
         autoChooser.addOption("Two piece amp", swerve.getAutonomousCommand("2PieceAmp"));
         autoChooser.addOption("Two piece mid podium shot", swerve.getAutonomousCommand("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid", swerve.getAutonomousCommand("3PieceMid"));
+        autoChooser.addOption("Three piece mid", swerve.getAutonomousCommand("Choreo3PieceTheoretical"));
+        autoChooser.addOption("Three piece mid center", swerve.getAutonomousCommand("Copy of Choreo3PieceTheoretical"));
+        autoChooser.addOption("Four piece mid", swerve.getAutonomousCommand("Choreo4PieceTheoretical"));
+        autoChooser.addOption("Four piece mid test", swerve.getAutonomousCommand("Choreo4PieceTheoreticalTest"));
+
+
 
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
