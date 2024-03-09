@@ -1,12 +1,12 @@
 package frc.robot.utils;
 
 public final class RationalInterpolation {
-	private static final double t1 = 0.92;
-	private static final double t2 = 2.685;
-	private static final double t3 = 4.135;
+	private static final double t1 = 1.42;
+	private static final double t2 = 2.56;
+	private static final double t3 = 4.50;
 	private static final double r1 = 45;
-	private static final double r2 = 25;
-	private static final double r3 = 19;
+	private static final double r2 = 27;
+	private static final double r3 = 19.5;
 
 	private static double inter12(double t) {
 		return r2 + (r2-r1)/(((t-t1)/(t-t2))*(1-((r2-r1)/r2)) - 1) ;

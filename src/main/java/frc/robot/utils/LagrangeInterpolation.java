@@ -20,11 +20,11 @@ public class LagrangeInterpolation {
 		for (int i = 0; i < vertices.length; ++i) {
 			double current = inverse.apply(vertices[i].getY());
 			for (int j = 0; j < i; ++j) {
-				current *= (x - vertices[j].getX()) / (vertices[i].getX() - vertices[i].getX());
+				current *= (x - vertices[j].getX()) / (vertices[i].getX() - vertices[j].getX());
 			}
 
 			for (int j = i + 1; j < vertices.length; ++j) {
-				current *= (x - vertices[j].getX()) / (vertices[i].getX() - vertices[i].getX());
+				current *= (x - vertices[j].getX()) / (vertices[i].getX() - vertices[j].getX());
 			}
 
 			sum += current;
