@@ -40,6 +40,18 @@
           "data": {
             "pathName": "Center to Mid "
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid to center under stage +1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center to mid under stage"
+          }
         }
       ]
     }
