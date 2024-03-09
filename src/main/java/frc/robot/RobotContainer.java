@@ -176,6 +176,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("Shoot 25 Angle", new ShooterCommandToAngle(shooterSubsystem, 25));
+        NamedCommands.registerCommand("Disable Vision", new InstantCommand(() -> photonvision.setDriverMode(true)));
+        NamedCommands.registerCommand("Enable Vision", new InstantCommand(() -> photonvision.setDriverMode(false)));
     }
 
     public void setMotorBrake(boolean brake) {
