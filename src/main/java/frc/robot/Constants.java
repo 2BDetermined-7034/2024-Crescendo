@@ -6,11 +6,15 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
+
+import java.io.IOException;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
@@ -26,6 +30,17 @@ public final class Constants {
 	public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
 	public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
 	public static final double LOOP_TIME = 0.13; //s, 20ms + 110ms sprk max velocity lag
+	public static final AprilTagFieldLayout aprilTagFieldLayout;
+
+	static {
+		try {
+			aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
 
 	public static class OperatorConstants {
 
@@ -48,7 +63,7 @@ public final class Constants {
 	public static final class Vision {
 		public static final String intakeColorCam = "4kcam1";
 		public static final String shooterMonoCam = "whitecasecam";
-		public static final Transform3d shooterCamToRobotTransfrom = new Transform3d(new Translation3d(0.175, -0.175, 0.6), new Rotation3d(0,Math.toRadians(23),Math.toRadians(180)));
+		public static final Transform3d shooterCamToRobotTransfrom = new Transform3d(new Translation3d(0.175, -0.175, 0.600), new Rotation3d(0,Math.toRadians(-23),Math.toRadians(180)));
 	}
 
 	public static final class Shooter {
