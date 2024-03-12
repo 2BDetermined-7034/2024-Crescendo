@@ -111,6 +111,10 @@ public final class Constants {
 		public static final double climbAmpPosition = -177;
 	}
 
+	public static final class LaserConstants {
+		public static final int detectionDistance = 33;
+	}
+
 	public static final class DrivebaseConstants {
 
 		// Hold time on motor brakes when disabled
