@@ -5,9 +5,9 @@
     "canbus": "drivebase"
   },
   "angle": {
-    "type": "talonfx",
+    "type": "sparkmax",
     "id": 3,
-    "canbus": "drivebase"
+    "canbus": null
   },
   "encoder": {
     "type": "cancoder",
@@ -23,7 +23,7 @@
     "drive": 0.04654211339
   },
   "absoluteEncoderInverted": false,
-  "absoluteEncoderOffset": -41.4,
+  "absoluteEncoderOffset": 0,
   "location": {
     "front": 11.4375,
     "left": 11.4375
