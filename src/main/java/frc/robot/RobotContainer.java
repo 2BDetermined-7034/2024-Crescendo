@@ -7,6 +7,9 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -55,19 +58,18 @@ public class RobotContainer {
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
 
 
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final LaserCANSensor laserCANShooter = new LaserCANSensor(0);
-    private final LaserCANSensor laserCANIntake = new LaserCANSensor(1);
+    private final LaserCANSensor laserCANSensor = new LaserCANSensor(0);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
     private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -93,7 +95,7 @@ public class RobotContainer {
 		/*
 		This Command uses both x and y from right analogue stick to control desired angle instead of angular rotation
 		 */
-        // Applies deadband and inverts controls because joysticks
+        // Applies deadbands and inverts controls because joysticks
         // are back-right positive while robot
         // controls are front-left positive
         // left stick controls translation

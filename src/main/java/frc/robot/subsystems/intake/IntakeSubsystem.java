@@ -10,6 +10,7 @@ import frc.robot.subsystems.sensors.LaserCANSensor;
 public class IntakeSubsystem extends SubsystemBase {
 	final private CANSparkMax intakeMotorUpper;
 	final private CANSparkMax intakeMotorLower;
+	LaserCANSensor laser;
 
 	public IntakeSubsystem() {
 		intakeMotorUpper = new CANSparkMax(Constants.Intake.upperNeoID, CANSparkLowLevel.MotorType.kBrushless);
@@ -17,6 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
 		intakeMotorUpper.setIdleMode(CANSparkBase.IdleMode.kCoast);
 		intakeMotorLower.setIdleMode(CANSparkBase.IdleMode.kCoast);
 		intakeMotorUpper.setInverted(true);
+		laser = new LaserCANSensor(0xFFFFF);
 	}
 
 
@@ -29,7 +31,6 @@ public class IntakeSubsystem extends SubsystemBase {
 //			intakeMotor1.set(speed);
 //			intakeMotor2.set(speed);
 //		}
-
 		intakeMotorUpper.set(speedUpper);
 		intakeMotorLower.set(speedLower);
 	}
