@@ -67,9 +67,10 @@ public final class Constants {
 	}
 
 	public static final class Shooter {
-		public static final int launchKrakenID = 12;
-		public static final int angleFalconID = 11;
-		public static final int neo550LowGearID = 4;
+		public static final int launchKrakenID = 6;
+		public static final int angleFalconID = 30;
+		public static final int neo550LowGearID = 3;
+		//TODO ID highgear sparkmax
 		public static final int neo550HighGearID = 11;
 		public static final int neo55HighGearRatio = 4;
 		public static final int neo550LowGearRatio = 1;
@@ -87,8 +88,8 @@ public final class Constants {
 		public static final double angleBackHardstop = 63.0;
 	}
 	public static final class Intake {
-		public static final int lowerNeoID = 13;
-		public static final int upperNeoID = 12;
+		public static final int lowerNeoID = 4;
+		public static final int upperNeoID = 6;
 		public static final double lowerIntakeSpeed = 0.5;
 		public static final double upperIntakeSpeed = 0.5;
 	}

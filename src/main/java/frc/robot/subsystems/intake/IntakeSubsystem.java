@@ -3,6 +3,7 @@ package frc.robot.subsystems.intake;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.sensors.LaserCANSensor;
@@ -16,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
 		intakeMotorLower = new CANSparkMax(Constants.Intake.lowerNeoID, CANSparkLowLevel.MotorType.kBrushless);
 		intakeMotorUpper.setIdleMode(CANSparkBase.IdleMode.kCoast);
 		intakeMotorLower.setIdleMode(CANSparkBase.IdleMode.kCoast);
-		intakeMotorUpper.setInverted(true);
+		intakeMotorLower.setInverted(true);
 	}
 
 
