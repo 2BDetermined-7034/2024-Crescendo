@@ -66,7 +66,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
@@ -349,7 +349,8 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    processCamera(RobotContainer.photonvision);
+    //TODO add back when vision is back
+//    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
   }
 
