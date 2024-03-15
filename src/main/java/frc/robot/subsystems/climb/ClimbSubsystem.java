@@ -19,7 +19,7 @@ public class ClimbSubsystem extends SubsystemBase {
 		lowerMotor = new TalonFX(Constants.Climb.lowerKrakenID, Constants.CANBUS_NAME);
 		upperMotor = new TalonFX(Constants.Climb.upperFalconID, Constants.CANBUS_NAME);
 
-		lowerMotor.setNeutralMode(NeutralModeValue.Brake); // TODO SET TO BRAKE
+		lowerMotor.setNeutralMode(NeutralModeValue.Brake);
 		upperMotor.setNeutralMode(NeutralModeValue.Brake);
 
 		Slot0Configs motorConfig = new Slot0Configs();

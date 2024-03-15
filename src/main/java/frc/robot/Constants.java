@@ -62,7 +62,7 @@ public final class Constants {
 
 	public static final class Vision {
 		public static final String intakeColorCam = "4kcam1";
-		public static final String shooterMonoCam = "whitecasecam";
+		public static final String shooterMonoCam = "greencase";
 		public static final Transform3d shooterCamToRobotTransfrom = new Transform3d(new Translation3d(0.175, -0.175, 0.600), new Rotation3d(0,Math.toRadians(-23),Math.toRadians(180)));
 	}
 
@@ -70,21 +70,20 @@ public final class Constants {
 		public static final int launchKrakenID = 6;
 		public static final int angleFalconID = 30;
 		public static final int neo550LowGearID = 3;
-		//TODO ID highgear sparkmax
-		public static final int neo550HighGearID = 11;
+		public static final int neo550HighGearID = 5;
 		public static final int neo55HighGearRatio = 4;
 		public static final int neo550LowGearRatio = 1;
 		/**
 		 * Velocity Setpoint for the Shooter
 		 */
-		public static final double shooterVelSetpoint = 50;
+		public static final double shooterVelSetpoint = 70;
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
 		public static final double shooterVelTolerance = 2;
 
 		public static final double angleGearRatio = 1d / 12.72d;
-		public static final double angleFrontHardstop = -60;
+		public static final double angleFrontHardstop = -82;
 		public static final double angleBackHardstop = 63.0;
 	}
 	public static final class Intake {

@@ -49,10 +49,12 @@ public class ShooterCommand extends Command {
 	public void execute() {
 		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
 		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
-		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
+		double distance = Constants.aprilTagFieldLayout.getTagPose(tagID).get().toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 		SmartDashboard.putNumber("Shooter Distance", distance);
 		shooter.setLaunchTalon(velocitySetpoint);
-//		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
+		//shooter.setAngleTalonPositionDegrees(0);
+
+		//shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 		shooter.setAngleTalonPositionDegrees(interpolation.get(distance));
 //		shooter.setAngleTalonPositionDegrees(SmartDashboard.getNumber("Set The Shooter Angle",  63));
 		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));

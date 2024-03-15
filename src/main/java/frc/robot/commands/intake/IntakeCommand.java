@@ -21,15 +21,18 @@ public class IntakeCommand extends Command {
 
 	@Override
 	public void execute() {
+		//TODO uncomment once lasercan is online
 		//Shooter should probably always be at zero at the end of a shooter command, its simpler
-		if (shooterLaser.getLatestDistance() > Constants.LaserConstants.detectionDistance
-				/*&& shooter.getAnglePositionDegrees() > Constants.Shooter.angleBackHardstop - 3*/) {
-			intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
-		}
-		if (intakeLaser.getLatestDistance() < Constants.LaserConstants.detectionDistance)
-			shooter.setNeoSpeeds(0.5);
-		else
-			shooter.setNeoSpeeds(0.0);
+//		if (shooterLaser.getLatestDistance() > Constants.LaserConstants.detectionDistance
+//				/*&& shooter.getAnglePositionDegrees() > Constants.Shooter.angleBackHardstop - 3*/) {
+//			intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
+//		}
+//		if (intakeLaser.getLatestDistance() < Constants.LaserConstants.detectionDistance)
+//			shooter.setNeoSpeeds(0.5);
+//		else
+//			shooter.setNeoSpeeds(0.0);
+		intake.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+		shooter.setNeoSpeeds(.5);
 	}
 
 	@Override

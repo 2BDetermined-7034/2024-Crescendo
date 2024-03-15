@@ -350,7 +350,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     //TODO add back when vision is back
-//    processCamera(RobotContainer.photonvision);
+    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
   }
 
