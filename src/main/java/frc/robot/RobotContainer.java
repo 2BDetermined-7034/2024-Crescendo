@@ -20,9 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.AutoIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.ReverseIntakeCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
@@ -68,6 +67,8 @@ public class RobotContainer {
 //    private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
 //    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
+    private final ReverseIntakeCommand reverseIntakeCommand = new ReverseIntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -134,7 +135,7 @@ public class RobotContainer {
 //
 //        //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
 //        //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
-//        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
 //        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed)));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 //
@@ -143,6 +144,7 @@ public class RobotContainer {
         new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
         new Trigger(driverController::getL1Button).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getL2Button).toggleOnTrue(reverseIntakeCommand);
 //        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
 //        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
 //        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
