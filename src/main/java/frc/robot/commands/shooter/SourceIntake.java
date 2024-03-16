@@ -14,7 +14,7 @@ public class SourceIntake extends Command {
 
 	@Override
 	public void execute() {
-		double velocitySetpoint = -30;
+		double velocitySetpoint = -20;
 		shooter.setLaunchTalon(velocitySetpoint);
 		shooter.setNeoSpeeds(-0.5);
 	}

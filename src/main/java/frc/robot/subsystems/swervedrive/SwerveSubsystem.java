@@ -342,7 +342,7 @@ public class SwerveSubsystem extends SubsystemBase
         Pose2d robotPose2d = estimatedPose.get().estimatedPose.toPose2d();
         double distance = camera.getBestTarget().getBestCameraToTarget().getTranslation().getNorm();
 
-        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
+        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance * 0.5, distance * 0.5, 0.01));
         swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getYaw()), estimatedPose.get().timestampSeconds);
       }
     }

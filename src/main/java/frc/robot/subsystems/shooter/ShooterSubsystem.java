@@ -58,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		angleMotorPID.kP = 1;
 		angleMotorPID.kI = 0;
 		angleMotorPID.kD = 0;
-//		angleMotorPID.kS = 0.24;
+		angleMotorPID.kS = 0.24;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
 		shooterPercent = 0;

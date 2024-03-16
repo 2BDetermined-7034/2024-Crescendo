@@ -27,14 +27,13 @@ public class ShooterCommand extends Command {
 		interpolation = new LinearInterpolation();
 
 		interpolation.vertices = new Translation2d[7];
-		interpolation.vertices[0] = new Translation2d(1.42, 45.0);
-		interpolation.vertices[1] = new Translation2d(2.02, 35.0);
-		interpolation.vertices[1] = new Translation2d(2.38, 32.0);
-		interpolation.vertices[2] = new Translation2d(2.50, 30.0);
-		interpolation.vertices[3] = new Translation2d(3.03, 26.4);
-		interpolation.vertices[4] = new Translation2d(3.50, 24.0);
-		interpolation.vertices[5] = new Translation2d(4.05, 21.5);
-		interpolation.vertices[6] = new Translation2d(4.65, 21.0);
+		interpolation.vertices[0] = new Translation2d(.257463908733832, 45.0);
+		interpolation.vertices[1] = new Translation2d(1.9039310238475524, 35.0);
+		interpolation.vertices[2] = new Translation2d(2.4671186773596276, 31.0);
+		interpolation.vertices[3] = new Translation2d(2.954671604288543, 28.0);
+		interpolation.vertices[4] = new Translation2d(3.5234219066572603, 25.0);
+		interpolation.vertices[5] = new Translation2d(4.019970514449032, 22.50);
+		interpolation.vertices[6] = new Translation2d(4.613365440225928, 20.750);
 
 //		interpolation.function = (Double x) -> {
 //			return 1.0 / x;
@@ -52,7 +51,7 @@ public class ShooterCommand extends Command {
 		double distance = Constants.aprilTagFieldLayout.getTagPose(tagID).get().toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 		SmartDashboard.putNumber("Shooter Distance", distance);
 		shooter.setLaunchTalon(velocitySetpoint);
-		//shooter.setAngleTalonPositionDegrees(0);
+//		shooter.setAngleTalonPositionDegrees(0);
 
 		//shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 		shooter.setAngleTalonPositionDegrees(interpolation.get(distance));

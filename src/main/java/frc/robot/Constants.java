@@ -76,7 +76,9 @@ public final class Constants {
 		/**
 		 * Velocity Setpoint for the Shooter
 		 */
-		public static final double shooterVelSetpoint = 70;
+		public static final double shooterVelSetpoint = 60;
+		public static final double shooterAmpVelSetpoint = 40;
+		public static final double shooterTrapVelSetpoint = 80;
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
