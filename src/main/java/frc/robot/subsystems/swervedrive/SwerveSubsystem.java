@@ -14,11 +14,13 @@ import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +35,7 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.vision.Photonvision;
+import org.opencv.dnn.Net;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -56,7 +59,6 @@ public class SwerveSubsystem extends SubsystemBase
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
   public        double      maximumSpeed = Units.feetToMeters(15.0);
-
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
    *
@@ -351,6 +353,13 @@ public class SwerveSubsystem extends SubsystemBase
   {
     processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
+
+    double[] robotPoseArray = new double[] {
+            getPose().getX(),
+            getPose().getY(),
+            getPose().getRotation().getRadians()
+    };
+    SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
   }
 
   @Override
@@ -415,7 +424,16 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
-    swerveDrive.zeroGyro();
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      swerveDrive.zeroGyro();
+      swerveDrive.setGyro(new Rotation3d(0, 0, Math.PI));
+    } else {
+      swerveDrive.zeroGyro();
+    }
+  }
+
+  public void setGyro(Rotation3d rotation) {
+    swerveDrive.setGyro(rotation);
   }
 
   /**

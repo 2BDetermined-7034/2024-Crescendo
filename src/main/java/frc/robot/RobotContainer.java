@@ -27,6 +27,7 @@ import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
+import frc.robot.commands.swervedrive.drivebase.RotateToAnyTag;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
@@ -59,10 +60,11 @@ public class RobotContainer {
 
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final LaserCANSensor laserCANSensor = new LaserCANSensor(0);
+    private final LaserCANSensor intakeLaser = new LaserCANSensor(1);
+    private final LaserCANSensor shooterLaser = new LaserCANSensor(0);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, intakeLaser, shooterLaser);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
@@ -109,7 +111,7 @@ public class RobotContainer {
         Command driveFieldOrientedTeleop = new TeleopDrive(swerve,
                 () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
                 () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
-                () -> -driverController.getRightX(),
+                () -> -MathUtil.applyDeadband(driverController.getRightX(), 0.25),
                 () -> true);
 
         swerve.setDefaultCommand(driveFieldOrientedTeleop);
