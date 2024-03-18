@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Constants.Shooter.*;
 
 import static frc.robot.Constants.*;
 
@@ -55,10 +56,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
 		Slot0Configs angleMotorPID = new Slot0Configs();
-		angleMotorPID.kP = 1;
-		angleMotorPID.kI = 0;
-		angleMotorPID.kD = 0;
-//		angleMotorPID.kS = 0.24;
+		angleMotorPID.kP = anglePIDConstants.kP;
+		angleMotorPID.kI = anglePIDConstants.kI;
+		angleMotorPID.kD = anglePIDConstants.kD;
+		angleMotorPID.kS = angleFeedForward;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
 		shooterPercent = 0;
@@ -108,6 +109,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
+		SmartDashboard.putNumber("Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
 	}
 
 	/**
