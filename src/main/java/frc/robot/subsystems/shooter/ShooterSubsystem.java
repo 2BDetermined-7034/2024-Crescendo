@@ -104,6 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
 		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
 		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
+		SmartDashboard.putNumber("Angle Setpoint Degrees", angleRotationsToDegrees(anglePositionController.Position));
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
