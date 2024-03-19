@@ -10,10 +10,12 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.Shooter;
+import static frc.robot.Constants.Shooter.anglePIDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 	private final TalonFX launchTalon;
@@ -24,10 +26,16 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final VelocityVoltage launchVelocityController;
 	private double shooterPercent;
 
+
+	private final TrapezoidProfile angleProfile = new TrapezoidProfile(
+			new TrapezoidProfile.Constraints(20, 40)
+	);
+	private TrapezoidProfile.State angleSetpoint = new TrapezoidProfile.State(); //Setpoint
+
 	/**
 	 * periodically assigned to the setpoint of the positionvoltage controller
 	 */
-	public double angleMotorPosition = 0;
+	public double angleMotorPosition = 0; //Goal state
 
 	/**
 	 * periodically assigned to as the setpoint of the velocityVoltageController
@@ -54,24 +62,28 @@ public class ShooterSubsystem extends SubsystemBase {
 		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
-		Slot0Configs angleMotorPID = new Slot0Configs();
-		angleMotorPID.kP = 1;
-		angleMotorPID.kI = 0;
-		angleMotorPID.kD = 0;
-//		angleMotorPID.kS = 0.24;
 
-		angleTalon.getConfigurator().apply(angleMotorPID);
+
+		Slot0Configs slot0Configs;
+		slot0Configs = new Slot0Configs();
+		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
+		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
+		slot0Configs.kP = anglePIDConstants.kP;
+		slot0Configs.kI = anglePIDConstants.kI;
+		slot0Configs.kD = anglePIDConstants.kD;
+		slot0Configs.kG = 0.2;
+		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
+
 		shooterPercent = 0;
 
 
 
-
-// robot init, set slot 0 gains
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
-		launchMotorPID.kP = 0.11;
-		launchMotorPID.kI = 0.48;
-		launchMotorPID.kD = 0.01;
+		launchMotorPID.kP = 1;
+		launchMotorPID.kI = 0.00;
+		launchMotorPID.kD = 0.0;
+		launchMotorPID.kS = 0.24;
 		launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
 
@@ -84,7 +96,11 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
-		anglePositionController.Position = angleMotorPosition;
+		// periodic, update the profile setpoint for 20 ms loop time
+		angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorPosition, 0));
+		// apply the setpoint to the control request
+		anglePositionController.Position = angleSetpoint.position;
+		anglePositionController.Velocity = angleSetpoint.velocity;
 		angleTalon.setControl(anglePositionController);
 
 		if(shooterPercent != 0){
@@ -104,9 +120,11 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
 		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
 		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
+		SmartDashboard.putNumber("Angle Setpoint Degrees", angleRotationsToDegrees(anglePositionController.Position));
 		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
+		SmartDashboard.putNumber("Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
 	}
 
 	/**
@@ -132,7 +150,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	/**
 	 * Gets the current rotations of the angle kraken in motor relative rotation units
-	 * @return
+	 * @return rotation position of angle kraken
 	 */
 	public double getAnglePositionRotations() {
 		return angleTalon.getPosition().getValue();
@@ -150,7 +168,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @return Degrees (relative to the horizon).
 	 */
 	public double angleRotationsToDegrees(double rotations){
-		return rotations * Shooter.angleGearRatio * (360 / 1) + Shooter.angleBackHardstop;
+		return rotations * Shooter.angleGearRatio * (360) + Shooter.angleBackHardstop;
 	}
 
 	public void runLaunchPercent(double percent){
@@ -160,8 +178,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	/**
 	 * Converts from degrees relative to the horizon to rotations of the angle Kraken relative to the hardstop.
 	 * Positive rotations indicates
-	 * @param degrees
-	 * @return
+	 * @param degrees input
+	 * @return rotations
 	 */
 	public double angleDegreesToRotations(double degrees) {
 		return (degrees - Shooter.angleBackHardstop) / (Shooter.angleGearRatio * 360);
@@ -170,7 +188,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	/**
 	 * Sets the shooter angle to the shooter relative degree angle
-	 * @param degrees
+	 * @param degrees position in degrees
 	 */
 	public void setAngleTalonPositionDegrees(double degrees){
 		angleMotorPosition = angleDegreesToRotations(MathUtil.clamp(degrees, Shooter.angleFrontHardstop, Shooter.angleBackHardstop));
@@ -178,23 +196,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	/**
 	 * Dont make this positive
-	 * @param rotations
+	 * @param rotations input
 	 */
-	public void setAngleTalonPositionRotations(double rotations) {
+	private void setAngleTalonPositionRotations(double rotations) {
 		angleMotorPosition = rotations;
 	}
 
 	/**
 	 * sets angle kraken speed [-1, 1]
-	 * @param speed
+	 * @param speed percent speed of angle kraken
 	 */
-	public void setAngleTalon(double speed) {
+	private void setAngleTalon(double speed) {
 		angleTalon.set(speed);
 	}
 
 	/**
 	 * Sets the indexing neo550 speeds on percent from [-1, 1]
-	 * @param speed
+	 * @param speed percent speed of indexing neos
 	 */
 	public void setNeoSpeeds(double speed) {
 		lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
