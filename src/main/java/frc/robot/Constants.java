@@ -89,6 +89,7 @@ public final class Constants {
 		public static final double angleBackHardstop = 63.0;
 	}
 	public static final class Intake {
+
 		public static final int lowerNeoID = 4;
 		public static final int upperNeoID = 6;
 		public static final double lowerIntakeSpeed = 0.5;
