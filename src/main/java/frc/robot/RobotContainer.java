@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -13,20 +12,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.climb.ClimbDownCommand;
-import frc.robot.commands.climb.ClimbUpCommand;
-import frc.robot.commands.intake.AutoIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeReverse;
+import frc.robot.commands.shooter.AmpShot;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.ReverseIntakeCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
-import frc.robot.subsystems.climb.ClimbSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -51,9 +45,8 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
-    //TODO
 
-//    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
+    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
 //
 //
 //
@@ -61,14 +54,16 @@ public class RobotContainer {
     private final LaserCANSensor laserCANShooter = new LaserCANSensor(0);
     private final LaserCANSensor laserCANIntake = new LaserCANSensor(1);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
-//    private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
-//    private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
+    private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
+    private final ShooterAmpCommand oldAmpCommand = new ShooterAmpCommand(shooterSubsystem);
 //    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 //    private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 //    private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
 //    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
+    private final ReverseIntakeCommand reverseIntakeCommand = new ReverseIntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -127,23 +122,27 @@ public class RobotContainer {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         //TODO
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
-////        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
 //        new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
-//        new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
-//        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
+        new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
+        new Trigger(driverController::getL2ButtonPressed).toggleOnTrue(new RotateToTag(swerve));
+        new Trigger(driverController::getL1Button).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getR1ButtonPressed).toggleOnTrue(reverseIntakeCommand);
+        new Trigger(driverController::getCrossButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
 //
 //
 //        //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
 //        //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
-//        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
 //        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed)));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 //
-//        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
-//        //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
-//        new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
-//        new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
-        new Trigger(driverController::getL1Button).toggleOnTrue(intakeCommand);
+        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
+        new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
+        new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
+        new Trigger(operatorController::getTriangleButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
+        new Trigger(operatorController::getOptionsButton).toggleOnTrue(oldAmpCommand);
+        new Trigger(operatorController::getR2ButtonPressed).toggleOnTrue(new GroundTrapShot(shooterSubsystem, swerve));
 //        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
 //        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
 //        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));

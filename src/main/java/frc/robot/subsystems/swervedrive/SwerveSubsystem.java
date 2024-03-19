@@ -14,6 +14,7 @@ import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.AutonConstants;
 import java.io.File;
+import java.sql.Driver;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
@@ -340,7 +342,7 @@ public class SwerveSubsystem extends SubsystemBase
         Pose2d robotPose2d = estimatedPose.get().estimatedPose.toPose2d();
         double distance = camera.getBestTarget().getBestCameraToTarget().getTranslation().getNorm();
 
-        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance, distance, 0.01));
+        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(MatBuilder.fill(Nat.N3(), Nat.N1(), distance * 0.5, distance * 0.5, 0.01));
         swerveDrive.addVisionMeasurement(new Pose2d(robotPose2d.getTranslation(), swerveDrive.getYaw()), estimatedPose.get().timestampSeconds);
       }
     }
@@ -350,7 +352,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     //TODO add back when vision is back
-//    processCamera(RobotContainer.photonvision);
+    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
   }
 
@@ -416,7 +418,18 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
+
+
     swerveDrive.zeroGyro();
+
+    /*
+    Resets the odometry of the robot correctly when on the red side of the alliance, but controls the robot as if shooter side is in front
+    Adjusted for in TeleopDrive.java
+     */
+    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      swerveDrive.setGyro(new Rotation3d(0,0,Math.toRadians(180)));
+    }
+
   }
 
   /**

@@ -17,7 +17,8 @@ public class IntakeSubsystem extends SubsystemBase {
 		intakeMotorLower = new CANSparkMax(Constants.Intake.lowerNeoID, CANSparkLowLevel.MotorType.kBrushless);
 		intakeMotorUpper.setIdleMode(CANSparkBase.IdleMode.kCoast);
 		intakeMotorLower.setIdleMode(CANSparkBase.IdleMode.kCoast);
-		intakeMotorLower.setInverted(true);
+		intakeMotorLower.setInverted(false);
+		intakeMotorUpper.setInverted(true);
 	}
 
 

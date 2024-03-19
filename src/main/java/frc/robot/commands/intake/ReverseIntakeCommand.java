@@ -6,13 +6,13 @@ import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
-public class IntakeCommand extends Command {
+public class ReverseIntakeCommand extends Command {
 
 	private final IntakeSubsystem intake;
 	private final ShooterSubsystem shooter;
 	private final LaserCANSensor intakeLaser, shooterLaser;
 
-	public IntakeCommand(IntakeSubsystem intake, ShooterSubsystem shooter, LaserCANSensor intakeLaser, LaserCANSensor shooterLaser) {
+	public ReverseIntakeCommand(IntakeSubsystem intake, ShooterSubsystem shooter, LaserCANSensor intakeLaser, LaserCANSensor shooterLaser) {
 		this.intake = intake;
 		this.shooter = shooter;
 		this.intakeLaser = intakeLaser; this.shooterLaser = shooterLaser;
@@ -31,7 +31,7 @@ public class IntakeCommand extends Command {
 //			shooter.setNeoSpeeds(0.5);
 //		else
 //			shooter.setNeoSpeeds(0.0);
-		intake.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+		intake.run(-Constants.Intake.lowerIntakeSpeed, -Constants.Intake.upperIntakeSpeed);
 		shooter.setNeoSpeeds(.5);
 	}
 

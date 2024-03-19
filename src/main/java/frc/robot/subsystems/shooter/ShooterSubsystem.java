@@ -78,6 +78,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
+
+// robot init, set slot 0 gains
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
 		launchMotorPID.kP = 1;
