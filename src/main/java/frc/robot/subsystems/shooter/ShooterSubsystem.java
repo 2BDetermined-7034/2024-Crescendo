@@ -64,15 +64,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-		Slot0Configs slot0Configs;
-		slot0Configs = new Slot0Configs();
-		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
-		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
-		slot0Configs.kP = anglePIDConstants.kP;
-		slot0Configs.kI = anglePIDConstants.kI;
-		slot0Configs.kD = anglePIDConstants.kD;
-		slot0Configs.kG = 0.2;
-		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
+//		Slot0Configs slot0Configs;
+//		slot0Configs = new Slot0Configs();
+//		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
+//		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
+//		slot0Configs.kP = anglePIDConstants.kP;
+//		slot0Configs.kI = anglePIDConstants.kI;
+//		slot0Configs.kD = anglePIDConstants.kD;
+//		slot0Configs.kG = 0.2;
+//		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
+
+		Slot0Configs angleMotorPID = new Slot0Configs();
+		angleMotorPID.kP = 1;
+		angleMotorPID.kI = 0;
+		angleMotorPID.kD = 0;
+		angleMotorPID.kS = 0.24;
+
+		angleTalon.getConfigurator().apply(angleMotorPID);
 
 		shooterPercent = 0;
 
