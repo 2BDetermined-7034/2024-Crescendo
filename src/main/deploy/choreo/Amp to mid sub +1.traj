@@ -226,15 +226,6 @@
           "name": "Auto Intake"
         }
       }
-    },
-    {
-      "timestamp": 2.286678266797785,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Stop Intake"
-        }
-      }
     }
   ]
 }
