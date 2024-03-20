@@ -80,7 +80,7 @@ public final class Constants {
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
-		public static final double shooterVelTolerance = 2;
+		public static final double shooterVelTolerance = 5;
 
 		public static final double angleGearRatio = 1d / 12.72d;
 		public static final double angleFrontHardstop = -60;

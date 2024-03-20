@@ -71,7 +71,7 @@ public class ShooterCommand extends Command {
 //		shooter.setAngleTalonPositionDegrees(SmartDashboard.getNumber("Set The Shooter Angle",  30));
 //		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
 		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
-			//shooter.setNeoSpeeds(0.5);
+			shooter.setNeoSpeeds(0.5);
 		}
 	}
 

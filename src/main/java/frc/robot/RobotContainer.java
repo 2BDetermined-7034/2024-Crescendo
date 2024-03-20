@@ -90,6 +90,7 @@ public class RobotContainer {
         autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
         autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
         autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid podium shot left", new PathPlannerAuto("2PieceMidPodiumShot"));
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
@@ -149,6 +150,7 @@ public class RobotContainer {
         new Trigger(operatorController::getRightBumper).whileTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
         new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
         new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(operatorController::getStartButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -10));
 
     }
 
@@ -172,7 +174,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-        NamedCommands.registerCommand("Shoot 25 Angle", new ShooterCommandToAngle(shooterSubsystem, 25));
+
+        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
 
     public void setMotorBrake(boolean brake) {
