@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.vision.Photonvision;
 import frc.robot.utils.LagrangeInterpolation;
 import frc.robot.utils.LinearInterpolation;
 import frc.robot.utils.RationalInterpolation;
@@ -17,12 +18,13 @@ public class ShooterCommand extends Command {
 	protected SwerveSubsystem swerveSubsystem;
 //	protected LagrangeInterpolation interpolation;
 	protected LinearInterpolation interpolation;
+	Photonvision photonvision;
 
-	public ShooterCommand(ShooterSubsystem shooter, SwerveSubsystem swerveSubsystem) {
+	public ShooterCommand(ShooterSubsystem shooter, SwerveSubsystem swerveSubsystem, Photonvision photon) {
 		this.shooter = shooter;
 		this.swerveSubsystem = swerveSubsystem;
+		this.photonvision = photon;
 		addRequirements(shooter);
-		SmartDashboard.putNumber("Set The Shooter Angle", 63);
 
 		interpolation = new LinearInterpolation();
 
@@ -61,7 +63,10 @@ public class ShooterCommand extends Command {
 	public void execute() {
 		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
 		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
-		double distance = Constants.aprilTagFieldLayout.getTagPose(tagID).get().toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
+		double distance = 0.9144;
+		if(photonvision.getCamera().isConnected()){
+			distance = Constants.aprilTagFieldLayout.getTagPose(tagID).get().toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
+		}
 		SmartDashboard.putNumber("Shooter Distance", distance);
 		shooter.setLaunchTalon(velocitySetpoint);
 //		shooter.setAngleTalonPositionDegrees(0);

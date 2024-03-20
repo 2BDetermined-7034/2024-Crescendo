@@ -19,7 +19,6 @@ public class AmpShot extends Command {
 		this.shooter = shooter;
 		this.swerveSubsystem = swerveSubsystem;
 		addRequirements(shooter);
-		SmartDashboard.putNumber("Set The Shooter Angle", 63);
 
 //		interpolation = new LinearInterpolation();
 //

@@ -8,6 +8,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,7 +44,7 @@ public class RobotContainer {
             "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final PS5Controller operatorController = new PS5Controller(1);
+    final XboxController operatorController = new XboxController(1);
     final PS5Controller driverController = new PS5Controller(0);
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
@@ -53,7 +54,7 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final LaserCANSensor laserCANShooter = new LaserCANSensor(0);
     private final LaserCANSensor laserCANIntake = new LaserCANSensor(1);
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve, photonvision);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand oldAmpCommand = new ShooterAmpCommand(shooterSubsystem);
 //    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
@@ -137,12 +138,24 @@ public class RobotContainer {
 //        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed)));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 //
+        /*
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
         new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
         new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(oldAmpCommand);
         new Trigger(operatorController::getR2ButtonPressed).toggleOnTrue(new GroundTrapShot(shooterSubsystem, swerve));
+         */
+
+        /*
+        new Trigger(operatorController::getBButton).onTrue(new ShooterReset(shooterSubsystem));
+        new Trigger(operatorController::getAButton).toggleOnTrue(shooterCommand);
+        new Trigger(operatorController::getXButton).toggleOnTrue(sourceIntake);
+        new Trigger(operatorController::getYButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
+        new Trigger(operatorController::getStartButton).toggleOnTrue(oldAmpCommand);
+        new Trigger(operatorController::getLeftBumper).toggleOnTrue(intakeCommand);
+        new Trigger(operatorController::getRightBumper).toggleOnTrue(reverseIntakeCommand);
+         */
 //        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
 //        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
 //        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
