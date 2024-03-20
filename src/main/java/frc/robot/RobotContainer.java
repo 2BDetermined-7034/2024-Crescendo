@@ -174,6 +174,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
+        NamedCommands.registerCommand("Intake Command", intakeCommand);
 
         NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }

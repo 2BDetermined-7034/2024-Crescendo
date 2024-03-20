@@ -38,9 +38,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "2PCMid"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2PCMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              }
+            ]
           }
         },
         {
@@ -108,9 +121,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Mid to top center"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Mid to top center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              }
+            ]
           }
         },
         {
