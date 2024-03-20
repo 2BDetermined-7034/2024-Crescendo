@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
@@ -13,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,7 +54,7 @@ public class RobotContainer {
             "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final PS5Controller operatorController = new PS5Controller(1);
+    final XboxController operatorController = new XboxController(1);
     final PS5Controller driverController = new PS5Controller(0);
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
@@ -84,17 +84,13 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        // PathPlanner Autos
-        autoChooser.addOption("One piece mid", swerve.getAutonomousCommand("1PieceMid"));
-        autoChooser.addOption("One piece amp", swerve.getAutonomousCommand("1PieceAmp"));
-        autoChooser.addOption("One piece source", swerve.getAutonomousCommand("1PieceSource"));
-        autoChooser.addOption("Two piece mid", swerve.getAutonomousCommand("2PieceMid"));
-        autoChooser.addOption("Two piece amp", swerve.getAutonomousCommand("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", swerve.getAutonomousCommand("2PieceMidPodiumShot"));
-        autoChooser.addOption("3PieceMid", swerve.getAutonomousCommand("3PieceMid"));
-
-
-
+        autoChooser.addOption("One piece mid", new PathPlannerAuto("1PieceMid"));
+        autoChooser.addOption("One piece amp", new PathPlannerAuto("1PieceAmp"));
+        autoChooser.addOption("One piece source", new PathPlannerAuto("1PieceSource"));
+        autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
+        autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
+        autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid podium shot left", new PathPlannerAuto("2PieceMidPodiumShot"));
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
@@ -143,17 +139,18 @@ public class RobotContainer {
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).whileTrue(betterIntakeCommand);
+        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
-        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
+        new Trigger(operatorController::getBButton).onTrue(new ShooterReset(shooterSubsystem));
         //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
-        new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
-        new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
-        new Trigger(operatorController::getL1Button).toggleOnTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
-        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
-        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
-        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(operatorController::getXButton).whileTrue(sourceIntake);
+        new Trigger(operatorController::getYButton).toggleOnTrue(ampCommand);
+        new Trigger(operatorController::getLeftBumper).whileTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
+        new Trigger(operatorController::getRightBumper).whileTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
+        new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
+        new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(operatorController::getStartButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -10));
 
     }
 
@@ -177,9 +174,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-        NamedCommands.registerCommand("Shoot 25 Angle", new ShooterCommandToAngle(shooterSubsystem, 25));
-        NamedCommands.registerCommand("Vision Align", new RotateToTag(swerve));
-        NamedCommands.registerCommand("Source Intake", sourceIntake);
+
+        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
 
     public void setMotorBrake(boolean brake) {

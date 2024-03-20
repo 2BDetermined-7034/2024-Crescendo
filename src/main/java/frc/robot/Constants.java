@@ -80,13 +80,13 @@ public final class Constants {
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
-		public static final double shooterVelTolerance = 2;
+		public static final double shooterVelTolerance = 5;
 
 		public static final double angleGearRatio = 1d / 12.72d;
 		public static final double angleFrontHardstop = -60;
 		public static final double angleBackHardstop = 63.0;
-		public static final PIDConstants anglePIDConstants = new PIDConstants(1,0,0.2);
-		public static final double angleFeedForward = 0.4;
+		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
+		public static final double angleFeedForward = 0.6;
 
 	}
 	public static final class Intake {
