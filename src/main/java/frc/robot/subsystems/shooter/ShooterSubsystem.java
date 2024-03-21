@@ -20,7 +20,7 @@ import static frc.robot.Constants.Shooter.anglePIDConstants;
 public class ShooterSubsystem extends SubsystemBase {
 	private final TalonFX launchTalon;
 	private final TalonFX angleTalon;
-	private final CANSparkMax lowGearNeo;
+//	private final CANSparkMax lowGearNeo;
 	private final CANSparkMax highGearNeo;
 	private final PositionVoltage anglePositionController;
 	private final VelocityVoltage launchVelocityController;
@@ -50,16 +50,16 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Set Shooter Angle", 0);
 		this.launchTalon = new TalonFX(Shooter.launchKrakenID);
 		this.angleTalon = new TalonFX(Shooter.angleFalconID);
-		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
+//		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
 		this.highGearNeo = new CANSparkMax(Shooter.neo550HighGearID, CANSparkLowLevel.MotorType.kBrushless);
 
 		angleTalon.setInverted(true);
-		lowGearNeo.setInverted(true);
+//		lowGearNeo.setInverted(false);
 		highGearNeo.setInverted(true);
 
 		launchTalon.setNeutralMode(NeutralModeValue.Coast);
 		angleTalon.setNeutralMode(NeutralModeValue.Brake);
-		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
+//		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
 
@@ -75,10 +75,12 @@ public class ShooterSubsystem extends SubsystemBase {
 //		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
 
 		Slot0Configs angleMotorPID = new Slot0Configs();
-		angleMotorPID.kP = 1;
-		angleMotorPID.kI = 0;
+		angleMotorPID.kP = 1.5;
+		angleMotorPID.kI = 2;
 		angleMotorPID.kD = 0;
+
 		angleMotorPID.kS = 0.24;
+		angleMotorPID.kV = 0.0;
 
 		angleTalon.getConfigurator().apply(angleMotorPID);
 
@@ -87,7 +89,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-// robot init, set slot 0 gains
+		// robot init, set slot 0 gains
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
 		launchMotorPID.kP = 1;
@@ -225,7 +227,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @param speed percent speed of indexing neos
 	 */
 	public void setNeoSpeeds(double speed) {
-		lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
+//		lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
 		highGearNeo.set(MathUtil.clamp(speed, -1, 1));
 
 	}
