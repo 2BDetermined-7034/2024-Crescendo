@@ -94,6 +94,8 @@ public class RobotContainer {
         autoChooser.addOption("Three piece mid podium shot left", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
         autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
         autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
+        autoChooser.addOption("New Auto", AutoFactory.getAutonomousCommand("New Auto"));
+
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
@@ -142,7 +144,7 @@ public class RobotContainer {
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
+        new Trigger(driverController::getCrossButton).whileTrue(intakeCommand);
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
