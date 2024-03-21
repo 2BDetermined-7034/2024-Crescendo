@@ -85,7 +85,7 @@ public final class Constants {
 		public static final double angleGearRatio = 1d / 12.72d;
 		public static final double angleFrontHardstop = -60;
 		public static final double angleBackHardstop = 63.0;
-		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
+//		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
 		public static final double angleFeedForward = 0.6;
 
 	}
@@ -101,7 +101,7 @@ public final class Constants {
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
-		public static final double currentLimit = 60;
+		public static final double currentLimit = 50;
 
 		public static final double kP = 0.1;
 		public static final double kI = 0;

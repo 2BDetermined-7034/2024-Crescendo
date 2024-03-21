@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.Shooter;
-import static frc.robot.Constants.Shooter.anglePIDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 	private final TalonFX launchTalon;
@@ -66,25 +65,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		Slot0Configs slot0Configs;
 
-//		slot0Configs = new Slot0Configs();
-//		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
-//		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
-//		slot0Configs.kP = anglePIDConstants.kP;
-//		slot0Configs.kI = anglePIDConstants.kI;
-//		slot0Configs.kD = anglePIDConstants.kD;
-//		slot0Configs.kG = 0.2;
-//		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
-
-//		//TODO replace old with new constansts, redo vision after wilsonville.
 		slot0Configs = new Slot0Configs();
-		//slot0Configs.kS = 0.24;
-		slot0Configs.kP = 1;
-		slot0Configs.kI = 0;
+		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
+		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
+		slot0Configs.kP = 5;
+		slot0Configs.kI = 2.5;
 		slot0Configs.kD = 0;
+		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
 
-		shooterPercent = 0;
-
-		angleTalon.getConfigurator().apply(slot0Configs);
+//		slot0Configs = new Slot0Configs();
+//		//slot0Configs.kS = 0.24;
+//		slot0Configs.kP = 1;
+//		slot0Configs.kI = 0;
+//		slot0Configs.kD = 0;
+//
+//		shooterPercent = 0;
+//
+//		angleTalon.getConfigurator().apply(slot0Configs);
 
 
 
