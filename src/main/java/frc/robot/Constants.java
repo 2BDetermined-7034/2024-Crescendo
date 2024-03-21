@@ -101,7 +101,7 @@ public final class Constants {
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
-		public static final double currentLimit = 40;
+		public static final double currentLimit = 60;
 
 		public static final double kP = 0.1;
 		public static final double kI = 0;

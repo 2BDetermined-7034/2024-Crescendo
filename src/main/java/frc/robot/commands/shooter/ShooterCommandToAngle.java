@@ -20,7 +20,7 @@ public class ShooterCommandToAngle extends Command {
 //		shooter.setLaunchTalon(velocitySetpoint);
 		shooter.setAngleTalonPositionDegrees(degrees);
 		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
-//			shooter.setNeoSpeeds(0.5);
+			shooter.setNeoSpeeds(0.5);
 		}
 	}
 

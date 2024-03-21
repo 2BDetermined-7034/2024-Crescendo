@@ -54,7 +54,7 @@ public class RobotContainer {
             "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final XboxController operatorController = new XboxController(1);
+    final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
@@ -142,15 +142,15 @@ public class RobotContainer {
         new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(-0.25, -0.25)).andThen(new InstantCommand( () -> intakeSubsystem.run(0,0))));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
-        new Trigger(operatorController::getBButton).onTrue(new ShooterReset(shooterSubsystem));
+        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
         //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
-        new Trigger(operatorController::getXButton).whileTrue(sourceIntake);
-        new Trigger(operatorController::getYButton).toggleOnTrue(ampCommand);
-        new Trigger(operatorController::getLeftBumper).whileTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
-        new Trigger(operatorController::getRightBumper).whileTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
-        new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
-        new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
-        new Trigger(operatorController::getStartButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -10));
+        new Trigger(operatorController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
+        new Trigger(operatorController::getL1Button).whileTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
+        new Trigger(operatorController::getR1Button).whileTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
+        new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
+        new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
 
     }
 
