@@ -39,16 +39,14 @@ public class ShooterCommand extends Command {
 			interpolation.vertices[6] = new Translation2d(4.05, 21.5);
 			interpolation.vertices[7] = new Translation2d(4.65, 21.0);
 		} else {
-			interpolation.vertices = new Translation2d[9];
-			interpolation.vertices[0] = new Translation2d(1.257463908733832, 63.0);
-			interpolation.vertices[1] = new Translation2d(1.9039310238475524, 45.0);
-			interpolation.vertices[2] = new Translation2d(2.4671186773596276, 31.0);
-			interpolation.vertices[3] = new Translation2d(2.954671604288543, 28.0);
-			interpolation.vertices[4] = new Translation2d(3.5234219066572603, 24.0);
-			interpolation.vertices[5] = new Translation2d(3.792860219135466, 23.0);
-			interpolation.vertices[6] = new Translation2d(4.019970514449032, 22.50);
-			interpolation.vertices[7] = new Translation2d(4.36105628345571, 21.4);
-			interpolation.vertices[8] = new Translation2d(4.613365440225928, 20.750);
+			interpolation.vertices = new Translation2d[7];
+			interpolation.vertices[0] = new Translation2d(1.262461460840503, 55);
+			interpolation.vertices[1] = new Translation2d(1.875073740967453, 46);
+			interpolation.vertices[2] = new Translation2d(2.490053775301344, 36.0);
+			interpolation.vertices[3] = new Translation2d(3.040430474763867, 33.0);
+			interpolation.vertices[4] = new Translation2d(3.487449626171466, 30.5);
+			interpolation.vertices[5] = new Translation2d(4.030337165233073, 29.5);
+			interpolation.vertices[6] = new Translation2d(4.419117932614939, 28.25);
 		}
 
 //		interpolation.function = (Double x) -> {
@@ -68,13 +66,15 @@ public class ShooterCommand extends Command {
 		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 		SmartDashboard.putNumber("Shooter Distance", distance);
 		shooter.setLaunchTalon(velocitySetpoint);
+		double degreeOutput = interpolation.get(distance);
+//		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
 //		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-		shooter.setAngleTalonPositionDegrees(interpolation.get(distance));
-//		shooter.setAngleTalonPositionDegrees(SmartDashboard.getNumber("Set The Shooter Angle",  30));
+		shooter.setAngleTalonPositionDegrees(degreeOutput);
 //		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
-		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
+		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance && Math.abs(shooter.getAnglePositionDegrees() - degreeOutput) < 2 && Math.abs(shooter.getAngleAcceleration()) < 3) {
 			shooter.setNeoSpeeds(0.5);
 		}
+
 	}
 
 	@Override
