@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3321382999420166,
+      "x": 1.2,
       "y": 5.586578369140625
     },
-    "rotation": -2.1643039844867607e-24
+    "rotation": 6.208451453219411e-22
   },
   "command": {
     "type": "sequential",
@@ -172,6 +172,25 @@
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp to podium note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
                 }
               }
             ]

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.AutoIntakeCommand;
@@ -84,15 +85,15 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("One piece mid", new PathPlannerAuto("1PieceMid"));
-        autoChooser.addOption("One piece amp", new PathPlannerAuto("1PieceAmp"));
-        autoChooser.addOption("One piece source", new PathPlannerAuto("1PieceSource"));
-        autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
-        autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid podium shot left", new PathPlannerAuto("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid to center field", swerve.getAutonomousCommand("3PieceMidToCenter"));
-        autoChooser.addOption("Three piece community", swerve.getAutonomousCommand("3PieceCommunity"));
+        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
+        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
+        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
+        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
+        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
+        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid podium shot left", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
+        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
