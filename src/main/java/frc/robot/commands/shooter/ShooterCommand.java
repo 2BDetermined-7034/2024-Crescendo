@@ -39,14 +39,23 @@ public class ShooterCommand extends Command {
 			interpolation.vertices[6] = new Translation2d(4.05, 21.5);
 			interpolation.vertices[7] = new Translation2d(4.65, 21.0);
 		} else {
+//			interpolation.vertices = new Translation2d[7];
+//			interpolation.vertices[0] = new Translation2d(1.262461460840503, 55);
+//			interpolation.vertices[1] = new Translation2d(1.875073740967453, 46);
+//			interpolation.vertices[2] = new Translation2d(2.490053775301344, 36.0);
+//			interpolation.vertices[3] = new Translation2d(3.040430474763867, 33.0);
+//			interpolation.vertices[4] = new Translation2d(3.487449626171466, 30.5);
+//			interpolation.vertices[5] = new Translation2d(4.030337165233073, 29.5);
+//			interpolation.vertices[6] = new Translation2d(4.419117932614939, 28.25);
+
 			interpolation.vertices = new Translation2d[7];
-			interpolation.vertices[0] = new Translation2d(1.262461460840503, 55);
-			interpolation.vertices[1] = new Translation2d(1.875073740967453, 46);
-			interpolation.vertices[2] = new Translation2d(2.490053775301344, 36.0);
-			interpolation.vertices[3] = new Translation2d(3.040430474763867, 33.0);
-			interpolation.vertices[4] = new Translation2d(3.487449626171466, 30.5);
-			interpolation.vertices[5] = new Translation2d(4.030337165233073, 29.5);
-			interpolation.vertices[6] = new Translation2d(4.419117932614939, 28.25);
+			interpolation.vertices[0] = new Translation2d(1.265, 50);
+			interpolation.vertices[1] = new Translation2d(1.512, 45);
+			interpolation.vertices[2] = new Translation2d(1.996, 38);
+			interpolation.vertices[3] = new Translation2d(2.496, 34);
+			interpolation.vertices[4] = new Translation2d(3.0, 32);
+			interpolation.vertices[5] = new Translation2d(3.51, 26.5);
+			interpolation.vertices[6] = new Translation2d(4.0, 25);
 		}
 
 //		interpolation.function = (Double x) -> {

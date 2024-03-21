@@ -90,35 +90,7 @@
       }
     }
   ],
-  "eventMarkers": [
-    {
-      "name": "Auto Intake",
-      "waypointRelativePos": 0.95,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Auto Intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Stop Intake",
-      "waypointRelativePos": 1.95,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 2.001,

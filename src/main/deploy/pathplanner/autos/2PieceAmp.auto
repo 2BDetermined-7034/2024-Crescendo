@@ -37,9 +37,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "1PCAmp"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1PCAmp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              }
+            ]
           }
         },
         {
