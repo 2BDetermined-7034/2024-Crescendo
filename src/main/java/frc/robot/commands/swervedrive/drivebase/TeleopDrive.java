@@ -65,8 +65,8 @@ public class TeleopDrive extends Command
 
      */
 		if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-			xVelocity = xVelocity;
-			yVelocity = yVelocity;
+			xVelocity = -xVelocity;
+			yVelocity = -yVelocity;
 		}
 
 		// Drive using raw values.

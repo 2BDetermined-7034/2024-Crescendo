@@ -74,7 +74,7 @@ public class RotateToTag extends Command  {
 	public void execute() {
 		int tagID = DriverStation.getAlliance().orElseThrow() == DriverStation.Alliance.Red ? 4 : 7;
 		Pose3d tagPose = Constants.aprilTagFieldLayout.getTagPose(tagID).get();
-		Rotation2d rotationSetpoint = Rotation2d.fromRadians(Math.atan2(tagPose.getY() - swerve.getPose().getY(), tagPose.getX() - swerve.getPose().getX())).plus(Rotation2d.fromDegrees(180));
+		Rotation2d rotationSetpoint = Rotation2d.fromRadians(Math.atan2(tagPose.getY() - swerve.getPose().getY(), tagPose.getX() - swerve.getPose().getX())).rotateBy(Rotation2d.fromDegrees(180));
 		//double rotation  = Constants.AprilTags.layout.get(tagID).pose.getRotation().toRotation2d().getRadians() - swerve.getHeading().getRadians();
 		swerve.drive(new Translation2d(), controller.calculate(swerve.getHeading().getRadians(), rotationSetpoint.getRadians()) , true);
 
