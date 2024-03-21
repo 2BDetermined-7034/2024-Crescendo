@@ -235,24 +235,5 @@
       "timestamp": 2.0633215375277008
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0.759182156624895,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Auto Intake"
-        }
-      }
-    },
-    {
-      "timestamp": 2.0633215375277008,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Stop Intake"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }
