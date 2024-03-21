@@ -91,6 +91,8 @@ public class RobotContainer {
         autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
         autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
         autoChooser.addOption("Three piece mid podium shot left", new PathPlannerAuto("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid to center field", swerve.getAutonomousCommand("3PieceMidToCenter"));
+        autoChooser.addOption("Three piece community", swerve.getAutonomousCommand("3PieceCommunity"));
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
