@@ -149,8 +149,8 @@ public class RobotContainer {
         //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
         new Trigger(operatorController::getSquareButton).whileTrue(sourceIntake);
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
-        new Trigger(operatorController::getL1Button).whileTrue(new BetterIntakeCommand(intakeSubsystem, shooterSubsystem));
-        new Trigger(operatorController::getR1Button).whileTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
+        new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
+        new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
         new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
         new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
