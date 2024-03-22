@@ -142,7 +142,7 @@ public class RobotContainer {
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).whileTrue(intakeCommand);
+        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 55));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
@@ -153,7 +153,8 @@ public class RobotContainer {
         new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
         new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
         new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
-        new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
+        new Trigger(operatorController::getCreateButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
+        new Trigger(operatorController::getOptionsButton).toggleOnTrue(new TempShooterCommand(shooterSubsystem, -20));
 
     }
 
@@ -178,6 +179,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note", shooterCommand);
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("Intake Command", intakeCommand);
+        NamedCommands.registerCommand("Source Intake", sourceIntake);
 
         NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }

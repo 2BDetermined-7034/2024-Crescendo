@@ -28,10 +28,11 @@ public class IntakeCommand extends Command {
 		else
 			intake.run(0.0, 0.0);
 
-		if (intakeLaser.getLatestMeasurement() < 50)
-			shooter.setNeoSpeeds(0.05);
-		else
-			shooter.setNeoSpeeds(0.0);
+//		if (intakeLaser.getLatestMeasurement() < 50)
+//			shooter.setNeoSpeeds(0.05);
+//		else
+//			shooter.setNeoSpeeds(0.0);
+		shooter.setNeoSpeeds(0.2);
 	}
 
 	@Override
@@ -47,5 +48,6 @@ public class IntakeCommand extends Command {
 	@Override
 	public void end(boolean interrupted) {
 		intake.run(0, 0);
+		shooter.setNeoSpeeds(0.0);
 	}
 }
