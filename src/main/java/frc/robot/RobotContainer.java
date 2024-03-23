@@ -73,7 +73,7 @@ public class RobotContainer {
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
-    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
+    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem, shooterLaser);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -180,6 +180,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("Intake Command", intakeCommand);
         NamedCommands.registerCommand("Source Intake", sourceIntake);
+        NamedCommands.registerCommand("Better Intake", betterIntakeCommand);
 
         NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
