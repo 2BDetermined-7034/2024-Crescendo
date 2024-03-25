@@ -15,12 +15,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.Shooter;
-import static frc.robot.Constants.Shooter.anglePIDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 	private final TalonFX launchTalon;
 	private final TalonFX angleTalon;
-//	private final CANSparkMax lowGearNeo;
+	private final CANSparkMax lowGearNeo;
 	private final CANSparkMax highGearNeo;
 	private final PositionVoltage anglePositionController;
 	private final VelocityVoltage launchVelocityController;
@@ -50,46 +49,41 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Set Shooter Angle", 0);
 		this.launchTalon = new TalonFX(Shooter.launchKrakenID);
 		this.angleTalon = new TalonFX(Shooter.angleFalconID);
-//		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
+		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
 		this.highGearNeo = new CANSparkMax(Shooter.neo550HighGearID, CANSparkLowLevel.MotorType.kBrushless);
 
 		angleTalon.setInverted(true);
-//		lowGearNeo.setInverted(false);
+		lowGearNeo.setInverted(true);
 		highGearNeo.setInverted(true);
 
 		launchTalon.setNeutralMode(NeutralModeValue.Coast);
 		angleTalon.setNeutralMode(NeutralModeValue.Brake);
-//		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
+		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
 
 
-//		Slot0Configs slot0Configs;
+		Slot0Configs slot0Configs;
+
+		slot0Configs = new Slot0Configs();
+		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
+		slot0Configs.kP = 3;
+		slot0Configs.kI = 10.1;
+		slot0Configs.kD = 0;
+		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
+
 //		slot0Configs = new Slot0Configs();
-//		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
-//		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
-//		slot0Configs.kP = anglePIDConstants.kP;
-//		slot0Configs.kI = anglePIDConstants.kI;
-//		slot0Configs.kD = anglePIDConstants.kD;
-//		slot0Configs.kG = 0.2;
-//		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
-
-		Slot0Configs angleMotorPID = new Slot0Configs();
-		angleMotorPID.kP = 1.5;
-		angleMotorPID.kI = 2;
-		angleMotorPID.kD = 0;
-
-		angleMotorPID.kS = 0.24;
-		angleMotorPID.kV = 0.0;
-
-		angleTalon.getConfigurator().apply(angleMotorPID);
-
-		shooterPercent = 0;
+//		//slot0Configs.kS = 0.24;
+//		slot0Configs.kP = 1;
+//		slot0Configs.kI = 0;
+//		slot0Configs.kD = 0;
+//
+//		shooterPercent = 0;
+//
+//		angleTalon.getConfigurator().apply(slot0Configs);
 
 
 
-
-		// robot init, set slot 0 gains
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
 		launchMotorPID.kP = 1;
@@ -137,6 +131,8 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
 		SmartDashboard.putNumber("Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
+		SmartDashboard.putNumber("Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
+		SmartDashboard.putNumber("Angle Motor Velocity", angleTalon.getVelocity().getValue());
 	}
 
 	/**
@@ -227,8 +223,18 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @param speed percent speed of indexing neos
 	 */
 	public void setNeoSpeeds(double speed) {
-//		lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
+		lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
 		highGearNeo.set(MathUtil.clamp(speed, -1, 1));
 
 	}
+
+	public double getAngleAcceleration() {
+		return angleTalon.getAcceleration().getValue();
+	}
+
+	public double getAngleVelocity() {
+		return angleTalon.getVelocity().getValue();
+	}
+
+
 }

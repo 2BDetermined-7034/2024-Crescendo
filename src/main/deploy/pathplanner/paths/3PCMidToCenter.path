@@ -3,45 +3,71 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7050561319382253,
-        "y": 4.42669621430541
+        "x": 1.35,
+        "y": 5.54
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2320437764983934,
-        "y": 4.11050362756931
+        "x": 2.35,
+        "y": 5.54
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7076091812668635,
-        "y": 3.95
+        "x": 3.7643848453338222,
+        "y": 6.495
       },
       "prevControl": {
-        "x": 1.7004772383296536,
-        "y": 3.9148674903626555
+        "x": 3.057192422666911,
+        "y": 6.0175
+      },
+      "nextControl": {
+        "x": 4.4715772680007335,
+        "y": 6.9725
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.115462616089283,
+        "y": 7.45
+      },
+      "prevControl": {
+        "x": 5.199872048860432,
+        "y": 7.45
+      },
+      "nextControl": {
+        "x": 6.98404044967915,
+        "y": 7.45
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.0,
+        "y": 7.45
+      },
+      "prevControl": {
+        "x": 8.0,
+        "y": 7.45
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Auto Intake",
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 2.5,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -56,9 +82,9 @@
     },
     {
       "name": "Stop Intake",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 2.95,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -86,7 +112,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -59.26451229807989,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true
