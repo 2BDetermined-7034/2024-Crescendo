@@ -9,14 +9,12 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 public class IntakeCommand extends Command {
 
 	private final IntakeSubsystem intake;
-	private final LaserCANSensor intakeLaser;
 	private final LaserCANSensor shooterLaser;
 	private final ShooterSubsystem shooter;
 
-	public IntakeCommand(IntakeSubsystem intake, ShooterSubsystem shooter, LaserCANSensor intakeLaser, LaserCANSensor shooterLaser) {
+	public IntakeCommand(IntakeSubsystem intake, ShooterSubsystem shooter, LaserCANSensor shooterLaser) {
 		this.intake = intake;
 		this.shooter = shooter;
-		this.intakeLaser = intakeLaser;
 		this.shooterLaser = shooterLaser;
 		addRequirements(intake);
 	}
@@ -25,13 +23,8 @@ public class IntakeCommand extends Command {
 	public void execute() {
 		if (shooterLaser.getLatestMeasurement() > 50)
 			intake.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
-		else
-			intake.run(0.0, 0.0);
-
-		if (intakeLaser.getLatestMeasurement() < 50)
-			shooter.setNeoSpeeds(0.05);
-		else
-			shooter.setNeoSpeeds(0.0);
+		else intake.run(0.0, 0.0);
+		shooter.setNeoSpeeds(0.);
 	}
 
 	@Override

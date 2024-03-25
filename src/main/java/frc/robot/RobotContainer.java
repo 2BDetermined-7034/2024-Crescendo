@@ -62,9 +62,8 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final LaserCANSensor intakeLaser = new LaserCANSensor(1);
     private final LaserCANSensor shooterLaser = new LaserCANSensor(0);
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, intakeLaser, shooterLaser);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, shooterLaser);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
     private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
