@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import frc.robot.Constants;
 import frc.robot.Constants.AutonConstants;
 import java.io.File;
 import java.util.Optional;
@@ -149,17 +150,6 @@ public class SwerveSubsystem extends SubsystemBase
     });
   }
 
-  /**
-   * Get the path follower with events.
-   *
-   * @param pathName       PathPlanner path name.
-   * @return {@link AutoBuilder#followPath(PathPlannerPath)} path command.
-   */
-  public Command getAutonomousCommand(String pathName)
-  {
-    // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(pathName);
-  }
 
   /**
    * Use PathPlanner Path finding to go to a point on the field.
@@ -360,6 +350,7 @@ public class SwerveSubsystem extends SubsystemBase
             getPose().getRotation().getRadians()
     };
     SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
+    SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTags().get(3).pose.toPose2d().minus(getPose()).getTranslation().getNorm());
   }
 
   @Override

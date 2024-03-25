@@ -67,9 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		slot0Configs = new Slot0Configs();
 		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
-		slot0Configs.kV = 0.12; // apply 12 V for a target velocity of 100 rps
-		slot0Configs.kP = 5;
-		slot0Configs.kI = 2;
+		slot0Configs.kP = 3;
+		slot0Configs.kI = 10.1;
 		slot0Configs.kD = 0;
 		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
 
@@ -133,6 +132,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
 		SmartDashboard.putNumber("Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
 		SmartDashboard.putNumber("Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
+		SmartDashboard.putNumber("Angle Motor Velocity", angleTalon.getVelocity().getValue());
 	}
 
 	/**
@@ -230,6 +230,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	public double getAngleAcceleration() {
 		return angleTalon.getAcceleration().getValue();
+	}
+
+	public double getAngleVelocity() {
+		return angleTalon.getVelocity().getValue();
 	}
 
 

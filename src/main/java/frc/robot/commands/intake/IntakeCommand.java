@@ -24,7 +24,7 @@ public class IntakeCommand extends Command {
 	@Override
 	public void execute() {
 		if (shooterLaser.getLatestMeasurement() > 50)
-			intake.run(Constants.Intake.upperIntakeSpeed, Constants.Intake.lowerIntakeSpeed);
+			intake.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
 		else
 			intake.run(0.0, 0.0);
 
