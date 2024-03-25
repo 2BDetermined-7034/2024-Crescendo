@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
@@ -22,6 +23,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -57,7 +59,13 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public        double      maximumSpeed = Units.feetToMeters(15.0);
+  public final double maximumSpeed = Units.feetToMeters(15.0);
+
+  /**
+   * IMU object from YAGSL
+   */
+  public Pigeon2 pigeon2;
+
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -79,10 +87,12 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-    //swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+//    swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     setupPathPlanner();
 
     swerveDrive.setMotorIdleMode(true);
+
+    pigeon2 = (Pigeon2) swerveDrive.swerveDriveConfiguration.imu.getIMU();
   }
 
   /**
@@ -351,9 +361,16 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    //TODO add back when vision is back
+    logging();
     processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
+  }
+
+  private void logging() {
+    double[] pigeonRotation = new double[] {Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getX()),Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getY()) , Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getZ())};
+    SmartDashboard.putNumberArray("Pigeon Roll Pitch Yaw", pigeonRotation);
+
+
   }
 
   @Override
