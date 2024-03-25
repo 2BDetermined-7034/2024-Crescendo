@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.swervedrive;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
@@ -21,22 +20,23 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import frc.robot.Constants;
 import frc.robot.Constants.AutonConstants;
 import java.io.File;
-import java.sql.Driver;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.vision.Photonvision;
+import org.opencv.dnn.Net;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -59,14 +59,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public final double maximumSpeed = Units.feetToMeters(15.0);
-
-  /**
-   * IMU object from YAGSL
-   */
-  public Pigeon2 pigeon2;
-
-
+  public        double      maximumSpeed = Units.feetToMeters(15.0);
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
    *
@@ -76,7 +69,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
@@ -87,12 +80,10 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-//    swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    //swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     setupPathPlanner();
 
     swerveDrive.setMotorIdleMode(true);
-
-    pigeon2 = (Pigeon2) swerveDrive.swerveDriveConfiguration.imu.getIMU();
   }
 
   /**
@@ -159,17 +150,6 @@ public class SwerveSubsystem extends SubsystemBase
     });
   }
 
-  /**
-   * Get the path follower with events.
-   *
-   * @param pathName       PathPlanner path name.
-   * @return {@link AutoBuilder#followPath(PathPlannerPath)} path command.
-   */
-  public Command getAutonomousCommand(String pathName)
-  {
-    // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(pathName);
-  }
 
   /**
    * Use PathPlanner Path finding to go to a point on the field.
@@ -361,16 +341,16 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    logging();
     processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
-  }
 
-  private void logging() {
-    double[] pigeonRotation = new double[] {Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getX()),Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getY()) , Units.radiansToDegrees(swerveDrive.getGyroRotation3d().getZ())};
-    SmartDashboard.putNumberArray("Pigeon Roll Pitch Yaw", pigeonRotation);
-
-
+    double[] robotPoseArray = new double[] {
+            getPose().getX(),
+            getPose().getY(),
+            getPose().getRotation().getRadians()
+    };
+    SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
+    SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTags().get(3).pose.toPose2d().minus(getPose()).getTranslation().getNorm());
   }
 
   @Override
@@ -435,18 +415,16 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
-
-
-    swerveDrive.zeroGyro();
-
-    /*
-    Resets the odometry of the robot correctly when on the red side of the alliance, but controls the robot as if shooter side is in front
-    Adjusted for in TeleopDrive.java
-     */
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      swerveDrive.setGyro(new Rotation3d(0,0,Math.toRadians(180)));
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      swerveDrive.zeroGyro();
+      swerveDrive.setGyro(new Rotation3d(0, 0, Math.PI));
+    } else {
+      swerveDrive.zeroGyro();
     }
+  }
 
+  public void setGyro(Rotation3d rotation) {
+    swerveDrive.setGyro(rotation);
   }
 
   /**

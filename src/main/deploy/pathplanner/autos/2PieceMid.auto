@@ -24,7 +24,26 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 1.5
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2PCMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
                 }
               }
             ]
@@ -33,7 +52,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2PCMid"
+            "pathName": "Mid to mid"
           }
         },
         {
@@ -49,15 +68,21 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 1.5
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "2PC",
   "choreoAuto": false
 }

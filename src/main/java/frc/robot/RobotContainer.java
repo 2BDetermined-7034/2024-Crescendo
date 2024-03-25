@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,15 +17,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.shooter.AmpShot;
+import frc.robot.commands.Auto.AutoFactory;
+import frc.robot.commands.climb.ClimbDownCommand;
+import frc.robot.commands.climb.ClimbUpCommand;
+import frc.robot.commands.intake.AutoIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
-import frc.robot.commands.intake.ReverseIntakeCommand;
 import frc.robot.commands.shooter.*;
+import frc.robot.commands.swervedrive.drivebase.RotateToAnyTag;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
+import frc.robot.subsystems.climb.ClimbSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.sensors.LaserCANSensor;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -44,27 +53,23 @@ public class RobotContainer {
             "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final XboxController operatorController = new XboxController(1);
+    final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
-//
-//
-//
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final LaserCANSensor laserCANShooter = new LaserCANSensor(0);
-    private final LaserCANSensor laserCANIntake = new LaserCANSensor(1);
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve, photonvision);
-    private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
-    private final ShooterAmpCommand oldAmpCommand = new ShooterAmpCommand(shooterSubsystem);
-//    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-//    private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-//    private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
-//    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
-    private final ReverseIntakeCommand reverseIntakeCommand = new ReverseIntakeCommand(intakeSubsystem, shooterSubsystem, laserCANIntake, laserCANShooter);
 
+
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final LaserCANSensor shooterLaser = new LaserCANSensor(0);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, shooterLaser);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
+    private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
+    private final ShooterAmpCommand ampCommand = new ShooterAmpCommand(shooterSubsystem);
+    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+    private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
+    private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -76,12 +81,15 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("One piece mid", new PathPlannerAuto("1PieceMid"));
-        autoChooser.addOption("One piece amp", new PathPlannerAuto("1PieceAmp"));
-        autoChooser.addOption("One piece source", new PathPlannerAuto("1PieceSource"));
-        autoChooser.addOption("Two piece mid", new PathPlannerAuto("2PieceMid"));
-        autoChooser.addOption("Two piece amp", new PathPlannerAuto("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", new PathPlannerAuto("2PieceMidPodiumShot"));
+        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
+        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
+        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
+        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
+        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
+        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
+        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
+        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
+
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
@@ -90,7 +98,7 @@ public class RobotContainer {
 		/*
 		This Command uses both x and y from right analogue stick to control desired angle instead of angular rotation
 		 */
-        // Applies deadband and inverts controls because joysticks
+        // Applies deadbands and inverts controls because joysticks
         // are back-right positive while robot
         // controls are front-left positive
         // left stick controls translation
@@ -104,7 +112,7 @@ public class RobotContainer {
         Command driveFieldOrientedTeleop = new TeleopDrive(swerve,
                 () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
                 () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
-                () -> -driverController.getRightX(),
+                () -> -MathUtil.applyDeadband(driverController.getRightX(), 0.25),
                 () -> true);
 
         swerve.setDefaultCommand(driveFieldOrientedTeleop);
@@ -119,46 +127,29 @@ public class RobotContainer {
      * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
      */
     private void configureBindings() {
-
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        //TODO
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
-        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
-//        new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
+//        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
+        new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
-        new Trigger(driverController::getL2ButtonPressed).toggleOnTrue(new RotateToTag(swerve));
-        new Trigger(driverController::getL1Button).toggleOnTrue(intakeCommand);
-        new Trigger(driverController::getR1ButtonPressed).toggleOnTrue(reverseIntakeCommand);
-        new Trigger(driverController::getCrossButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
-//
-//
-//        //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
-//        //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
-        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-//        new Trigger(driverController::getCrossButton).onTrue(new InstantCommand(() -> intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed)));
-//        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
-//
-        /*
-        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
-        new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
-        new Trigger(operatorController::getSquareButton).toggleOnTrue(sourceIntake);
-        new Trigger(operatorController::getTriangleButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
-        new Trigger(operatorController::getOptionsButton).toggleOnTrue(oldAmpCommand);
-        new Trigger(operatorController::getR2ButtonPressed).toggleOnTrue(new GroundTrapShot(shooterSubsystem, swerve));
-         */
+        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
 
-        /*
-        new Trigger(operatorController::getBButton).onTrue(new ShooterReset(shooterSubsystem));
-        new Trigger(operatorController::getAButton).toggleOnTrue(shooterCommand);
-        new Trigger(operatorController::getXButton).toggleOnTrue(sourceIntake);
-        new Trigger(operatorController::getYButton).toggleOnTrue(new AmpShot(shooterSubsystem, swerve));
-        new Trigger(operatorController::getStartButton).toggleOnTrue(oldAmpCommand);
-        new Trigger(operatorController::getLeftBumper).toggleOnTrue(intakeCommand);
-        new Trigger(operatorController::getRightBumper).toggleOnTrue(reverseIntakeCommand);
-         */
-//        new Trigger(operatorController::getR1Button).toggleOnTrue(new BetterIntakeReverse(intakeSubsystem, shooterSubsystem));
-//        new Trigger(operatorController::getL2Button).whileTrue(new ClimbDownCommand(climbSubsystem));
-//        new Trigger(operatorController::getR2Button).whileTrue(new ClimbUpCommand(climbSubsystem));
+
+        //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
+        //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
+        new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(driverController::getCrossButton).whileTrue(intakeCommand);
+//        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
+
+        new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
+        //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
+        new Trigger(operatorController::getSquareButton).whileTrue(sourceIntake);
+        new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
+        new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
+        new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
+        new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
+        new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
 
     }
 
@@ -177,14 +168,13 @@ public class RobotContainer {
     public void setDriveMode() {
         //drivebase.setDefaultCommand();
     }
-
-    //TODO
     public void registerPathplannerCommands() {
-//        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
-//        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
-//        NamedCommands.registerCommand("Shoot Note", shooterCommand);
-//        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-//        NamedCommands.registerCommand("Shoot 25 Angle", new ShooterCommandToAngle(shooterSubsystem, 25));
+        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
+        NamedCommands.registerCommand("Shoot Note", shooterCommand);
+        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
+        NamedCommands.registerCommand("Intake Command", intakeCommand);
+
+        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
 
     public void setMotorBrake(boolean brake) {
