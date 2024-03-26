@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.56,
+      "y": 5.606069564819336
+    },
+    "rotation": -7.129596853765927e-18
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID Community to W1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID W1 to Community"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

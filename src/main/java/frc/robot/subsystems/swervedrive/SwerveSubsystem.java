@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
@@ -21,8 +23,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -65,11 +69,14 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @param directory Directory of swerve drive config files.
    */
+
+  public TalonFX drive1;
+  public Pigeon2 pigeon2;
   public SwerveSubsystem(File directory)
   {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
@@ -84,6 +91,9 @@ public class SwerveSubsystem extends SubsystemBase
     setupPathPlanner();
 
     swerveDrive.setMotorIdleMode(true);
+
+    drive1 = (TalonFX) swerveDrive.getModules()[0].getDriveMotor().getMotor();
+    pigeon2 = (Pigeon2) swerveDrive.swerveDriveConfiguration.imu.getIMU();
   }
 
   /**
@@ -344,6 +354,7 @@ public class SwerveSubsystem extends SubsystemBase
 //    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
 
+
     double[] robotPoseArray = new double[] {
             getPose().getX(),
             getPose().getY(),
@@ -351,6 +362,13 @@ public class SwerveSubsystem extends SubsystemBase
     };
     SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
     SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTags().get(3).pose.toPose2d().minus(getPose()).getTranslation().getNorm());
+
+    SmartDashboard.putNumber("Front Left Drive Torque", drive1.getTorqueCurrent().getValueAsDouble() * 0.01926);
+    SmartDashboard.putNumber("MOI", (drive1.getTorqueCurrent().getValueAsDouble() * 0.01926) / (drive1.getAcceleration().getValueAsDouble() * 2 * Math.PI));
+  }
+
+  private void logging(){
+    SmartDashboard.putData("Swerve/States", (Sendable) swerveDrive.getStates()[1]);
   }
 
   @Override
