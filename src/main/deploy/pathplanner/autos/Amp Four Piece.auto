@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.705522358417511,
+      "y": 6.583481788635254
+    },
+    "rotation": 59.46881854694502
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AMP to W1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AMP W1 to W2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AMP W2 to W3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4PC",
+  "choreoAuto": true
+}

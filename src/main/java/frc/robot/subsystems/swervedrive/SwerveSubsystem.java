@@ -341,7 +341,7 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    processCamera(RobotContainer.photonvision);
+//    processCamera(RobotContainer.photonvision);
     swerveDrive.updateOdometry();
 
     double[] robotPoseArray = new double[] {

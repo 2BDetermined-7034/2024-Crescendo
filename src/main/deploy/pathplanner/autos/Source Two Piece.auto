@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7039347290992737,
+      "y": 4.413463592529297
+    },
+    "rotation": -57.828778044257895
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SOURCE to W3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2PC",
+  "choreoAuto": true
+}

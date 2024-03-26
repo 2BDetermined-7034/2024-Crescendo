@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.655407726764679,
+      "y": 6.6335859298706055
+    },
+    "rotation": 59.46881854694502
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AMP to W1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2PC",
+  "choreoAuto": true
+}

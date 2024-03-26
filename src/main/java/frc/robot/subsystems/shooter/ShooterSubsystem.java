@@ -52,7 +52,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
 		this.highGearNeo = new CANSparkMax(Shooter.neo550HighGearID, CANSparkLowLevel.MotorType.kBrushless);
 
-		angleTalon.setInverted(true);
+		angleTalon.setInverted(false);
 		lowGearNeo.setInverted(true);
 		highGearNeo.setInverted(true);
 

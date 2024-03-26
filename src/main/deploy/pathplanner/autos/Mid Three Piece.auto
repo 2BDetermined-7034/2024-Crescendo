@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.293156623840332,
+      "y": 5.606069564819336
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID to W2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID To C2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID C2 to Center"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3PC",
+  "choreoAuto": true
+}
