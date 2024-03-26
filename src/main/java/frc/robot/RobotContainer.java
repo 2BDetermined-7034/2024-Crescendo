@@ -87,8 +87,11 @@ public class RobotContainer {
         autoChooser.addOption("Choreo Source Two Piece", AutoFactory.getAutonomousCommand("Source Two Piece"));
         autoChooser.addOption("Choreo Amp Three Piece", AutoFactory.getAutonomousCommand("Amp Three Piece"));
         autoChooser.addOption("Choreo Mid Three Piece", AutoFactory.getAutonomousCommand("Mid Three Piece"));
+        autoChooser.addOption("Choreo Source Three Piece", AutoFactory.getAutonomousCommand("Source Three Piece"));
         autoChooser.addOption("Choreo Mid Four Piece", AutoFactory.getAutonomousCommand("Mid Four Piece"));
         autoChooser.addOption("Choreo Amp Four Piece", AutoFactory.getAutonomousCommand("Amp Four Piece"));
+        autoChooser.addOption("Choreo Source Four Piece", AutoFactory.getAutonomousCommand("Source Four Piece"));
+
 
 
 
