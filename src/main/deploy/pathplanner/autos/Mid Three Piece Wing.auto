@@ -12,33 +12,110 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 1.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Note"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "MID to W2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MID to W2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter spinup"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "MID W2 to Community Line"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MID W2 to Community Line"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter spinup"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 1.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Note"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "MID Community to W1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MID Community to W1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter spinup"
+                }
+              }
+            ]
           }
         },
         {
@@ -46,16 +123,10 @@
           "data": {
             "pathName": "MID W1 to Community"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3PC",
   "choreoAuto": true
 }

@@ -73,7 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Auto Intake"
+                "name": null
               }
             }
           ]
@@ -90,7 +90,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Stop Intake"
+                "name": null
               }
             }
           ]
