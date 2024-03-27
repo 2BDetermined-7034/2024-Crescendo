@@ -54,11 +54,11 @@ public class AutoFactory {
 		);
 	}
 
-	public static Command shootNote(ShooterSubsystem shooter, LaserCANSensor shooterLazer) {
+	public static Command shootNote(ShooterSubsystem shooter, LaserCANSensor shooterLaser) {
 		return new FunctionalCommand(
 				() -> {},
 				() -> {
-					if(shooterLazer.getLatestMeasurement() < 50) {
+					if(shooterLaser.getLatestMeasurement() < 50) {
 						shooter.setNeoSpeeds(0.05);
 					} else {
 						shooter.setNeoSpeeds(0);
@@ -79,20 +79,85 @@ public class AutoFactory {
 		);
 	}
 
-	public static Command ampTwoPiece() {
-		return new ParallelCommandGroup(
-				constantShooter(RobotContainer.shooterSubsystem),
-				new SequentialCommandGroup(
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote(RobotContainer.shooterSubsystem, RobotContainer.shooterLaser)
-						),
-						new ParallelRaceGroup(
-								followPath("Amp to W1"),
-								stallIntake(RobotContainer.intakeSubsystem, RobotContainer.shooterSubsystem, RobotContainer.intakeLaser, RobotContainer.shooterLaser)
+	public class Autos {
+		public class TwoPiece {
+			public static Command ampTwoPiece() {
+				return new ParallelCommandGroup(
+						getSpinUpShooterCommand(),
+						new SequentialCommandGroup(
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								),
+								new ParallelRaceGroup(
+										followPath("Amp to W1"),
+										getStallIntakeCommand()
+								),
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								)
 						)
-				)
 				);
+			}
+
+			public static Command midTwoPiece() {
+				return new ParallelCommandGroup(
+						getSpinUpShooterCommand(),
+						new SequentialCommandGroup(
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								),
+								new ParallelRaceGroup(
+										followPath("Mid to W2"),
+										getStallIntakeCommand()
+								),
+								followPath("MID W2 to Community Line"),
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								)
+						)
+				);
+			}
+
+			public static Command sourceTwoPiece() {
+				return new ParallelCommandGroup(
+						getSpinUpShooterCommand(),
+						new SequentialCommandGroup(
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								),
+								new ParallelRaceGroup(
+										followPath("SOURCE to W3"),
+										getStallIntakeCommand()
+								),
+								new ParallelRaceGroup(
+										new WaitCommand(1),
+										getShootNoteCommand()
+								)
+						)
+				);
+			}
+		}
+
+		public class ThreePiece {
+
+		}
+	}
+
+	private static Command getSpinUpShooterCommand() {
+		return constantShooter(RobotContainer.shooterSubsystem);
+	}
+
+	private static Command getShootNoteCommand() {
+		return shootNote(RobotContainer.shooterSubsystem, RobotContainer.shooterLaser);
+	}
+
+	private static Command getStallIntakeCommand() {
+		return stallIntake(RobotContainer.intakeSubsystem, RobotContainer.shooterSubsystem, RobotContainer.intakeLaser, RobotContainer.shooterLaser);
 	}
 
 }

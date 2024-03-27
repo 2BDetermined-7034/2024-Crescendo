@@ -57,7 +57,6 @@ public class RobotContainer {
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
 
-
     public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
     public static final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -90,7 +89,6 @@ public class RobotContainer {
 //        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
 //        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
 //        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
-
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
