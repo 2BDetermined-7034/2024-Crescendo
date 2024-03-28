@@ -85,14 +85,14 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
-        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
-        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
-        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
-        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
-        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
+//        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
+//        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
+//        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
+//        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
+//        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
+//        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
+//        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
+//        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
 
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));

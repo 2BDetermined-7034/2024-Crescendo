@@ -10,9 +10,7 @@ import frc.robot.Constants;
 
 public class ClimbSubsystem extends SubsystemBase {
 	protected TalonFX lowerMotor, upperMotor;
-	protected PositionVoltage positionVoltage;
 	protected double targetPosition;
-	boolean manualOverrideActive;
 	private Follower lowerMotorFollower;
 
 	public ClimbSubsystem() {
@@ -22,22 +20,10 @@ public class ClimbSubsystem extends SubsystemBase {
 		lowerMotor.setNeutralMode(NeutralModeValue.Brake); // TODO SET TO BRAKE
 		upperMotor.setNeutralMode(NeutralModeValue.Brake);
 
-		Slot0Configs motorConfig = new Slot0Configs();
-		motorConfig.kP = 1.0;
-		motorConfig.kI = 0.0;
-		motorConfig.kD = 0.0;
-		motorConfig.kS = 0.2;
+		lowerMotorFollower = new Follower(Constants.Climb.upperFalconID, false);
 
-		upperMotor.getConfigurator().apply(motorConfig);
-
-		lowerMotorFollower = new Follower(Constants.Climb.upperFalconID, true);
-
-		positionVoltage = new PositionVoltage(0);
-
-		upperMotor.setInverted(true);
-
-		upperMotor.setPosition(0.0);
-		lowerMotor.setPosition(0.0);
+		upperMotor.setInverted(false);
+		lowerMotor.setInverted(false);
 	}
 
 	@Override
@@ -50,28 +36,15 @@ public class ClimbSubsystem extends SubsystemBase {
 	 * SmartDashBoard Logging
 	 */
 	public void logging() {
-		SmartDashboard.putNumber("Upper Falcon Current", upperMotor.getStatorCurrent().getValue());
 		SmartDashboard.putNumber("Upper Falcon Rotations", upperMotor.getPosition().getValue());
+		SmartDashboard.putNumber("Upper Falcon Current", upperMotor.getStatorCurrent().getValue());
 		SmartDashboard.putNumber("Lower Kraken Encoder", lowerMotor.getPosition().getValue());
+		SmartDashboard.putNumber("Lower Falcon Rotations", lowerMotor.getPosition().getValue());
+		SmartDashboard.putNumber("Lower Falcon Current", lowerMotor.getStatorCurrent().getValue());
 	}
 
-	/**
-	 *
-	 * @param position Target position for the climb in motor revolutions
-	 */
-	public void setPosition(double position) {
-		positionVoltage.Position = position;
-		upperMotor.setControl(positionVoltage);
-	}
-
-	/**
-	 *
-	 * @param speed Sets the raw velocity of the motors
-	 */
-	public void setOverrideVelocity(double speed) {
-		upperMotor.set(speed);
-		//lowerMotor.set(speed);
-		manualOverrideActive = speed != 0;
+	public void setPercent(double percent){
+		upperMotor.set(percent);
 	}
 
 	/**
@@ -89,9 +62,6 @@ public class ClimbSubsystem extends SubsystemBase {
 	public boolean atCurrentLimit() {
 		return getMotorCurrent() > Constants.Climb.currentLimit;
 	}
-	public boolean useClosedLoop(){
-		return !atCurrentLimit() && !manualOverrideActive;
-	}
 
 	/**
 	 * Gets the current position of the higher geared Talon on the Climb in Rotations
@@ -107,12 +77,5 @@ public class ClimbSubsystem extends SubsystemBase {
 	 */
 	public void coast(){
 		upperMotor.setControl(new CoastOut());
-	}
-
-	/**
-	 * Do not use this irresponsibly
-	 */
-	public void resetClimbZero() {
-		upperMotor.setPosition(0);
 	}
 }

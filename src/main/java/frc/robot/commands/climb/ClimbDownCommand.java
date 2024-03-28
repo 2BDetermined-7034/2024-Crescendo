@@ -1,6 +1,7 @@
 package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.climb.ClimbSubsystem;
 
 public class ClimbDownCommand extends Command {
@@ -17,7 +18,7 @@ public class ClimbDownCommand extends Command {
 	@Override
 	public void execute() {
 //		climb.setPosition(Constants.Climb.hoistDownPosition);
-		climb.setOverrideVelocity(0.8);
+		climb.setPercent(-Constants.Climb.climbSpeed);
 	}
 
 	public boolean isFinished(){
@@ -26,6 +27,6 @@ public class ClimbDownCommand extends Command {
 
 	@Override
 	public void end(boolean interrupted) {
-		climb.setOverrideVelocity(0.0);
+		climb.setPercent(0.0);
 	}
 }

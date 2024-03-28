@@ -98,10 +98,11 @@ public final class Constants {
 	public static final class Climb {
 		public static final int upperFalconID = 9;
 		public static final int lowerKrakenID = 10;
+		public static final double climbSpeed = 0.4;
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
-		public static final double currentLimit = 50;
+		public static final double currentLimit = 40;
 
 		public static final double kP = 0.1;
 		public static final double kI = 0;
