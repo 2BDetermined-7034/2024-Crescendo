@@ -271,9 +271,6 @@ public class ShooterSubsystem extends SubsystemBase {
 		return angleTalon.getVelocity().getValue();
 	}
 
-	private void sysIdVoltageDrive(Measure<Voltage> volts){
-		angleTalon.setVoltage(volts.magnitude());
-	}
 
 	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
 		return sysIdRoutine.dynamic(direction);

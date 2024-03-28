@@ -156,8 +156,9 @@ public class RobotContainer {
         new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
 
-        new Trigger(operatorController::getL1Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-        new Trigger(operatorController::getL2Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+//        new Trigger(operatorController::getL1Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+//        new Trigger(operatorController::get
+//        L2Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
 
     }
 
