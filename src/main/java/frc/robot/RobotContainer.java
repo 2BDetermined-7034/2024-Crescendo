@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
@@ -149,11 +150,14 @@ public class RobotContainer {
         //new Trigger(operatorController::getCrossButton).toggleOnTrue(shooterCommand);
         new Trigger(operatorController::getSquareButton).whileTrue(sourceIntake);
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
-        new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
-        new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
+        //new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
+        //new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
         new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
         new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
+
+        new Trigger(operatorController::getL1Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        new Trigger(operatorController::getL2Button).whileTrue(shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
 
     }
 

@@ -11,9 +11,15 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.*;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import static edu.wpi.first.units.MutableMeasure.mutable;
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.Constants.Shooter;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -40,6 +46,12 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * periodically assigned to as the setpoint of the velocityVoltageController
 	 */
 	public double launchMotorVelocity = 0;
+	private final SysIdRoutine sysIdRoutine;
+	private final MutableMeasure<Voltage> appliedVoltage = mutable(Volts.of(0));
+	private final MutableMeasure<Angle> angle = mutable(Rotations.of(0));
+	private final MutableMeasure<Velocity<Angle>> velocity = mutable(RotationsPerSecond.of(0));
+
+
 
 	/**
 	 * Initialize the robot's {@link ShooterSubsystem},
@@ -60,7 +72,6 @@ public class ShooterSubsystem extends SubsystemBase {
 		angleTalon.setNeutralMode(NeutralModeValue.Brake);
 		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
-
 
 
 		Slot0Configs slot0Configs;
@@ -99,7 +110,31 @@ public class ShooterSubsystem extends SubsystemBase {
 		launchVelocityController = new VelocityVoltage(0);
 
 		//init encoder to 0 position on boot
+
+		sysIdRoutine = new SysIdRoutine(
+						// Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
+						new SysIdRoutine.Config(
+								Volts.of(0.5).per(Seconds.of(1)), Volts.of(2), Seconds.of(3), null),
+						new SysIdRoutine.Mechanism(
+								// Tell SysId how to plumb the driving voltage to the motor(s).
+								(Measure<Voltage> volts) -> {
+									angleTalon.setVoltage(volts.in(Volts));
+								},
+								// Tell SysId how to record a frame of data for each motor on the mechanism being
+								// characterized.
+								log -> {
+									// Record a frame for the shooter motor.
+									log.motor("shooter-angle")
+											.voltage(appliedVoltage.mut_replace(angleTalon.getMotorVoltage().getValue(), Volts))
+											.angularPosition(angle.mut_replace(angleTalon.getPosition().getValue(), Rotations))
+											.angularVelocity(
+													velocity.mut_replace(angleTalon.getVelocity().getValue(), RotationsPerSecond));
+								},
+								// Tell SysId to make generated commands require this subsystem, suffix test state in
+								// WPILog with this subsystem's name ("shooter")
+								this));
 	}
+
 
 	public void periodic() {
 		// periodic, update the profile setpoint for 20 ms loop time
@@ -236,5 +271,16 @@ public class ShooterSubsystem extends SubsystemBase {
 		return angleTalon.getVelocity().getValue();
 	}
 
+	private void sysIdVoltageDrive(Measure<Voltage> volts){
+		angleTalon.setVoltage(volts.magnitude());
+	}
 
+	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+		return sysIdRoutine.dynamic(direction);
+	}
+
+
+	public Command sysIDQuasistatic(SysIdRoutine.Direction direction) {
+		return sysIdRoutine.quasistatic(direction);
+	}
 }
