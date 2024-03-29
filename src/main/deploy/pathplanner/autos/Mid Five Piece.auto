@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.705522358417511,
-      "y": 6.583481788635254
+      "x": 1.293156623840332,
+      "y": 5.606069564819336
     },
-    "rotation": 59.46881854694502
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,43 +14,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AMP to W1"
+            "pathName": "MID to W2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP W1 to C1"
+            "pathName": "MID To C2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP C1 to wing"
+            "pathName": "MID C2 to Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP wing to C2"
+            "pathName": "MID Wing to C3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP C2 to wing"
+            "pathName": "MID C3 to Wing"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP wing to C3"
+            "pathName": "MID wing understage to C4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AMP C3 to wing"
+            "pathName": "MID C4 to wing"
           }
         }
       ]
