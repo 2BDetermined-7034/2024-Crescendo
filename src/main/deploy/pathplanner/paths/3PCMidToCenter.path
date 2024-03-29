@@ -73,7 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Auto Intake"
+                "name": null
               }
             }
           ]
@@ -90,7 +90,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Stop Intake"
+                "name": null
               }
             }
           ]
@@ -100,7 +100,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 3.5,
-    "maxAcceleration": 2.001,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

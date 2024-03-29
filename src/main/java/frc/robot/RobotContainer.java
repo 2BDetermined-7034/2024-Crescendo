@@ -15,10 +15,7 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.AutoFactory;
@@ -60,12 +57,11 @@ public class RobotContainer {
 
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
 
+    public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final LaserCANSensor intakeLaser = new LaserCANSensor(1);
-    private final LaserCANSensor shooterLaser = new LaserCANSensor(0);
+    public static final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    public static final LaserCANSensor intakeLaser = new LaserCANSensor(1);
+    public static final LaserCANSensor shooterLaser = new LaserCANSensor(0);
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, intakeLaser, shooterLaser);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
@@ -93,7 +89,6 @@ public class RobotContainer {
 //        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
 //        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
 //        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
-
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
@@ -173,12 +168,12 @@ public class RobotContainer {
         //drivebase.setDefaultCommand();
     }
     public void registerPathplannerCommands() {
-        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
-        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
-        NamedCommands.registerCommand("Shoot Note", shooterCommand);
-        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-        NamedCommands.registerCommand("Intake Command", intakeCommand);
-
+//        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
+//        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
+        NamedCommands.registerCommand("Shoot Note", AutoFactory.shootNote(shooterSubsystem, shooterLaser));
+//        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
+        NamedCommands.registerCommand("Intake Command", AutoFactory.stallIntake(intakeSubsystem, shooterSubsystem, intakeLaser, shooterLaser));
+        NamedCommands.registerCommand("Shooter spinup", AutoFactory.constantShooter(shooterSubsystem));
         NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
 
