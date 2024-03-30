@@ -22,7 +22,7 @@
                     "isInitialGuess": false,
                     "translationConstrained": true,
                     "headingConstrained": true,
-                    "controlIntervalCount": 13
+                    "controlIntervalCount": 18
                 },
                 {
                     "x": 3.5306286811828613,
@@ -30,7 +30,7 @@
                     "heading": 0,
                     "isInitialGuess": false,
                     "translationConstrained": true,
-                    "headingConstrained": false,
+                    "headingConstrained": true,
                     "controlIntervalCount": 40
                 }
             ],
@@ -4512,31 +4512,27 @@
                     "scope": [
                         "first"
                     ],
-                    "type": "StopPoint",
-                    "direction": 0
+                    "type": "StopPoint"
                 },
                 {
                     "scope": [
                         "last"
                     ],
-                    "type": "StopPoint",
-                    "direction": 0
+                    "type": "StopPoint"
                 },
                 {
                     "scope": [
                         1,
                         2
                     ],
-                    "type": "StraightLine",
-                    "direction": 0
+                    "type": "StraightLine"
                 },
                 {
                     "scope": [
                         0,
                         0
                     ],
-                    "type": "ZeroAngularVelocity",
-                    "direction": 0
+                    "type": "ZeroAngularVelocity"
                 }
             ],
             "usesControlIntervalGuessing": true,

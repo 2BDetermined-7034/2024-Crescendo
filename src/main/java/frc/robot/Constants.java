@@ -69,6 +69,7 @@ public final class Constants {
 	public static final class Shooter {
 		public static final int launchKrakenID = 12;
 		public static final int angleFalconID = 11;
+		public static final int angleCANCoderID = 0;
 		public static final int neo550LowGearID = 4;
 		public static final int neo550HighGearID = 11;
 		public static final int neo55HighGearRatio = 4;
