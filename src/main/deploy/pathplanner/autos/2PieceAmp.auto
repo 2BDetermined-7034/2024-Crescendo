@@ -2,29 +2,29 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.705522358417511,
-      "y": 6.583481788635254
+      "x": 0.7050561319382253,
+      "y": 6.651755158003897
     },
-    "rotation": 59.46881854694502
+    "rotation": 57.20046872738079
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
               {
                 "type": "named",
                 "data": {
                   "name": "Shoot Note"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
                 }
               }
             ]
@@ -37,51 +37,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AMP to W1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Better Intake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter spinup"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Note"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "AMP W1 to W2"
+                  "pathName": "1PCAmp"
                 }
               },
               {
@@ -89,14 +45,14 @@
                 "data": {
                   "name": "Intake Command"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter spinup"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2PCAmp"
           }
         },
         {
@@ -106,13 +62,32 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 2.0
                 }
               },
               {
                 "type": "named",
                 "data": {
+                  "name": "Source Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
                   "name": "Shoot Note"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
                 }
               }
             ]
@@ -121,6 +96,6 @@
       ]
     }
   },
-  "folder": "3PC",
-  "choreoAuto": true
+  "folder": "2PC",
+  "choreoAuto": false
 }
