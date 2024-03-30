@@ -85,10 +85,12 @@ public final class Constants {
 
 		//12T to 42T, 15T to 42T gears
 		public static final double angleGearRatio = 180d / 1764d;
+		public static final double angleCancoderGearRatio = 15d / 42d;
 		public static final double angleFrontHardstop = -60;
 		public static final double angleBackHardstop = 60.0;
 //		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
 		public static final double angleFeedForward = 0.6;
+		public static final double angleCanCoderZero = 0d;
 
 	}
 	public static final class Intake {
