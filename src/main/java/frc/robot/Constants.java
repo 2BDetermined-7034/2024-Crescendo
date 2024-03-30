@@ -82,7 +82,8 @@ public final class Constants {
 		 */
 		public static final double shooterVelTolerance = 5;
 
-		public static final double angleGearRatio = 1d / 12.72d;
+		//12T to 42T, 15T to 42T gears
+		public static final double angleGearRatio = 180d / 1764d;
 		public static final double angleFrontHardstop = -60;
 		public static final double angleBackHardstop = 60.0;
 //		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);

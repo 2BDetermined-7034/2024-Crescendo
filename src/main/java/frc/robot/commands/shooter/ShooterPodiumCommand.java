@@ -14,11 +14,9 @@ public class ShooterPodiumCommand extends Command {
 
 	@Override
 	public void execute() {
-		double velocitySetpoint = 50;
-		shooter.setLaunchTalon(velocitySetpoint);
-		//shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
+		shooter.setLaunchTalon(Constants.Shooter.shooterVelSetpoint);
 		shooter.setAngleTalonPositionDegrees(31);
-		if(shooter.getLaunchMotorVelocity() > velocitySetpoint - Constants.Shooter.shooterVelTolerance) {
+		if(shooter.withinShootingTolerances(31)) {
 			shooter.setNeoSpeeds(0.5);
 		}
 	}

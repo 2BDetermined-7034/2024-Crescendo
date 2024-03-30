@@ -5,14 +5,9 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -21,12 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
-import frc.robot.commands.intake.AutoIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
-import frc.robot.commands.swervedrive.drivebase.RotateToAnyTag;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
@@ -69,7 +60,6 @@ public class RobotContainer {
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
-    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

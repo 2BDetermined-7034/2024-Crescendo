@@ -1,6 +1,9 @@
 package frc.robot.subsystems.shooter;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -13,6 +16,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.Shooter;
 
@@ -23,6 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final CANSparkMax highGearNeo;
 	private final PositionVoltage anglePositionController;
 	private final VelocityVoltage launchVelocityController;
+	private final PositionVoltage backToHardstopController;
 	private double shooterPercent;
 
 
@@ -34,12 +39,14 @@ public class ShooterSubsystem extends SubsystemBase {
 	/**
 	 * periodically assigned to the setpoint of the positionvoltage controller
 	 */
-	public double angleMotorPosition = 0; //Goal state
+	public double angleMotorSetpoint = Shooter.angleBackHardstop; //Goal state
 
 	/**
 	 * periodically assigned to as the setpoint of the velocityVoltageController
 	 */
 	public double launchMotorVelocity = 0;
+
+	private final String smdbLoggingString = "Shooter/";
 
 	/**
 	 * Initialize the robot's {@link ShooterSubsystem},
@@ -61,16 +68,25 @@ public class ShooterSubsystem extends SubsystemBase {
 		lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 		highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
+		// Configs
 
-
-		Slot0Configs slot0Configs;
-
-		slot0Configs = new Slot0Configs();
+		Slot0Configs slot0Configs = new Slot0Configs();
 		slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
 		slot0Configs.kP = 3;
 		slot0Configs.kI = 10.1;
 		slot0Configs.kD = 0;
-		angleTalon.getConfigurator().apply(slot0Configs, 0.050);
+
+		Slot1Configs slot1Configs = new Slot1Configs();
+		slot1Configs.kS = 0;
+		slot1Configs.kP = 0;
+		slot1Configs.kI = 0;
+		slot1Configs.kD = 0;
+
+		TalonFXConfiguration test = new TalonFXConfiguration();
+		test.Feedback.SensorToMechanismRatio = 1d / Shooter.angleGearRatio;
+		test.Slot0 = slot0Configs;
+		test.Slot1 = slot1Configs;
+		angleTalon.getConfigurator().apply(test, 0.050);
 
 //		slot0Configs = new Slot0Configs();
 //		//slot0Configs.kS = 0.24;
@@ -82,8 +98,6 @@ public class ShooterSubsystem extends SubsystemBase {
 //
 //		angleTalon.getConfigurator().apply(slot0Configs);
 
-
-
 		var launchMotorPID = new Slot0Configs();
 		launchMotorPID.kV = 0.12;
 		launchMotorPID.kP = 1;
@@ -92,47 +106,46 @@ public class ShooterSubsystem extends SubsystemBase {
 		launchMotorPID.kS = 0.24;
 		launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
-
-		angleTalon.setPosition(angleDegreesToRotations(Shooter.angleBackHardstop));
-
 		anglePositionController = new PositionVoltage(angleDegreesToRotations(Shooter.angleBackHardstop));
 		launchVelocityController = new VelocityVoltage(0);
+		backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop, 0.0, false, 0.0, 1, false, false, false);
 
 		//init encoder to 0 position on boot
 	}
 
 	public void periodic() {
-		// periodic, update the profile setpoint for 20 ms loop time
-		angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorPosition, 0));
-		// apply the setpoint to the control request
-		anglePositionController.Position = angleSetpoint.position;
-		anglePositionController.Velocity = angleSetpoint.velocity;
-		angleTalon.setControl(anglePositionController);
+		// Will run the launch Kraken to coast out when given a stop command (vel = 0).
+		// This prevents harshly braking the flywheels causing excess heat.
 
-		if(shooterPercent != 0){
-			launchTalon.set(shooterPercent);
-		} else if(launchMotorVelocity != 0){
+		if(launchMotorVelocity != 0){
 			launchVelocityController.Velocity = MathUtil.clamp(launchMotorVelocity, -80, 80);
 			launchTalon.setControl(launchVelocityController);
 		} else {
 			launchTalon.setControl(new NeutralOut());
 		}
 
+		if(angleMotorSetpoint == Shooter.angleBackHardstop){
+			angleTalon.setControl(backToHardstopController);
+		} else {
+			// periodic, update the profile setpoint for 20 ms loop time
+			angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
+			// apply the setpoint to the control request
+			anglePositionController.Position = angleSetpoint.position;
+			anglePositionController.Velocity = angleSetpoint.velocity;
+			angleTalon.setControl(anglePositionController);
+		}
+
 		logging();
 	}
 
 	private void logging() {
-		SmartDashboard.putNumber("Angle Position Rotations", getAnglePositionRotations());
-		SmartDashboard.putNumber("Launch Kraken Velocity", getLaunchMotorVelocity());
-		SmartDashboard.putNumber("Angle Position Degrees", getAnglePositionDegrees());
-		SmartDashboard.putNumber("Angle Setpoint", anglePositionController.Position);
-		SmartDashboard.putNumber("Angle Setpoint Degrees", angleRotationsToDegrees(anglePositionController.Position));
-		SmartDashboard.putNumber("Angle Supply Voltage", angleTalon.getSupplyVoltage().getValue());
-		SmartDashboard.putNumber("Angle Motor Voltage", angleTalon.getMotorVoltage().getValue());
-		SmartDashboard.putNumber("Launch Current", launchTalon.getTorqueCurrent().getValue());
-		SmartDashboard.putNumber("Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
-		SmartDashboard.putNumber("Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
-		SmartDashboard.putNumber("Angle Motor Velocity", angleTalon.getVelocity().getValue());
+		SmartDashboard.putNumber("Shooter/Angle Position Degrees", getAnglePositionDegrees());
+		SmartDashboard.putNumber("Shooter/Angle Setpoint Degrees", angleMotorSetpoint);
+		SmartDashboard.putNumber("Shooter/Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
+		SmartDashboard.putNumber("Shooter/Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
+		SmartDashboard.putNumber("Shooter/Angle Motor Velocity", angleTalon.getVelocity().getValue());
+		SmartDashboard.putNumber("Shooter/Launch Motor Velocity", launchTalon.getVelocity().getValue());
+		SmartDashboard.putNumber("Shooter/Launch Motor Current", launchTalon.getTorqueCurrent().getValue());
 	}
 
 	/**
@@ -165,7 +178,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public double getAnglePositionDegrees() {
-		return angleRotationsToDegrees(angleTalon.getPosition().getValue());
+		return angleTalon.getPosition().getValue();
 	}
 
 	/**
@@ -176,7 +189,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @return Degrees (relative to the horizon).
 	 */
 	public double angleRotationsToDegrees(double rotations){
-		return rotations * Shooter.angleGearRatio * (360) + Shooter.angleBackHardstop;
+		return rotations;
 	}
 
 	public void runLaunchPercent(double percent){
@@ -190,7 +203,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @return rotations
 	 */
 	public double angleDegreesToRotations(double degrees) {
-		return (degrees - Shooter.angleBackHardstop) / (Shooter.angleGearRatio * 360);
+		return degrees;
 	}
 
 
@@ -198,8 +211,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * Sets the shooter angle to the shooter relative degree angle
 	 * @param degrees position in degrees
 	 */
-	public void setAngleTalonPositionDegrees(double degrees){
-		angleMotorPosition = angleDegreesToRotations(MathUtil.clamp(degrees, Shooter.angleFrontHardstop, Shooter.angleBackHardstop));
+	public void setAngleTalonPositionDegrees(double degrees) {
+		angleMotorSetpoint = degrees;
 	}
 
 	/**
@@ -207,15 +220,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	 * @param rotations input
 	 */
 	private void setAngleTalonPositionRotations(double rotations) {
-		angleMotorPosition = rotations;
-	}
-
-	/**
-	 * sets angle kraken speed [-1, 1]
-	 * @param speed percent speed of angle kraken
-	 */
-	private void setAngleTalon(double speed) {
-		angleTalon.set(speed);
+		angleMotorSetpoint = rotations;
 	}
 
 	/**
@@ -236,5 +241,24 @@ public class ShooterSubsystem extends SubsystemBase {
 		return angleTalon.getVelocity().getValue();
 	}
 
+	/**
+	 * Conditions for launch are:
+	 * Launch motor at velocity,
+	 * Angle motor within degree tolerance,
+	 * Angle motor acceleration within tolerance,
+	 * Angle motor velocity within tolerance.
+	 * These conditions should prevent firing before the shooter has reached a stable configuration
+	 * @param angleSetpoint The degree the angle motor is driving to
+	 * @return If the shooter is within tolerance to shoot
+	 */
+	public boolean withinShootingTolerances(double angleSetpoint){
+		return withinShootingTolerances(angleSetpoint, Shooter.shooterVelSetpoint);
+	}
 
+	public boolean withinShootingTolerances(double angleSetpoint, double velocitySetpoint){
+		return Math.abs(getLaunchMotorVelocity() - velocitySetpoint) < Constants.Shooter.shooterVelTolerance
+				&& Math.abs(getAnglePositionDegrees() - angleSetpoint) < 0.5
+				&& Math.abs(getAngleAcceleration()) < 2
+				&& Math.abs(getAngleVelocity()) < 2;
+	}
 }
