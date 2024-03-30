@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.swervedrive;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -71,7 +70,6 @@ public class SwerveSubsystem extends SubsystemBase
    */
 
   public TalonFX drive1;
-  public Pigeon2 pigeon2;
   public SwerveSubsystem(File directory)
   {
 
@@ -93,7 +91,6 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setMotorIdleMode(true);
 
     drive1 = (TalonFX) swerveDrive.getModules()[0].getDriveMotor().getMotor();
-    pigeon2 = (Pigeon2) swerveDrive.swerveDriveConfiguration.imu.getIMU();
   }
 
   /**
