@@ -20,42 +20,36 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MID To C2"
+            "pathName": "MID W2 to Community Line"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID C2 to Center"
+            "pathName": "MID Community to W1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID Wing to C3"
+            "pathName": "MID W1 to Community"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID C3 to Wing"
+            "pathName": "MID community to C1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID wing understage to C4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MID C4 to wing"
+            "pathName": "MID C1 to wing"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "5PC",
   "choreoAuto": true
 }

@@ -28,34 +28,10 @@
           "data": {
             "pathName": "AMP C1 to wing"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AMP wing to C2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AMP C2 to wing"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AMP wing to C3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AMP C3 to wing"
-          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3PC",
   "choreoAuto": true
 }

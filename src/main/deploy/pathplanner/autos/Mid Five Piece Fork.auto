@@ -40,10 +40,22 @@
           "data": {
             "pathName": "MID C3 to Wing"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID wing understage to C4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MID C4 to wing"
+          }
         }
       ]
     }
   },
-  "folder": "4PC",
+  "folder": "5PC",
   "choreoAuto": true
 }
