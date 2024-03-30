@@ -69,9 +69,9 @@ public final class Constants {
 	public static final class Shooter {
 		public static final int launchKrakenID = 12;
 		public static final int angleFalconID = 11;
-		public static final int angleCANCoderID = 0;
-		public static final int neo550LowGearID = 4;
-		public static final int neo550HighGearID = 11;
+		public static final int angleCANCoderID = 5;
+		public static final int neo550LowGearID = 3;
+		public static final int neo550HighGearID = 5;
 		public static final int neo55HighGearRatio = 4;
 		public static final int neo550LowGearRatio = 1;
 		/**
@@ -90,7 +90,8 @@ public final class Constants {
 		public static final double angleBackHardstop = 60.0;
 //		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
 		public static final double angleFeedForward = 0.6;
-		public static final double angleCanCoderZero = 0d;
+		public static final double angleCanCoderZero = 0.157;
+		public static final double angleRotorToSensorGearRatio = 12d / 42d;
 
 	}
 	public static final class Intake {

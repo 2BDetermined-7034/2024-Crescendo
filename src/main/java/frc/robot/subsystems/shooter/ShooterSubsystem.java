@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
@@ -74,13 +75,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
         CANcoderConfiguration angleCANCoderConfig = new CANcoderConfiguration();
         angleCANCoderConfig.MagnetSensor.MagnetOffset = Shooter.angleCanCoderZero;
+        angleCANCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        angleCANCoder.getConfigurator().apply(angleCANCoderConfig);
 
         // PID values when driving to an angle
 
         Slot0Configs slot0Configs = new Slot0Configs();
         slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
         slot0Configs.kP = 3;
-        slot0Configs.kI = 10.1;
+        slot0Configs.kI = 0;
         slot0Configs.kD = 0;
 
         // PID values when driving to the hardstop
@@ -95,6 +98,7 @@ public class ShooterSubsystem extends SubsystemBase {
         angleTalonConfig.Feedback.SensorToMechanismRatio = 1d / Shooter.angleCancoderGearRatio;
         angleTalonConfig.Feedback.FeedbackRemoteSensorID = angleCANCoder.getDeviceID();
         angleTalonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        angleTalonConfig.Feedback.RotorToSensorRatio = 1d / Shooter.angleRotorToSensorGearRatio;
         angleTalonConfig.Slot0 = slot0Configs;
         angleTalonConfig.Slot1 = slot1Configs;
         angleTalon.getConfigurator().apply(angleTalonConfig, 0.050);
@@ -118,6 +122,7 @@ public class ShooterSubsystem extends SubsystemBase {
         launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
         anglePositionController = new PositionVoltage(angleDegreesToRotations(Shooter.angleBackHardstop));
+
         launchVelocityController = new VelocityVoltage(0);
         backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop, 0.0, false, 0.0, 1, false, false, false);
 
@@ -138,12 +143,14 @@ public class ShooterSubsystem extends SubsystemBase {
         if(angleMotorSetpoint == Shooter.angleBackHardstop){
             angleTalon.setControl(backToHardstopController);
         } else {
-            // periodic, update the profile setpoint for 20 ms loop time
-            angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
-            // apply the setpoint to the control request
-            anglePositionController.Position = angleSetpoint.position;
-            anglePositionController.Velocity = angleSetpoint.velocity;
+//            // periodic, update the profile setpoint for 20 ms loop time
+//            angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
+//            // apply the setpoint to the control request
+//            anglePositionController.Position = angleSetpoint.position;
+//            anglePositionController.Velocity = angleSetpoint.velocity;
+            anglePositionController.Position = angleMotorSetpoint;
             angleTalon.setControl(anglePositionController);
+
         }
 
         logging();
@@ -151,7 +158,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private void logging() {
         SmartDashboard.putNumber("Shooter/Angle Position Degrees", getAnglePositionDegrees());
-        SmartDashboard.putNumber("Shooter/Angle Setpoint Degrees", angleMotorSetpoint);
+        SmartDashboard.putNumber("Shooter/Angle Setpoint Degrees", angleRotationsToDegrees(angleMotorSetpoint));
         SmartDashboard.putNumber("Shooter/Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Velocity", angleTalon.getVelocity().getValue());
@@ -189,7 +196,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getAnglePositionDegrees() {
-        return angleTalon.getPosition().getValue();
+        return angleRotationsToDegrees(angleTalon.getPosition().getValue());
     }
 
     /**
@@ -200,7 +207,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return Degrees (relative to the horizon).
      */
     public double angleRotationsToDegrees(double rotations){
-        return rotations;
+        return rotations * 360d;
     }
 
     public void runLaunchPercent(double percent){
@@ -214,7 +221,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return rotations
      */
     public double angleDegreesToRotations(double degrees) {
-        return degrees;
+        return degrees / 360d;
     }
 
 
@@ -223,7 +230,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param degrees position in degrees
      */
     public void setAngleTalonPositionDegrees(double degrees) {
-        angleMotorSetpoint = degrees;
+        angleMotorSetpoint = angleDegreesToRotations(degrees);
     }
 
     /**

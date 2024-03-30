@@ -4,32 +4,21 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
-//import frc.robot.commands.intake.AutoIntakeCommand;
 import frc.robot.commands.intake.BetterIntakeCommand;
-import frc.robot.commands.intake.BetterIntakeReverse;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
-import frc.robot.commands.swervedrive.drivebase.RotateToAnyTag;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.climb.ClimbSubsystem;
@@ -85,14 +74,14 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
-        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
-        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
-        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
-        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
-        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
-        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
-        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
+//        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
+//        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
+//        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
+//        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
+//        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
+//        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
+//        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
+//        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
 
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
@@ -174,15 +163,15 @@ public class RobotContainer {
         //drivebase.setDefaultCommand();
     }
     public void registerPathplannerCommands() {
-        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
-        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
-        NamedCommands.registerCommand("Shoot Note", shooterCommand);
-//        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-        NamedCommands.registerCommand("Intake Command", intakeCommand);
-        NamedCommands.registerCommand("Source Intake", sourceIntake);
-        NamedCommands.registerCommand("Better Intake", betterIntakeCommand);
-
-        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
+//        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
+//        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
+//        NamedCommands.registerCommand("Shoot Note", shooterCommand);
+////        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
+//        NamedCommands.registerCommand("Intake Command", intakeCommand);
+//        NamedCommands.registerCommand("Source Intake", sourceIntake);
+//        NamedCommands.registerCommand("Better Intake", betterIntakeCommand);
+//
+//        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
     }
 
     public void setMotorBrake(boolean brake) {
