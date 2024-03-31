@@ -39,20 +39,20 @@ public class AutoFactory {
 		return AutoBuilder.followPath(path);
 	}
 
-	public Command followChoreoPath(String pathname, boolean resetOdometry) {
-		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
-		if (resetOdometry) {
-			Pose2d startingPose = path.getPreviewStartingHolonomicPose();
-			if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-				startingPose = GeometryUtil.flipFieldPose(startingPose);
-			}
-			Rotation3d rotation3d = new Rotation3d(0, 0, startingPose.getRotation().getRadians());
-			swerve.setGyro(rotation3d);
-			swerve.resetOdometry(startingPose);
-
-		}
-		return AutoBuilder.followPath(path);
-	}
+//	public Command followChoreoPath(String pathname, boolean resetOdometry) {
+//		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
+//		if (resetOdometry) {
+//			Pose2d startingPose = path.getPreviewStartingHolonomicPose();
+//			if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+//				startingPose = GeometryUtil.flipFieldPose(startingPose);
+//			}
+//			Rotation3d rotation3d = new Rotation3d(0, 0, startingPose.getRotation().getRadians());
+//			swerve.setGyro(rotation3d);
+//			swerve.resetOdometry(startingPose);
+//
+//		}
+//		return AutoBuilder.followPath(path);
+//	}
 
 	public Command getAutonomousCommand(String pathName) {
 		// Create a path following command using AutoBuilder. This will also trigger event markers.
@@ -116,76 +116,76 @@ public class AutoFactory {
 		);
 	}
 
-	public Command aw1() {
-		return new ParallelCommandGroup(
-				constantShooter(),
-				new SequentialCommandGroup(
-						new WaitCommand(1),
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote()
-						),
-						new ParallelRaceGroup(
-								followChoreoPath("Amp to W1", true),
-								stallIntake()
-						),
-						angleShooter(36),
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote()
-						),
-						angleShooter(Constants.Shooter.angleBackHardstop)
-				)
-		);
-	}
-
-	/*
-	Mid 2 works
-	 */
-	public Command midw2() {
-		return new ParallelCommandGroup(
-				constantShooter(),
-				new SequentialCommandGroup(
-						new WaitCommand(1),
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote()
-						),
-						new ParallelRaceGroup(
-								followChoreoPath("MID to W2", true),
-								stallIntake()
-						),
-						new ParallelRaceGroup(
-								followChoreoPath("MID W2 to Community Line", false),
-								stallIntake()
-						),
-						angleShooter(36),
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote()
-						),
-						angleShooter(Constants.Shooter.angleBackHardstop)
-				)
-		);
-	}
-
-	public Command sw3() {
-		return new ParallelCommandGroup(
-				constantShooter(),
-				new SequentialCommandGroup(
-						new ParallelRaceGroup(
-								new WaitCommand(3),
-								shootNote()
-						),
-						new ParallelRaceGroup(
-								followPath("SOURCE to W3"),
-								stallIntake()
-						),
-						new ParallelRaceGroup(
-								new WaitCommand(1),
-								shootNote()
-						)
-				)
-		);
-	}
+//	public Command aw1() {
+//		return new ParallelCommandGroup(
+//				constantShooter(),
+//				new SequentialCommandGroup(
+//						new WaitCommand(1),
+//						new ParallelRaceGroup(
+//								new WaitCommand(1),
+//								shootNote()
+//						),
+//						new ParallelRaceGroup(
+//								followChoreoPath("Amp to W1", true),
+//								stallIntake()
+//						),
+//						angleShooter(36),
+//						new ParallelRaceGroup(
+//								new WaitCommand(1),
+//								shootNote()
+//						),
+//						angleShooter(Constants.Shooter.angleBackHardstop)
+//				)
+//		);
+//	}
+//
+//	/*
+//	Mid 2 works
+//	 */
+//	public Command midw2() {
+//		return new ParallelCommandGroup(
+//				constantShooter(),
+//				new SequentialCommandGroup(
+//						new WaitCommand(1),
+//						new ParallelRaceGroup(
+//								new WaitCommand(1),
+//								shootNote()
+//						),
+//						new ParallelRaceGroup(
+//								followChoreoPath("MID to W2", true),
+//								stallIntake()
+//						),
+//						new ParallelRaceGroup(
+//								followChoreoPath("MID W2 to Community Line", false),
+//								stallIntake()
+//						),
+//						angleShooter(36),
+//						new ParallelRaceGroup(
+//								new WaitCommand(1),
+//								shootNote()
+//						),
+//						angleShooter(Constants.Shooter.angleBackHardstop)
+//				)
+//		);
+//	}
+//
+//	public Command sw3() {
+//		return new ParallelCommandGroup(
+//				constantShooter(),
+//				new SequentialCommandGroup(
+//						new ParallelRaceGroup(
+//								new WaitCommand(3),
+//								shootNote()
+//						),
+//						new ParallelRaceGroup(
+//								followPath("SOURCE to W3"),
+//								stallIntake()
+//						),
+//						new ParallelRaceGroup(
+//								new WaitCommand(1),
+//								shootNote()
+//						)
+//				)
+//		);
+//	}
 }
