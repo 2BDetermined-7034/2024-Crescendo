@@ -164,10 +164,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stall Intake", autoFactory.stallIntake());
         NamedCommands.registerCommand("Shoot Note", autoFactory.shootNote());
         NamedCommands.registerCommand("Constant Shooter", autoFactory.constantShooter());
-        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(36));
         NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooter(Constants.Shooter.angleBackHardstop));
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
+        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(36));
 
 
 

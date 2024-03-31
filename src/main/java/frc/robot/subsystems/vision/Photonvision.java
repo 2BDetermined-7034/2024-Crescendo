@@ -24,15 +24,15 @@ public class Photonvision extends SubsystemBase {
 	/**
 	 * A subsystem to initialize {@link Photonvision} camera instances to allow for multiple camera pose estimation and measurements.
 	 * @param cameraName String, the camera name, as it shows on the PhotonVision dashboard
-	 * @param cameraToRobot Transform3D, where the camera is relative to the robot
+	 * @param robotToCamera Transform3D, where the camera is relative to the robot
 	 */
-	public Photonvision(String cameraName, Transform3d cameraToRobot) {
+	public Photonvision(String cameraName, Transform3d robotToCamera) {
 		this.camera = new PhotonCamera(cameraName);
 		pipelineResult = new PhotonPipelineResult();
 
 		try {
 			AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-			poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, cameraToRobot);
+			poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCamera);
 		} catch(IOException e) {
 			DriverStation.reportError(e.toString(), true);
 		}
