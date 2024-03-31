@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
-import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
@@ -40,7 +40,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final SendableChooser<Command> autoChooser;
 
-    private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+    public final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/kraken"));
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -50,11 +50,11 @@ public class RobotContainer {
     public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
 
 
-    public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    public  final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
-    public static final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    public static final LaserCANSensor intakeLaser = new LaserCANSensor(1);
-    public static final LaserCANSensor shooterLaser = new LaserCANSensor(0);
+    public  final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    public  final LaserCANSensor intakeLaser = new LaserCANSensor(1);
+    public  final LaserCANSensor shooterLaser = new LaserCANSensor(0);
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, shooterSubsystem, intakeLaser, shooterLaser);
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, swerve);
     private final SourceIntake sourceIntake = new SourceIntake(shooterSubsystem);
@@ -62,18 +62,22 @@ public class RobotContainer {
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
-    private final BetterIntakeCommand betterIntakeCommand = new BetterIntakeCommand(intakeSubsystem, shooterSubsystem, shooterLaser);
+
+
+    private final AutoFactory autoFactory = new AutoFactory(this);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+
         registerPathplannerCommands();
         // Configure the trigger bindings
         configureBindings();
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
+        autoChooser.addOption("Two piece mid", autoFactory.midw2());
 //        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
 //        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
 //        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
@@ -126,12 +130,12 @@ public class RobotContainer {
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
         new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
-
+        new Trigger(driverController::getCrossButton).whileTrue(autoFactory.stallIntake());
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
-        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 48));
+//        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 48));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
 
         new Trigger(operatorController::getCircleButton).onTrue(new ShooterReset(shooterSubsystem));
@@ -177,4 +181,6 @@ public class RobotContainer {
     public void setMotorBrake(boolean brake) {
         swerve.setMotorBrake(brake);
     }
+
+
 }

@@ -74,7 +74,7 @@ public class ShooterCommand extends Command {
 		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
 		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 		SmartDashboard.putNumber("Shooter Distance", distance);
-//		shooter.setLaunchTalon(velocitySetpoint);
+		shooter.setLaunchTalon(velocitySetpoint);
 //		double degreeOutput = interpolation.get(distance);
 		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
 //		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);

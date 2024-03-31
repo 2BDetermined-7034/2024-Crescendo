@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
     /**
      * periodically assigned to the setpoint of the positionvoltage controller
      */
-    public double angleMotorSetpoint = Shooter.angleBackHardstop; //Goal state
+    public double angleMotorSetpoint = Shooter.angleBackHardstop/360; //Goal state
 
     /**
      * periodically assigned to as the setpoint of the velocityVoltageController
@@ -62,14 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
         this.highGearNeo = new CANSparkMax(Shooter.neo550HighGearID, CANSparkLowLevel.MotorType.kBrushless);
         this.angleCANCoder = new CANcoder(Shooter.angleCANCoderID);
 
-        angleTalon.setInverted(true);
-        lowGearNeo.setInverted(true);
-        highGearNeo.setInverted(true);
 
-        launchTalon.setNeutralMode(NeutralModeValue.Coast);
-        angleTalon.setNeutralMode(NeutralModeValue.Brake);
-        lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
-        highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         // Configs
 
@@ -81,16 +74,16 @@ public class ShooterSubsystem extends SubsystemBase {
         // PID values when driving to an angle
 
         Slot0Configs slot0Configs = new Slot0Configs();
-        slot0Configs.kS = 0.24; // add 0.24 V to overcome friction
-        slot0Configs.kP = 3;
-        slot0Configs.kI = 0;
+        slot0Configs.kS = 5; // add 0.24 V to overcome friction
+        slot0Configs.kP = 25;
+        slot0Configs.kI = 60;
         slot0Configs.kD = 0;
 
         // PID values when driving to the hardstop
 
         Slot1Configs slot1Configs = new Slot1Configs();
         slot1Configs.kS = 0;
-        slot1Configs.kP = 0;
+        slot1Configs.kP = 10;
         slot1Configs.kI = 0;
         slot1Configs.kD = 0;
 
@@ -101,6 +94,7 @@ public class ShooterSubsystem extends SubsystemBase {
         angleTalonConfig.Feedback.RotorToSensorRatio = 1d / Shooter.angleRotorToSensorGearRatio;
         angleTalonConfig.Slot0 = slot0Configs;
         angleTalonConfig.Slot1 = slot1Configs;
+
         angleTalon.getConfigurator().apply(angleTalonConfig, 0.050);
 
 //		slot0Configs = new Slot0Configs();
@@ -113,6 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
 //
 //		angleTalon.getConfigurator().apply(slot0Configs);
 
+
         var launchMotorPID = new Slot0Configs();
         launchMotorPID.kV = 0.12;
         launchMotorPID.kP = 1;
@@ -121,12 +116,24 @@ public class ShooterSubsystem extends SubsystemBase {
         launchMotorPID.kS = 0.24;
         launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
-        anglePositionController = new PositionVoltage(angleDegreesToRotations(Shooter.angleBackHardstop));
+        anglePositionController = new PositionVoltage(angleTalon.getPosition().getValue());
 
         launchVelocityController = new VelocityVoltage(0);
-        backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop, 0.0, false, 0.0, 1, false, false, false);
+        backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop / 360d, 0.0, false, 0.0, 1, false, false, false);
 
         //init encoder to 0 position on boot
+
+
+        //Use phoenix Tuner, doesn't seem to work
+
+
+        launchTalon.setNeutralMode(NeutralModeValue.Coast);
+        angleTalon.setNeutralMode(NeutralModeValue.Brake);
+        lowGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        highGearNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        angleTalon.setInverted(true);
+        lowGearNeo.setInverted(true);
+        highGearNeo.setInverted(true);
     }
 
     public void periodic() {
@@ -140,30 +147,31 @@ public class ShooterSubsystem extends SubsystemBase {
             launchTalon.setControl(new NeutralOut());
         }
 
-        if(angleMotorSetpoint == Shooter.angleBackHardstop){
+        if(angleMotorSetpoint == Shooter.angleBackHardstop / 360d){
             angleTalon.setControl(backToHardstopController);
         } else {
-//            // periodic, update the profile setpoint for 20 ms loop time
-//            angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
-//            // apply the setpoint to the control request
-//            anglePositionController.Position = angleSetpoint.position;
-//            anglePositionController.Velocity = angleSetpoint.velocity;
+            // periodic, update the profile setpoint for 20 ms loop time
+            angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
+            // apply the setpoint to the control request
+            anglePositionController.Position = angleSetpoint.position;
+            anglePositionController.Velocity = angleSetpoint.velocity;
             anglePositionController.Position = angleMotorSetpoint;
             angleTalon.setControl(anglePositionController);
-
         }
 
         logging();
     }
 
     private void logging() {
-        SmartDashboard.putNumber("Shooter/Angle Position Degrees", getAnglePositionDegrees());
+        SmartDashboard.putNumber("Shooter/Angle Position Degrees", angleTalon.getPosition().getValue() * 360);
         SmartDashboard.putNumber("Shooter/Angle Setpoint Degrees", angleRotationsToDegrees(angleMotorSetpoint));
         SmartDashboard.putNumber("Shooter/Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Velocity", angleTalon.getVelocity().getValue());
         SmartDashboard.putNumber("Shooter/Launch Motor Velocity", launchTalon.getVelocity().getValue());
         SmartDashboard.putNumber("Shooter/Launch Motor Current", launchTalon.getTorqueCurrent().getValue());
+        SmartDashboard.putNumber("Shooter/Angle Motor Rotations", angleTalon.getPosition().getValue());
+        SmartDashboard.putNumber("Shooter/Angle Motor Setpoint Rotations", angleMotorSetpoint);
     }
 
     /**
