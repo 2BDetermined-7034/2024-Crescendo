@@ -39,20 +39,19 @@ public class AutoFactory {
 		return AutoBuilder.followPath(path);
 	}
 
-//	public Command followChoreoPath(String pathname, boolean resetOdometry) {
-//		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
-//		if (resetOdometry) {
-//			Pose2d startingPose = path.getPreviewStartingHolonomicPose();
-//			if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-//				startingPose = GeometryUtil.flipFieldPose(startingPose);
-//			}
-//			Rotation3d rotation3d = new Rotation3d(0, 0, startingPose.getRotation().getRadians());
-//			swerve.setGyro(rotation3d);
-//			swerve.resetOdometry(startingPose);
-//
-//		}
-//		return AutoBuilder.followPath(path);
-//	}
+	public Command followChoreoPath(String pathname, boolean resetOdometry) {
+		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
+		if (resetOdometry) {
+			Pose2d startingPose = path.getPreviewStartingHolonomicPose();
+			if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+				startingPose = GeometryUtil.flipFieldPose(startingPose);
+			}
+			Rotation3d rotation3d = new Rotation3d(0, 0, startingPose.getRotation().getRadians());
+			swerve.setGyro(rotation3d);
+			swerve.resetOdometry(startingPose);
+		}
+		return AutoBuilder.followPath(path);
+	}
 
 	public Command getAutonomousCommand(String pathName) {
 		// Create a path following command using AutoBuilder. This will also trigger event markers.
@@ -115,6 +114,51 @@ public class AutoFactory {
 				() -> shooterSubsystem.withinShootingTolerances(angle)
 		);
 	}
+
+//	public Command aw1() {
+//    Command autoCommand = new SequentialCommandGroup(
+//        new WaitCommand(1),
+//        new ParallelRaceGroup(
+//            new WaitCommand(1),
+//            shootNote()
+//        ),
+//        new ParallelRaceGroup(
+//            followChoreoPath("Amp to W1", true),
+//            stallIntake()
+//        ),
+//        angleShooter(36),
+//        new ParallelRaceGroup(
+//            new WaitCommand(1),
+//            shootNote()
+//        ),
+//        angleShooter(Constants.Shooter.angleBackHardstop)
+//    );
+//
+//    return new PathPlannerAuto("Amp to W1") {
+//        @Override
+//        public void initialize() {
+//            super.initialize();
+//            autoCommand.initialize();
+//        }
+//
+//        @Override
+//        public void execute() {
+//            super.execute();
+//            autoCommand.execute();
+//        }
+//
+//        @Override
+//        public void end(boolean interrupted) {
+//            super.end(interrupted);
+//            autoCommand.end(interrupted);
+//        }
+//
+//        @Override
+//        public boolean isFinished() {
+//            return autoCommand.isFinished();
+//        }
+//    };
+//}
 
 //	public Command aw1() {
 //		return new ParallelCommandGroup(
