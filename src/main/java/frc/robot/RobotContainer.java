@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -79,8 +80,16 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("Two piece mid", autoFactory.getAutonomousCommand("Mid Two Piece"));
-        autoChooser.addOption("Two piece amp", autoFactory.getAutonomousCommand("Amp Two Piece"));
+        autoChooser.addOption("Two piece mid W2", autoFactory.getAutonomousCommand("Mid Two Piece"));
+        autoChooser.addOption("Two piece amp W3", autoFactory.getAutonomousCommand("Amp Two Piece"));
+        autoChooser.addOption("Two piece source W2", autoFactory.getAutonomousCommand("Source Two Piece"));
+        autoChooser.addOption("Two piece source out W2", autoFactory.getAutonomousCommand("Source Two Piece W3 Out"));
+        autoChooser.addOption("Three piece mid W1,W2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
+        autoChooser.addOption("Three piece mid W1,C3", autoFactory.getAutonomousCommand("Mid Three Piece W2,C3"));
+
+
+
+
 
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
@@ -167,7 +176,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooter(Constants.Shooter.angleBackHardstop));
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
-        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(36));
+        NamedCommands.registerCommand("Shoot Note Shortcut", autoFactory.shootNoteShortcut());
+        NamedCommands.registerCommand("Alignment Shortcut 0", autoFactory.shooterAlign(0));
+
+
+        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(0)); // TODO Change back to 36 ish
 
 
 

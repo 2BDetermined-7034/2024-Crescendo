@@ -32,22 +32,9 @@
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 1.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Shoot Note"
-                            }
-                          }
-                        ]
+                        "name": "Shoot Note Shortcut"
                       }
                     },
                     {
@@ -57,7 +44,44 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "SOURCE W3 to Subwoofer"
+                              "pathName": "SOURCE to W3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Stall Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Alignment Shortcut 0"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot Note Shortcut"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle Shooter Hardstop"
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "SOURCE W3 to C5"
                             }
                           },
                           {
@@ -74,43 +98,30 @@
                       "data": {
                         "commands": [
                           {
-                            "type": "wait",
+                            "type": "path",
                             "data": {
-                              "waitTime": 0.7
+                              "pathName": "SOURCE C5 to wing"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Rotate to speaker"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Angle Shooter 36 degrees"
+                              "name": "Stall Intake"
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 1.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Shoot Note"
-                            }
-                          }
-                        ]
+                        "name": "Alignment Shortcut 0"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot Note Shortcut"
                       }
                     },
                     {
@@ -128,6 +139,6 @@
       ]
     }
   },
-  "folder": "2PC",
+  "folder": "3PC",
   "choreoAuto": true
 }

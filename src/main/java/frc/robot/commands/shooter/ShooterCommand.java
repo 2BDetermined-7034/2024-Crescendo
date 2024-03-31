@@ -24,6 +24,7 @@ public class ShooterCommand extends Command {
 		addRequirements(shooter);
 		SmartDashboard.putNumber("Set The Shooter Angle", 30);
 		SmartDashboard.putNumber("Set Shooter Velocity", 60);
+		SmartDashboard.putBoolean("Is Shooting", false);
 
 		interpolation = new LinearInterpolation();
 
@@ -85,6 +86,9 @@ public class ShooterCommand extends Command {
 
 		if(shooter.withinShootingTolerances(degreeOutput)) {
 			shooter.setNeoSpeeds(0.5);
+			SmartDashboard.putBoolean("Is Shooting", true);
+		} else {
+			SmartDashboard.putBoolean("Is Shooting", false);
 		}
 	}
 
@@ -93,5 +97,6 @@ public class ShooterCommand extends Command {
 		shooter.setLaunchTalon(0);
 		shooter.setNeoSpeeds(0.0);
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
+		SmartDashboard.putBoolean("Is Shooting", false);
 	}
 }

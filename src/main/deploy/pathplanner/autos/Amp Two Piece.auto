@@ -70,9 +70,22 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "race",
                       "data": {
-                        "name": "Rotate to speaker"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.7
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Rotate to speaker"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
