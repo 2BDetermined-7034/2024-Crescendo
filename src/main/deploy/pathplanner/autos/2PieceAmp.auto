@@ -18,7 +18,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot Note"
+                  "name": null
                 }
               },
               {
@@ -43,7 +43,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake Command"
+                  "name": null
                 }
               }
             ]
@@ -68,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Source Intake"
+                  "name": null
                 }
               }
             ]
@@ -81,7 +81,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot Note"
+                  "name": null
                 }
               },
               {

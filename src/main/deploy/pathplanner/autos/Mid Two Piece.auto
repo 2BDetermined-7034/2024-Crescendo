@@ -18,13 +18,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shooter spinup"
+                  "name": "Constant Shooter"
                 }
               },
               {
                 "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
                     {
                       "type": "race",
                       "data": {
@@ -57,16 +63,35 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Intake Command"
+                              "name": "Stall Intake"
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "MID W2 to Community Line"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "MID W2 to Community Line"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Stall Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle Shooter 36 degrees"
                       }
                     },
                     {
@@ -86,6 +111,12 @@
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle Shooter Hardstop"
                       }
                     }
                   ]

@@ -1,8 +1,13 @@
-package frc.robot.commands.auto;
+package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.GeometryUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -37,7 +42,14 @@ public class AutoFactory {
 	public Command followChoreoPath(String pathname, boolean resetOdometry) {
 		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
 		if (resetOdometry) {
-			swerve.resetOdometry(path.getPreviewStartingHolonomicPose());
+			Pose2d startingPose = path.getPreviewStartingHolonomicPose();
+			if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+				startingPose = GeometryUtil.flipFieldPose(startingPose);
+			}
+			Rotation3d rotation3d = new Rotation3d(0, 0, startingPose.getRotation().getRadians());
+			swerve.setGyro(rotation3d);
+			swerve.resetOdometry(startingPose);
+
 		}
 		return AutoBuilder.followPath(path);
 	}
@@ -50,9 +62,8 @@ public class AutoFactory {
 
 	public Command constantShooter() {
 		return Commands.startEnd(
-				() -> shooterSubsystem.setLaunchTalon(80),
-				() -> shooterSubsystem.setLaunchTalon(0),
-				shooterSubsystem
+				() -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint),
+				() -> shooterSubsystem.setLaunchTalon(0)
 		);
 	}
 
@@ -65,8 +76,8 @@ public class AutoFactory {
 					if (shooterLaser.getLatestMeasurement() < 20) {
 						shooterSubsystem.setNeoSpeeds(0);
 					} else {
-						shooterSubsystem.setNeoSpeeds(0.05);
-						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+						shooterSubsystem.setNeoSpeeds(0.08);
+						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed + 1.5, Constants.Intake.upperIntakeSpeed + 1.5);
 					}
 
 				},
@@ -74,7 +85,7 @@ public class AutoFactory {
 					shooterSubsystem.setNeoSpeeds(0);
 					intakeSubsystem.run(0, 0);
 				},
-				() -> shooterLaser.getLatestMeasurement() < 20
+				() -> false
 		);
 	}
 
@@ -83,8 +94,8 @@ public class AutoFactory {
 				() -> {
 				},
 				() -> {
-					if (shooterLaser.getLatestMeasurement() < 50) {
-						shooterSubsystem.setNeoSpeeds(0.1);
+					if (Math.abs(shooterSubsystem.getLaunchMotorVelocity() - Constants.Shooter.shooterVelSetpoint) < 4) {
+						shooterSubsystem.setNeoSpeeds(0.4);
 					} else {
 						shooterSubsystem.setNeoSpeeds(0);
 					}
@@ -97,10 +108,11 @@ public class AutoFactory {
 	}
 
 	public Command angleShooter(double angle) {
-		return Commands.startEnd(
+		return new FunctionalCommand(
+				() -> {},
 				() -> shooterSubsystem.setAngleTalonPositionDegrees(angle),
-				() -> shooterSubsystem.setAngleTalonPositionDegrees(0),
-				shooterSubsystem
+				(interrupted) -> {},
+				() -> shooterSubsystem.withinShootingTolerances(angle)
 		);
 	}
 
@@ -108,27 +120,33 @@ public class AutoFactory {
 		return new ParallelCommandGroup(
 				constantShooter(),
 				new SequentialCommandGroup(
+						new WaitCommand(1),
 						new ParallelRaceGroup(
 								new WaitCommand(1),
 								shootNote()
 						),
 						new ParallelRaceGroup(
-								followPath("Amp to W1"),
+								followChoreoPath("Amp to W1", true),
 								stallIntake()
 						),
+						angleShooter(36),
 						new ParallelRaceGroup(
 								new WaitCommand(1),
 								shootNote()
-						)
+						),
+						angleShooter(Constants.Shooter.angleBackHardstop)
 				)
 		);
 	}
 
+	/*
+	Mid 2 works
+	 */
 	public Command midw2() {
-
 		return new ParallelCommandGroup(
 				constantShooter(),
 				new SequentialCommandGroup(
+						new WaitCommand(1),
 						new ParallelRaceGroup(
 								new WaitCommand(1),
 								shootNote()
@@ -137,11 +155,16 @@ public class AutoFactory {
 								followChoreoPath("MID to W2", true),
 								stallIntake()
 						),
-						followChoreoPath("MID W2 to Community Line", false),
+						new ParallelRaceGroup(
+								followChoreoPath("MID W2 to Community Line", false),
+								stallIntake()
+						),
+						angleShooter(36),
 						new ParallelRaceGroup(
 								new WaitCommand(1),
 								shootNote()
-						)
+						),
+						angleShooter(Constants.Shooter.angleBackHardstop)
 				)
 		);
 	}

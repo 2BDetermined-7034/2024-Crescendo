@@ -18,7 +18,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shooter spinup"
+                  "name": null
                 }
               },
               {
@@ -38,7 +38,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Shoot Note"
+                              "name": null
                             }
                           }
                         ]
@@ -57,7 +57,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Intake Command"
+                              "name": null
                             }
                           }
                         ]
@@ -76,7 +76,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Shoot Note"
+                              "name": null
                             }
                           }
                         ]

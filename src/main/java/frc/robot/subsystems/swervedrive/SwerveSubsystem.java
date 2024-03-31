@@ -350,7 +350,7 @@ public class SwerveSubsystem extends SubsystemBase
             getPose().getRotation().getRadians()
     };
     SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
-    SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTags().get(3).pose.toPose2d().minus(getPose()).getTranslation().getNorm());
+    SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTagPose(4).get().toPose2d().minus(getPose()).getTranslation().getNorm());
   }
 
   @Override

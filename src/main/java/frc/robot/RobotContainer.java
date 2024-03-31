@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.util.Named;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS5Controller;
@@ -14,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.IntakeCommand;
@@ -47,7 +48,7 @@ public class RobotContainer {
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
 
-    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.shooterCamToRobotTransfrom);
+    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.lowerRobotToCamera);
 
 
     public  final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -64,12 +65,13 @@ public class RobotContainer {
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
 
 
-    private final AutoFactory autoFactory = new AutoFactory(this);
+    private final AutoFactory autoFactory;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        autoFactory = new AutoFactory(this);
 
         registerPathplannerCommands();
         // Configure the trigger bindings
@@ -77,15 +79,8 @@ public class RobotContainer {
 
         //Add Auto Options
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("Two piece mid", autoFactory.midw2());
-//        autoChooser.addOption("One piece mid", AutoFactory.getAutonomousCommand("1PieceMid"));
-//        autoChooser.addOption("One piece amp", AutoFactory.getAutonomousCommand("1PieceAmp"));
-//        autoChooser.addOption("One piece source", AutoFactory.getAutonomousCommand("1PieceSource"));
-//        autoChooser.addOption("Two piece mid", AutoFactory.getAutonomousCommand("2PieceMid"));
-//        autoChooser.addOption("Two piece amp", AutoFactory.getAutonomousCommand("2PieceAmp"));
-//        autoChooser.addOption("Two piece mid podium shot", AutoFactory.getAutonomousCommand("2PieceMidPodiumShot"));
-//        autoChooser.addOption("Three piece mid to center field", AutoFactory.getAutonomousCommand("3PieceMidToCenter"));
-//        autoChooser.addOption("Three piece community", AutoFactory.getAutonomousCommand("3PieceCommunity"));
+        autoChooser.addOption("Two piece mid", autoFactory.getAutonomousCommand("Mid Two Piece"));
+        autoChooser.addOption("Two piece amp", autoFactory.getAutonomousCommand("Amp Two Piece"));
 
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
@@ -113,7 +108,6 @@ public class RobotContainer {
                 () -> true);
 
         swerve.setDefaultCommand(driveFieldOrientedTeleop);
-
     }
 
     /**
@@ -167,15 +161,16 @@ public class RobotContainer {
         //drivebase.setDefaultCommand();
     }
     public void registerPathplannerCommands() {
-//        NamedCommands.registerCommand("Run Intake", betterIntakeCommand);
-//        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> {intakeSubsystem.run(0, 0); shooterSubsystem.setLaunchTalon(0);}));
-//        NamedCommands.registerCommand("Shoot Note", shooterCommand);
-////        NamedCommands.registerCommand("Auto Intake", new AutoIntakeCommand(intakeSubsystem, shooterSubsystem));
-//        NamedCommands.registerCommand("Intake Command", intakeCommand);
-//        NamedCommands.registerCommand("Source Intake", sourceIntake);
-//        NamedCommands.registerCommand("Better Intake", betterIntakeCommand);
-//
-//        NamedCommands.registerCommand("Rotate to Tag", new RotateToTag(swerve));
+        NamedCommands.registerCommand("Stall Intake", autoFactory.stallIntake());
+        NamedCommands.registerCommand("Shoot Note", autoFactory.shootNote());
+        NamedCommands.registerCommand("Constant Shooter", autoFactory.constantShooter());
+        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(36));
+        NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooter(Constants.Shooter.angleBackHardstop));
+        NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
+
+
+
+
     }
 
     public void setMotorBrake(boolean brake) {

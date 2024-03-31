@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.705522358417511,
-      "y": 6.583481788635254
+      "x": 0.7081867456436157,
+      "y": 6.563179969787598
     },
     "rotation": 59.46881854694502
   },
@@ -18,13 +18,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shooter spinup"
+                  "name": "Constant Shooter"
                 }
               },
               {
                 "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
                     {
                       "type": "race",
                       "data": {
@@ -51,16 +57,28 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "AMP to W1"
+                              "pathName": "Amp to W1"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Intake Command"
+                              "name": "Stall Intake"
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Rotate to speaker"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle Shooter 36 degrees"
                       }
                     },
                     {
@@ -80,6 +98,12 @@
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle Shooter Hardstop"
                       }
                     }
                   ]

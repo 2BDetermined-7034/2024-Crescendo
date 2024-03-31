@@ -24,7 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot Note"
+                  "name": null
                 }
               }
             ]
@@ -37,19 +37,19 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AMP to W1"
+                  "pathName": null
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Better Intake"
+                  "name": null
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Shooter spinup"
+                  "name": null
                 }
               }
             ]
@@ -68,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot Note"
+                  "name": null
                 }
               }
             ]
@@ -87,13 +87,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake Command"
+                  "name": null
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Shooter spinup"
+                  "name": null
                 }
               }
             ]
@@ -112,7 +112,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot Note"
+                  "name": null
                 }
               }
             ]

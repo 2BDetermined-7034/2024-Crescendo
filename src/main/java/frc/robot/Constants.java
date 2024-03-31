@@ -62,9 +62,9 @@ public final class Constants {
 
 	public static final class Vision {
 		public static final String intakeColorCam = "4kcam1";
-		public static final String shooterMonoCam = "whitecasecam";
-		public static final Transform3d shooterCamToRobotTransfrom = new Transform3d(new Translation3d(0.175, -0.175, 0.600), new Rotation3d(0,Math.toRadians(-23),Math.toRadians(180)));
-		public static final Transform3d lowerCamToRobotTransform = new Transform3d(new Translation3d(-0.152, 0, 0.267), new Rotation3d(0, Math.toRadians(27), Math.toRadians(180)));
+		public static final String shooterMonoCam = "MonoArducam1";
+		public static final Transform3d shooterRobotToCamera = new Transform3d(new Translation3d(0.175, -0.175, 0.600), new Rotation3d(0,Math.toRadians(-23),Math.toRadians(180)));
+		public static final Transform3d lowerRobotToCamera = new Transform3d(new Translation3d(-0.152, 0, 0.267), new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)));
 	}
 
 	public static final class Shooter {
@@ -78,7 +78,7 @@ public final class Constants {
 		/**
 		 * Velocity Setpoint for the Shooter
 		 */
-		public static final double shooterVelSetpoint = 50;
+		public static final double shooterVelSetpoint = 70;
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
@@ -91,7 +91,7 @@ public final class Constants {
 		public static final double angleBackHardstop = 60.0;
 //		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
 		public static final double angleFeedForward = 0.6;
-		public static final double angleCanCoderZero = 0.157;
+		public static final double angleCanCoderZero = 0;
 		public static final double angleRotorToSensorGearRatio = 12d / 42d;
 
 	}
