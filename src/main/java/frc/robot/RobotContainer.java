@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Auto.AutoFactory;
+import frc.robot.commands.auto.AutoFactory;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
 import frc.robot.commands.intake.IntakeCommand;
