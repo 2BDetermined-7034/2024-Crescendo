@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.293156623840332,
-      "y": 5.606069564819336
+      "x": 0.7081867456436157,
+      "y": 6.563179969787598
     },
-    "rotation": 0.0
+    "rotation": 59.46881854694502
   },
   "command": {
     "type": "sequential",
@@ -14,31 +14,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MID to W2"
+            "pathName": "Amp to W1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID To C2"
+            "pathName": "AMP W1 to C1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID C2 to Center"
+            "pathName": "AMP C1 to wing"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID Wing to C3"
+            "pathName": "AMP wing to C2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MID C3 to Wing"
+            "pathName": "AMP C2 to wing"
           }
         }
       ]
