@@ -28,36 +28,21 @@ public class ShooterCommand extends Command {
 
 		interpolation = new LinearInterpolation();
 
-		final boolean isKrepe = false;
-		if (isKrepe) {
-			interpolation.vertices = new Translation2d[8];
-			interpolation.vertices[0] = new Translation2d(1.42, 45.0);
-			interpolation.vertices[1] = new Translation2d(2.02, 35.0);
-			interpolation.vertices[2] = new Translation2d(2.38, 32.0);
-			interpolation.vertices[3] = new Translation2d(2.50, 30.0);
-			interpolation.vertices[4] = new Translation2d(3.03, 26.4);
-			interpolation.vertices[5] = new Translation2d(3.50, 24.0);
-			interpolation.vertices[6] = new Translation2d(4.05, 21.5);
-			interpolation.vertices[7] = new Translation2d(4.65, 21.0);
-		} else {
-//			interpolation.vertices = new Translation2d[7];
-//			interpolation.vertices[0] = new Translation2d(1.262461460840503, 55);
-//			interpolation.vertices[1] = new Translation2d(1.875073740967453, 46);
-//			interpolation.vertices[2] = new Translation2d(2.490053775301344, 36.0);
-//			interpolation.vertices[3] = new Translation2d(3.040430474763867, 33.0);
-//			interpolation.vertices[4] = new Translation2d(3.487449626171466, 30.5);
-//			interpolation.vertices[5] = new Translation2d(4.030337165233073, 29.5);
-//			interpolation.vertices[6] = new Translation2d(4.419117932614939, 28.25);
+			interpolation.vertices = new Translation2d[11];
+			interpolation.vertices[0] = new Translation2d(1.365, 55.0);
+			interpolation.vertices[1] = new Translation2d(1.75, 45.0);
+			interpolation.vertices[2] = new Translation2d(2.09, 38.0);
+			interpolation.vertices[3] = new Translation2d(2.46, 32.0);
+			interpolation.vertices[4] = new Translation2d(2.81, 29.0);
+			interpolation.vertices[5] = new Translation2d(3.17, 27.0);
+			interpolation.vertices[6] = new Translation2d(3.5, 24.3);
+			interpolation.vertices[7] = new Translation2d(3.82, 23.0);
+			interpolation.vertices[8] = new Translation2d(4.17, 22.0);
+			interpolation.vertices[9] = new Translation2d(4.52, 21.0);
+			interpolation.vertices[10] = new Translation2d(4.81, 20.25);
 
-			interpolation.vertices = new Translation2d[7];
-			interpolation.vertices[0] = new Translation2d(1.265, 50);
-			interpolation.vertices[1] = new Translation2d(1.512, 45);
-			interpolation.vertices[2] = new Translation2d(1.996, 38);
-			interpolation.vertices[3] = new Translation2d(2.496, 34);
-			interpolation.vertices[4] = new Translation2d(3.0, 32);
-			interpolation.vertices[5] = new Translation2d(3.51, 26.5);
-			interpolation.vertices[6] = new Translation2d(4.0, 25);
-		}
+
+
 
 //		interpolation.function = (Double x) -> {
 //			return 1.0 / x;
@@ -76,8 +61,8 @@ public class ShooterCommand extends Command {
 		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 		SmartDashboard.putNumber("Shooter Distance", distance);
 		shooter.setLaunchTalon(velocitySetpoint);
-//		double degreeOutput = interpolation.get(distance);
-		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
+		double degreeOutput = interpolation.get(distance);
+//		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
 //		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 		shooter.setAngleTalonPositionDegrees(degreeOutput);
 //		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));

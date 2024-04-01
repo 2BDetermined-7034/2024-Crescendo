@@ -18,7 +18,9 @@ public class ShooterAmpCommand extends Command {
 		double velocitySetpoint = 40;
 		shooter.setLaunchTalon(velocitySetpoint);
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-		if(shooter.withinShootingTolerances(40, velocitySetpoint)) {
+		//shooter.setAngleTalonPositionDegrees(53);
+		//if(Math.abs(shooter.getLaunchMotorVelocity() - velocitySetpoint) < 5) {
+		if(shooter.withinShootingTolerances(53, velocitySetpoint)){
 			shooter.setNeoSpeeds(0.5);
 		}
 	}

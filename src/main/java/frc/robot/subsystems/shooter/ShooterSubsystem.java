@@ -83,7 +83,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         Slot1Configs slot1Configs = new Slot1Configs();
         slot1Configs.kS = 0;
-        slot1Configs.kP = 10;
+        slot1Configs.kP = 6;
         slot1Configs.kI = 0;
         slot1Configs.kD = 0;
 
@@ -172,6 +172,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shooter/Launch Motor Current", launchTalon.getTorqueCurrent().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Rotations", angleTalon.getPosition().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Setpoint Rotations", angleMotorSetpoint);
+        SmartDashboard.putNumber("Shooter/Kicker Motor Set Percent", highGearNeo.get());
     }
 
     /**

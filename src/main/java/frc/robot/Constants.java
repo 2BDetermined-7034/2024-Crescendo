@@ -91,7 +91,7 @@ public final class Constants {
 		public static final double angleBackHardstop = 60.0;
 //		public static final PIDConstants anglePIDConstants = new PIDConstants(1,2.5,0);
 		public static final double angleFeedForward = 0.6;
-		public static final double angleCanCoderZero = 0.05;
+		public static final double angleCanCoderZero = .239;
 		public static final double angleRotorToSensorGearRatio = 12d / 42d;
 
 	}

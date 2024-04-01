@@ -66,7 +66,7 @@ public class RotateToTag extends Command  {
 	public RotateToTag(SwerveSubsystem swerveSubsystem) {
 		this.swerve = swerveSubsystem;
 		controller.enableContinuousInput(-Math.PI, Math.PI);
-		controller.setTolerance(0.04, 0.0004);
+		controller.setTolerance(0.02, 0.0004);
 		addRequirements(swerveSubsystem);
 	}
 
