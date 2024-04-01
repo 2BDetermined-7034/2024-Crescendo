@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.705522358417511,
-      "y": 6.583481788635254
+      "x": 0.7081867456436157,
+      "y": 6.563179969787598
     },
     "rotation": 59.46881854694502
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "AMP to W1"
           }
         },
         {

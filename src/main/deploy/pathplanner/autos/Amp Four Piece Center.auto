@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "AMP to W1"
           }
         },
         {
@@ -27,12 +27,6 @@
           "type": "path",
           "data": {
             "pathName": "AMP C1 to wing"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AMP wing to C2"
           }
         },
         {
