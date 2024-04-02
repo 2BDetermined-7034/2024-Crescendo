@@ -84,7 +84,6 @@ public class RobotContainer {
         autoChooser.addOption("Two piece source W2", autoFactory.getAutonomousCommand("Source Two Piece"));
         autoChooser.addOption("Two piece source out W2", autoFactory.getAutonomousCommand("Source Two Piece W3 Out"));
         autoChooser.addOption("Three piece mid W2,C2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
-        autoChooser.addOption("Three piece mid W2,C3", autoFactory.getAutonomousCommand("Mid Three Piece W2,C3"));
         autoChooser.addOption("Three piece amp W1,C1", autoFactory.getAutonomousCommand("Amp Three Piece W1,C1"));
 
 
