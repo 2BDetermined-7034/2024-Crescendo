@@ -148,6 +148,12 @@
                       "data": {
                         "name": "Angle Shooter Hardstop"
                       }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "AMP W1 C1 exit"
+                      }
                     }
                   ]
                 }
