@@ -85,6 +85,8 @@ public class RobotContainer {
         autoChooser.addOption("Two piece source out W2", autoFactory.getAutonomousCommand("Source Two Piece W3 Out"));
         autoChooser.addOption("Three piece mid W2,C2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
         autoChooser.addOption("Three piece mid W2,C3", autoFactory.getAutonomousCommand("Mid Three Piece W2,C3"));
+        autoChooser.addOption("Three piece amp W1,C1", autoFactory.getAutonomousCommand("Amp Three Piece W1,C1"));
+
 
 
 
@@ -170,9 +172,11 @@ public class RobotContainer {
     }
     public void registerPathplannerCommands() {
         NamedCommands.registerCommand("Stall Intake", autoFactory.stallIntake());
+        NamedCommands.registerCommand("Stall Intake Slow", autoFactory.stallIntakeSlow());
+
         NamedCommands.registerCommand("Shoot Note", autoFactory.shootNote());
         NamedCommands.registerCommand("Constant Shooter", autoFactory.constantShooter());
-        NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooter(Constants.Shooter.angleBackHardstop));
+        NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooterHardStop());
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
         NamedCommands.registerCommand("Shoot Note Shortcut", autoFactory.shootNoteShortcut());
@@ -184,6 +188,24 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Alignment Shortcut 29", autoFactory.shooterAlign(29));
         NamedCommands.registerCommand("Angle Shooter 29 degrees", autoFactory.angleShooter(29));
+
+        NamedCommands.registerCommand("Alignment Shortcut 23", autoFactory.shooterAlign(23));
+        NamedCommands.registerCommand("Angle Shooter 23 degrees", autoFactory.angleShooter(23));
+
+        NamedCommands.registerCommand("Alignment Shortcut 24", autoFactory.shooterAlign(24));
+        NamedCommands.registerCommand("Angle Shooter 24 degrees", autoFactory.angleShooter(24));
+
+        NamedCommands.registerCommand("Alignment Shortcut 25.5", autoFactory.shooterAlign(25.5));
+        NamedCommands.registerCommand("Angle Shooter 25.5 degrees", autoFactory.angleShooter(25.5));
+
+        NamedCommands.registerCommand("Alignment Shortcut 26", autoFactory.shooterAlign(26));
+        NamedCommands.registerCommand("Angle Shooter 26 degrees", autoFactory.angleShooter(26));
+
+        NamedCommands.registerCommand("Alignment Shortcut 20", autoFactory.shooterAlign(20));
+        NamedCommands.registerCommand("Angle Shooter 20 degrees", autoFactory.angleShooter(20));
+
+        NamedCommands.registerCommand("Alignment Shortcut 22", autoFactory.shooterAlign(22));
+        NamedCommands.registerCommand("Angle Shooter 22 degrees", autoFactory.angleShooter(22));
 
 
 

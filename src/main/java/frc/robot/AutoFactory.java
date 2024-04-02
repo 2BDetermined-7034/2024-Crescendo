@@ -89,6 +89,28 @@ public class AutoFactory {
 		);
 	}
 
+	public Command stallIntakeSlow() {
+		return new FunctionalCommand(
+				() -> {
+				},
+				() -> {
+
+					if (shooterLaser.getLatestMeasurement() < 50) {
+						shooterSubsystem.setNeoSpeeds(-0.05);
+					} else {
+						shooterSubsystem.setNeoSpeeds(0.07);
+						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, 0.35);
+					}
+
+				},
+				(interrupted) -> {
+					shooterSubsystem.setNeoSpeeds(0);
+					intakeSubsystem.run(0, 0);
+				},
+				() -> false
+		);
+	}
+
 	public Command shootNoteShortcut() {
 		return new ParallelDeadlineGroup(
 				new WaitCommand(1),
@@ -139,6 +161,10 @@ public class AutoFactory {
 				(interrupted) -> {},
 				() -> shooterSubsystem.withinShootingTolerances(angle)
 		);
+	}
+
+	public Command angleShooterHardStop() {
+		return new InstantCommand(() -> shooterSubsystem.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop));
 	}
 
 //	public Command aw1() {
