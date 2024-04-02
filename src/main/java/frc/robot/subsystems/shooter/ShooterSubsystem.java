@@ -166,8 +166,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shooter/Angle Position Degrees", angleTalon.getPosition().getValue() * 360);
         SmartDashboard.putNumber("Shooter/Angle Setpoint Degrees", angleRotationsToDegrees(angleMotorSetpoint));
         SmartDashboard.putNumber("Shooter/Angle Motor Current", angleTalon.getTorqueCurrent().getValue());
-        SmartDashboard.putNumber("Shooter/Angle Motor Acceleration", angleTalon.getAcceleration().getValue());
-        SmartDashboard.putNumber("Shooter/Angle Motor Velocity", angleTalon.getVelocity().getValue());
+        SmartDashboard.putNumber("Shooter/Angle Motor Acceleration Degrees", angleTalon.getAcceleration().getValue() * 360);
+        SmartDashboard.putNumber("Shooter/Angle Motor Velocity Degrees", angleTalon.getVelocity().getValue() * 360);
         SmartDashboard.putNumber("Shooter/Launch Motor Velocity", launchTalon.getVelocity().getValue());
         SmartDashboard.putNumber("Shooter/Launch Motor Current", launchTalon.getTorqueCurrent().getValue());
         SmartDashboard.putNumber("Shooter/Angle Motor Rotations", angleTalon.getPosition().getValue());

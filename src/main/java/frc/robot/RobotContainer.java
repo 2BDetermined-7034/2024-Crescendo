@@ -65,7 +65,6 @@ public class RobotContainer {
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
 
-
     private final AutoFactory autoFactory;
 
     /**
@@ -84,8 +83,8 @@ public class RobotContainer {
         autoChooser.addOption("Two piece amp W3", autoFactory.getAutonomousCommand("Amp Two Piece"));
         autoChooser.addOption("Two piece source W2", autoFactory.getAutonomousCommand("Source Two Piece"));
         autoChooser.addOption("Two piece source out W2", autoFactory.getAutonomousCommand("Source Two Piece W3 Out"));
-        autoChooser.addOption("Three piece mid W1,W2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
-        autoChooser.addOption("Three piece mid W1,C3", autoFactory.getAutonomousCommand("Mid Three Piece W2,C3"));
+        autoChooser.addOption("Three piece mid W2,C2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
+        autoChooser.addOption("Three piece mid W2,C3", autoFactory.getAutonomousCommand("Mid Three Piece W2,C3"));
 
 
 
@@ -177,10 +176,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
         NamedCommands.registerCommand("Shoot Note Shortcut", autoFactory.shootNoteShortcut());
-        NamedCommands.registerCommand("Alignment Shortcut 0", autoFactory.shooterAlign(0));
+        NamedCommands.registerCommand("Alignment Shortcut 36", autoFactory.shooterAlign(36));
+        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(36));
 
+        NamedCommands.registerCommand("Alignment Shortcut 27", autoFactory.shooterAlign(27));
+        NamedCommands.registerCommand("Angle Shooter 27 degrees", autoFactory.angleShooter(27));
 
-        NamedCommands.registerCommand("Angle Shooter 36 degrees", autoFactory.angleShooter(0)); // TODO Change back to 36 ish
+        NamedCommands.registerCommand("Alignment Shortcut 29", autoFactory.shooterAlign(29));
+        NamedCommands.registerCommand("Angle Shooter 29 degrees", autoFactory.angleShooter(29));
 
 
 

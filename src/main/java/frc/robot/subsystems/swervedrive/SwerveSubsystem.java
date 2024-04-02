@@ -60,6 +60,11 @@ public class SwerveSubsystem extends SubsystemBase
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
   public        double      maximumSpeed = Units.feetToMeters(17.7);
+
+  /**
+   * True or false, if photonvision should post apriltag vision measurements to YAGSL.
+   */
+  public boolean postVisionMeasurements = true;
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
    *
@@ -268,6 +273,14 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   /**
+   *
+   * @param enable if true, photonvision will post vision measurements to YAGSL
+   */
+  public void setPostVisionMeasurements(boolean enable) {
+    postVisionMeasurements = enable;
+  }
+
+  /**
    * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
    * calculates and commands module states accordingly.  Can use either open-loop or closed-loop velocity control for
    * the wheel velocities.  Also has field- and robot-relative modes, which affect how the translation vector is used.
@@ -325,7 +338,7 @@ public class SwerveSubsystem extends SubsystemBase
    * @param camera New PhotonVision instance with the new camera name
    */
   private void processCamera(Photonvision camera) {
-    if(camera.hasTargets()) {
+    if(camera.hasTargets() && postVisionMeasurements) {
       Optional<EstimatedRobotPose> estimatedPose = getEstimatedGlobalPose(camera, getPose());
 
       if(estimatedPose.isPresent()) {
@@ -341,7 +354,9 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    processCamera(RobotContainer.photonvision);
+    if(postVisionMeasurements) {
+      processCamera(RobotContainer.photonvision);
+    }
     swerveDrive.updateOdometry();
 
     double[] robotPoseArray = new double[] {

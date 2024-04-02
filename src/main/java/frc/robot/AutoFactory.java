@@ -73,11 +73,11 @@ public class AutoFactory {
 				},
 				() -> {
 
-					if (shooterLaser.getLatestMeasurement() < 20) {
+					if (shooterLaser.getLatestMeasurement() < 50) {
 						shooterSubsystem.setNeoSpeeds(0);
 					} else {
-						shooterSubsystem.setNeoSpeeds(0.08);
-						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed + 1.5, Constants.Intake.upperIntakeSpeed + 1.5);
+						shooterSubsystem.setNeoSpeeds(0.07);
+						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
 					}
 
 				},
@@ -96,14 +96,21 @@ public class AutoFactory {
 		);
 	}
 
+
 	/**
 	 *
+	 * @param shooterAngle Angle of the shooter when
 	 */
 	public Command shooterAlign(double shooterAngle) {
-		return new ParallelRaceGroup(
-				new WaitCommand(.35),
-				new RotateToTag(swerve),
-				angleShooter(shooterAngle)
+		return new SequentialCommandGroup(
+				new ParallelRaceGroup(
+						new WaitCommand(.35),
+						new RotateToTag(swerve)
+				),
+				new ParallelRaceGroup(
+						new WaitCommand(.35),
+						angleShooter(shooterAngle)
+				)
 		);
 	}
 
@@ -112,7 +119,7 @@ public class AutoFactory {
 				() -> {
 				},
 				() -> {
-					if (Math.abs(shooterSubsystem.getLaunchMotorVelocity() - Constants.Shooter.shooterVelSetpoint) < 4) {
+					if (Math.abs(shooterSubsystem.getLaunchMotorVelocity() - Constants.Shooter.shooterVelSetpoint) < 4 && Math.abs(shooterSubsystem.getAnglePositionRotations() - shooterSubsystem.angleMotorSetpoint) < 3 && Math.abs(shooterSubsystem.getAngleAcceleration()) < 5d/360d && Math.abs(shooterSubsystem.getAngleMotorVelocity()) < 1d/360d ) {
 						shooterSubsystem.setNeoSpeeds(0.4);
 					} else {
 						shooterSubsystem.setNeoSpeeds(0);

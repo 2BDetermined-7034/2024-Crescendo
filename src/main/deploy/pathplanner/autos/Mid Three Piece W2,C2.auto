@@ -57,21 +57,41 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "deadline",
                       "data": {
-                        "name": "Alignment Shortcut 0"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.25
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Stall Intake"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Shoot Note Shortcut"
+                        "name": "Alignment Shortcut 27"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "race",
                       "data": {
-                        "name": "Angle Shooter Hardstop"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Shoot Note Shortcut"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -88,6 +108,12 @@
                             "type": "named",
                             "data": {
                               "name": "Stall Intake"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Angle Shooter Hardstop"
                             }
                           }
                         ]
@@ -115,7 +141,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Alignment Shortcut 0"
+                        "name": "Alignment Shortcut 27"
                       }
                     },
                     {
