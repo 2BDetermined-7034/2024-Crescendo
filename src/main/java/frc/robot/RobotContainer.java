@@ -64,6 +64,7 @@ public class RobotContainer {
     private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
     private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
     private final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
+    private final ShooterCommandToAngle subwooferShot = new ShooterCommandToAngle(shooterSubsystem, Constants.Shooter.angleBackHardstop);
 
     private final AutoFactory autoFactory;
 
@@ -133,7 +134,7 @@ public class RobotContainer {
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
         new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
-        new Trigger(driverController::getCrossButton).whileTrue(autoFactory.stallIntake());
+        new Trigger(driverController::getCrossButton).whileTrue(subwooferShot);
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
