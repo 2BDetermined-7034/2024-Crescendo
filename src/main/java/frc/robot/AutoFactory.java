@@ -178,6 +178,7 @@ public class AutoFactory {
                             new WaitCommand(.35),
                             new RotateToTag(swerve)
                     ),
+                    angleShooter(angle),
                     shootNoteShortcut(),
                     stopShootLauncher(),
                     angleShooterHardStop(),
@@ -186,6 +187,7 @@ public class AutoFactory {
         } else {
             return new SequentialCommandGroup(
                     constantShooterInstant(),
+                    angleShooter(angle),
                     shootNoteShortcut(),
                     stopShootLauncher(),
                     angleShooterHardStop(),
