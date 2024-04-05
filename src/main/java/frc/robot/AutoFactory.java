@@ -3,14 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-import com.pathplanner.lib.util.GeometryUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.sensors.LaserCANSensor;
@@ -119,52 +112,86 @@ public class AutoFactory {
     }
 
 
-	/**
-	 *
-	 * @param shooterAngle Angle of the shooter when
-	 */
-	public Command shooterAlign(double shooterAngle) {
-		return new SequentialCommandGroup(
-				new ParallelRaceGroup(
-						new WaitCommand(.35),
-						new RotateToTag(swerve)
-				),
-				new ParallelRaceGroup(
-						new WaitCommand(.35),
-						angleShooter(shooterAngle)
-				)
-		);
-	}
+    /**
+     * @param shooterAngle Angle of the shooter when
+     */
+    public Command shooterAlign(double shooterAngle) {
+        return new SequentialCommandGroup(
+                new ParallelRaceGroup(
+                        new WaitCommand(.35),
+                        new RotateToTag(swerve)
+                ),
+                new ParallelRaceGroup(
+                        new WaitCommand(.35),
+                        angleShooter(shooterAngle)
+                )
+        );
+    }
 
-	public Command shootNote() {
-		return new FunctionalCommand(
-				() -> {
-				},
-				() -> {
-					if (Math.abs(shooterSubsystem.getLaunchMotorVelocity() - Constants.Shooter.shooterVelSetpoint) < 4 && Math.abs(shooterSubsystem.getAnglePositionRotations() - shooterSubsystem.angleMotorSetpoint) < 3 && Math.abs(shooterSubsystem.getAngleAcceleration()) < 5d/360d && Math.abs(shooterSubsystem.getAngleMotorVelocity()) < 1d/360d ) {
-						shooterSubsystem.setNeoSpeeds(0.4);
-					} else {
-						shooterSubsystem.setNeoSpeeds(0);
-					}
-				},
-				(interrupted) -> {
-					shooterSubsystem.setNeoSpeeds(0);
-				},
-				() -> false
-		);
-	}
+    public Command shootNote() {
+        return new FunctionalCommand(
+                () -> {
+                },
+                () -> {
+                    if (Math.abs(shooterSubsystem.getLaunchMotorVelocity() - Constants.Shooter.shooterVelSetpoint) < 4 && Math.abs(shooterSubsystem.getAnglePositionRotations() - shooterSubsystem.angleMotorSetpoint) < 3 && Math.abs(shooterSubsystem.getAngleAcceleration()) < 5d / 360d && Math.abs(shooterSubsystem.getAngleMotorVelocity()) < 1d / 360d) {
+                        shooterSubsystem.setNeoSpeeds(0.4);
+                    } else {
+                        shooterSubsystem.setNeoSpeeds(0);
+                    }
+                },
+                (interrupted) -> {
+                    shooterSubsystem.setNeoSpeeds(0);
+                },
+                () -> false
+        );
+    }
 
-	public Command angleShooter(double angle) {
-		return new FunctionalCommand(
-				() -> {},
-				() -> shooterSubsystem.setAngleTalonPositionDegrees(angle),
-				(interrupted) -> {},
-				() -> shooterSubsystem.withinShootingTolerances(angle)
-		);
-	}
+    public Command stopShootLauncher() {
+        return new InstantCommand(() -> shooterSubsystem.setLaunchTalon(0));
+    }
+
+    public Command angleShooter(double angle) {
+        return new FunctionalCommand(
+                () -> {
+                },
+                () -> shooterSubsystem.setAngleTalonPositionDegrees(angle),
+                (interrupted) -> {
+                },
+                () -> shooterSubsystem.withinShootingTolerances(angle)
+        );
+    }
 
     public Command angleShooterHardStop() {
         return new InstantCommand(() -> shooterSubsystem.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop));
+    }
+
+    public Command constantShooterInstant() {
+        return new InstantCommand(() -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint));
+    }
+
+
+    public Command shootNoteRoutine(double angle, boolean align) {
+        if (align) {
+            return new SequentialCommandGroup(
+                    constantShooterInstant(),
+                    new ParallelDeadlineGroup(
+                            new WaitCommand(.35),
+                            new RotateToTag(swerve)
+                    ),
+                    shootNoteShortcut(),
+                    stopShootLauncher(),
+                    angleShooterHardStop(),
+                    new WaitCommand(1)
+            );
+        } else {
+            return new SequentialCommandGroup(
+                    constantShooterInstant(),
+                    shootNoteShortcut(),
+                    stopShootLauncher(),
+                    angleShooterHardStop(),
+                    new WaitCommand(1)
+            );
+        }
     }
 
 //	public Command aw1() {
