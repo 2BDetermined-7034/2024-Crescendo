@@ -67,17 +67,25 @@ public class AutoFactory {
 		);
 	}
 
+	public Command constantShooterHardStop() {
+		return new InstantCommand(() -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint));
+	}
+
+	public Command stopShooterSpin() {
+		return new InstantCommand(() -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint))
+;	}
+
 	public Command stallIntake() {
 		return new FunctionalCommand(
 				() -> {
 				},
 				() -> {
 
-					if (shooterLaser.getLatestMeasurement() < 50) {
+					if (shooterLaser.getLatestMeasurement() < 80) {
 						shooterSubsystem.setNeoSpeeds(0);
 					} else {
 						shooterSubsystem.setNeoSpeeds(0.07);
-						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed - 0.20);
 					}
 
 				},
