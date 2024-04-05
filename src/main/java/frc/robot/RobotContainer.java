@@ -215,6 +215,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note Routine 23 Align", autoFactory.shootNoteRoutine(23, true));
 
 
+        NamedCommands.registerCommand("Shoot Note Routine 25.5", autoFactory.shootNoteRoutine(25.5, false));
+        NamedCommands.registerCommand("Shoot Note Routine 25.5 Align", autoFactory.shootNoteRoutine(25.5, true));
 
         NamedCommands.registerCommand("Source Intake", sourceIntake);
 
