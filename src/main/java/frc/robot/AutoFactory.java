@@ -19,26 +19,26 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 
 public class AutoFactory {
-	private final RobotContainer container;
-	private final SwerveSubsystem swerve;
-	private final ShooterSubsystem shooterSubsystem;
-	private final LaserCANSensor intakeLaser;
-	private final LaserCANSensor shooterLaser;
-	private final IntakeSubsystem intakeSubsystem;
+    private final RobotContainer container;
+    private final SwerveSubsystem swerve;
+    private final ShooterSubsystem shooterSubsystem;
+    private final LaserCANSensor intakeLaser;
+    private final LaserCANSensor shooterLaser;
+    private final IntakeSubsystem intakeSubsystem;
 
-	public AutoFactory(RobotContainer container) {
-		this.container = container;
-		swerve = container.swerve;
-		shooterSubsystem = container.shooterSubsystem;
-		intakeLaser = container.intakeLaser;
-		shooterLaser = container.shooterLaser;
-		intakeSubsystem = container.intakeSubsystem;
-	}
+    public AutoFactory(RobotContainer container) {
+        this.container = container;
+        swerve = container.swerve;
+        shooterSubsystem = container.shooterSubsystem;
+        intakeLaser = container.intakeLaser;
+        shooterLaser = container.shooterLaser;
+        intakeSubsystem = container.intakeSubsystem;
+    }
 
-	public Command followPath(String pathName) {
-		PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-		return AutoBuilder.followPath(path);
-	}
+    public Command followPath(String pathName) {
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+        return AutoBuilder.followPath(path);
+    }
 
 //	public Command followChoreoPath(String pathname, boolean resetOdometry) {
 //		PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathname);
@@ -54,69 +54,69 @@ public class AutoFactory {
 //		return AutoBuilder.followPath(path);
 //	}
 
-	public Command getAutonomousCommand(String pathName) {
-		// Create a path following command using AutoBuilder. This will also trigger event markers.
-		return new PathPlannerAuto(pathName);
-	}
+    public Command getAutonomousCommand(String pathName) {
+        // Create a path following command using AutoBuilder. This will also trigger event markers.
+        return new PathPlannerAuto(pathName);
+    }
 
 
-	public Command constantShooter() {
-		return Commands.startEnd(
-				() -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint),
-				() -> shooterSubsystem.setLaunchTalon(0)
-		);
-	}
+    public Command constantShooter() {
+        return Commands.startEnd(
+                () -> shooterSubsystem.setLaunchTalon(Constants.Shooter.shooterVelSetpoint),
+                () -> shooterSubsystem.setLaunchTalon(0)
+        );
+    }
 
-	public Command stallIntake() {
-		return new FunctionalCommand(
-				() -> {
-				},
-				() -> {
+    public Command stallIntake() {
+        return new FunctionalCommand(
+                () -> {
+                },
+                () -> {
 
-					if (shooterLaser.getLatestMeasurement() < 50) {
-						shooterSubsystem.setNeoSpeeds(0);
-					} else {
-						shooterSubsystem.setNeoSpeeds(0.07);
-						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
-					}
+                    if (shooterLaser.getLatestMeasurement() < 50) {
+                        shooterSubsystem.setNeoSpeeds(0);
+                    } else {
+                        shooterSubsystem.setNeoSpeeds(0.07);
+                        intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, Constants.Intake.upperIntakeSpeed);
+                    }
 
-				},
-				(interrupted) -> {
-					shooterSubsystem.setNeoSpeeds(0);
-					intakeSubsystem.run(0, 0);
-				},
-				() -> false
-		);
-	}
+                },
+                (interrupted) -> {
+                    shooterSubsystem.setNeoSpeeds(0);
+                    intakeSubsystem.run(0, 0);
+                },
+                () -> false
+        );
+    }
 
-	public Command stallIntakeSlow() {
-		return new FunctionalCommand(
-				() -> {
-				},
-				() -> {
+    public Command stallIntakeSlow() {
+        return new FunctionalCommand(
+                () -> {
+                },
+                () -> {
 
-					if (shooterLaser.getLatestMeasurement() < 50) {
-						shooterSubsystem.setNeoSpeeds(-0.05);
-					} else {
-						shooterSubsystem.setNeoSpeeds(0.07);
-						intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, 0.35);
-					}
+                    if (shooterLaser.getLatestMeasurement() < 50) {
+                        shooterSubsystem.setNeoSpeeds(-0.05);
+                    } else {
+                        shooterSubsystem.setNeoSpeeds(0.07);
+                        intakeSubsystem.run(Constants.Intake.lowerIntakeSpeed, 0.35);
+                    }
 
-				},
-				(interrupted) -> {
-					shooterSubsystem.setNeoSpeeds(0);
-					intakeSubsystem.run(0, 0);
-				},
-				() -> false
-		);
-	}
+                },
+                (interrupted) -> {
+                    shooterSubsystem.setNeoSpeeds(0);
+                    intakeSubsystem.run(0, 0);
+                },
+                () -> false
+        );
+    }
 
-	public Command shootNoteShortcut() {
-		return new ParallelDeadlineGroup(
-				new WaitCommand(1),
-				shootNote()
-		);
-	}
+    public Command shootNoteShortcut() {
+        return new ParallelDeadlineGroup(
+                new WaitCommand(1),
+                shootNote()
+        );
+    }
 
 
 	/**
@@ -163,9 +163,9 @@ public class AutoFactory {
 		);
 	}
 
-	public Command angleShooterHardStop() {
-		return new InstantCommand(() -> shooterSubsystem.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop));
-	}
+    public Command angleShooterHardStop() {
+        return new InstantCommand(() -> shooterSubsystem.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop));
+    }
 
 //	public Command aw1() {
 //    Command autoCommand = new SequentialCommandGroup(
