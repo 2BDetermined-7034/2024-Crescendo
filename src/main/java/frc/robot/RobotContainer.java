@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.climb.ClimbUpCommand;
+import frc.robot.commands.intake.BetterIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.swervedrive.drivebase.RotateToTag;
@@ -133,7 +134,7 @@ public class RobotContainer {
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
         new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
-        new Trigger(driverController::getCrossButton).whileTrue(autoFactory.stallIntake());
+        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 50));
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
@@ -173,8 +174,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stall Intake", autoFactory.stallIntake());
         NamedCommands.registerCommand("Stall Intake Slow", autoFactory.stallIntakeSlow());
 
+        NamedCommands.registerCommand("Better Intake", new BetterIntakeCommand(intakeSubsystem, shooterSubsystem, shooterLaser));
+
+
         NamedCommands.registerCommand("Shoot Note", autoFactory.shootNote());
         NamedCommands.registerCommand("Constant Shooter", autoFactory.constantShooter());
+        NamedCommands.registerCommand("Constant Shooter Hardstop", autoFactory.constantShooterHardStop());
         NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooterHardStop());
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
@@ -189,6 +194,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("Angle Shooter 29 degrees", autoFactory.angleShooter(29));
 
         NamedCommands.registerCommand("Alignment Shortcut 23", autoFactory.shooterAlign(23));
+
+        NamedCommands.registerCommand("Alignment Shortcut 50", autoFactory.shooterAlign(50));
+        NamedCommands.registerCommand("Angle Shooter 50", autoFactory.angleShooter(50));
+
+
         NamedCommands.registerCommand("Angle Shooter 23 degrees", autoFactory.angleShooter(23));
 
         NamedCommands.registerCommand("Alignment Shortcut 24", autoFactory.shooterAlign(24));
