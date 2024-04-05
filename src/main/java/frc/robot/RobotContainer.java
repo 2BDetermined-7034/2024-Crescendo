@@ -207,6 +207,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("Alignment Shortcut 22", autoFactory.shooterAlign(22));
         NamedCommands.registerCommand("Angle Shooter 22 degrees", autoFactory.angleShooter(22));
 
+        NamedCommands.registerCommand("Shoot Note Routine 22", autoFactory.shootNoteRoutine(22, true));
+
+        NamedCommands.registerCommand("Shoot Note Routine 27", autoFactory.shootNoteRoutine(27, false));
+
         NamedCommands.registerCommand("Shoot Note Routine 50", autoFactory.shootNoteRoutine(50, false));
 
         NamedCommands.registerCommand("Shoot Note Routine 50 Align", autoFactory.shootNoteRoutine(50, true));
