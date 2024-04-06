@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7081867456436157,
-      "y": 6.563179969787598
+      "x": 0.7084316611289978,
+      "y": 4.45611047744751
     },
-    "rotation": 59.46881854694502
+    "rotation": -59.74356465217464
   },
   "command": {
     "type": "sequential",
@@ -30,26 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp to W1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stall Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp W1 to subwoofer"
+                  "pathName": "SOURCE C5"
                 }
               },
               {
@@ -89,7 +70,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Note Routine 50"
+            "name": "Shoot Note Routine 27"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SOURCE C5 exit"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stall Intake"
+                }
+              }
+            ]
           }
         }
       ]

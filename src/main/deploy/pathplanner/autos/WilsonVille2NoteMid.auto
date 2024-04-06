@@ -2,99 +2,99 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7081867456436157,
-      "y": 6.563179969787598
+      "x": 1.3491521419562087,
+      "y": 5.539225686154654
     },
-    "rotation": 59.46881854694502
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot Note Routine 50"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp to W1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stall Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp W1 to subwoofer"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stall Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 2.5
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Source Intake"
+                  "name": "Angle Shooter 50"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Constant Shooter Hardstop"
                 }
               }
             ]
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.8
+            "name": "Shoot Note Shortcut"
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot Note Routine 50"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2PCMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Better Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid to mid"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Alignment Shortcut 50"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Note"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
   "folder": "2PC",
-  "choreoAuto": true
+  "choreoAuto": false
 }

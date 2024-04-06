@@ -18,7 +18,13 @@
           }
         },
         {
-          "type": "race",
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -56,32 +62,38 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.8
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Shoot Note Routine 23 Align"
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stall Intake"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "AMP W1 to C1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stall Intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -116,6 +128,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.8
           }
         },
         {

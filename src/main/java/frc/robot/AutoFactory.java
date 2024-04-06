@@ -198,6 +198,13 @@ public class AutoFactory {
         }
     }
 
+//    public Command sourceIntakeLaunch() {
+//        return Commands.startEnd(
+//                () -> shooterSubsystem.setLaunchTalon(-30),
+//                () ->
+//        );
+//    }
+
 //	public Command aw1() {
 //    Command autoCommand = new SequentialCommandGroup(
 //        new WaitCommand(1),

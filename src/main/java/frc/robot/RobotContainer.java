@@ -84,6 +84,11 @@ public class RobotContainer {
         autoChooser.addOption("Two piece amp W3", autoFactory.getAutonomousCommand("Amp Two Piece"));
         autoChooser.addOption("Two piece source W2", autoFactory.getAutonomousCommand("Source Two Piece"));
         autoChooser.addOption("Two piece source out W2", autoFactory.getAutonomousCommand("Source Two Piece W3 Out"));
+        autoChooser.addOption("No Constant Amp Two Piece W1", autoFactory.getAutonomousCommand("NoConstant Amp Two Piece"));
+        autoChooser.addOption("No Constant Mid Two Piece W2", autoFactory.getAutonomousCommand("NoConstant Mid Two Piece"));
+        autoChooser.addOption("No Constant Mid Amp Piece W1,C1", autoFactory.getAutonomousCommand("NoConstant Amp Three Piece W1, C1"));
+        autoChooser.addOption("No Constant Mid Mid Piece W2,C2", autoFactory.getAutonomousCommand("NoConstant Mid Three Piece W2,C2"));
+        autoChooser.addOption("No Constant Source C5", autoFactory.getAutonomousCommand("NoConstant Source C5"));
         autoChooser.addOption("Three piece mid W2,C2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
         autoChooser.addOption("Three piece amp W1,C1", autoFactory.getAutonomousCommand("Amp Three Piece W1,C1"));
 
@@ -180,7 +185,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note", autoFactory.shootNote());
         NamedCommands.registerCommand("Constant Shooter", autoFactory.constantShooter());
         NamedCommands.registerCommand("Instant Constant Shooter", autoFactory.constantShooterInstant());
-        NamedCommands.registerCommand("Constant Shooter Hardstop", autoFactory.constantShooterHardStop());
+//        NamedCommands.registerCommand("Constant Shooter Hardstop", autoFactory.constantShooterHardStop());
         NamedCommands.registerCommand("Angle Shooter Hardstop", autoFactory.angleShooterHardStop());
         NamedCommands.registerCommand("Rotate to speaker", new RotateToTag(swerve));
 
@@ -217,9 +222,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("Alignment Shortcut 22", autoFactory.shooterAlign(22));
         NamedCommands.registerCommand("Angle Shooter 22 degrees", autoFactory.angleShooter(22));
 
-        NamedCommands.registerCommand("Shoot Note Routine 22", autoFactory.shootNoteRoutine(22, true));
+        NamedCommands.registerCommand("Shoot Note Routine 21.5 Align", autoFactory.shootNoteRoutine(21.5, true));
+
+
+        NamedCommands.registerCommand("Shoot Note Routine 22 Align", autoFactory.shootNoteRoutine(22, true));
 
         NamedCommands.registerCommand("Shoot Note Routine 27", autoFactory.shootNoteRoutine(27, false));
+        NamedCommands.registerCommand("Shoot Note Routine 27 Align", autoFactory.shootNoteRoutine(27, true));
+
 
         NamedCommands.registerCommand("Shoot Note Routine 50", autoFactory.shootNoteRoutine(50, false));
 
@@ -228,6 +238,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Note Routine 23", autoFactory.shootNoteRoutine(23, false));
         NamedCommands.registerCommand("Shoot Note Routine 23 Align", autoFactory.shootNoteRoutine(23, true));
 
+        NamedCommands.registerCommand("Shoot Note Routine 45 Align", autoFactory.shootNoteRoutine(45, true));
 
         NamedCommands.registerCommand("Shoot Note Routine 25.5", autoFactory.shootNoteRoutine(25.5, false));
         NamedCommands.registerCommand("Shoot Note Routine 25.5 Align", autoFactory.shootNoteRoutine(25.5, true));
