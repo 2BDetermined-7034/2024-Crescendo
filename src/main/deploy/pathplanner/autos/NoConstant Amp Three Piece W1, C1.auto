@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AMP to W1"
+                  "pathName": "Amp to W1"
                 }
               },
               {
@@ -124,7 +124,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Stall Intake"
+                  "name": "Source Intake"
                 }
               }
             ]
@@ -143,9 +143,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "AMP W1 C1 exit"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "AMP W1 C1 exit"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stall Intake"
+                }
+              }
+            ]
           }
         }
       ]

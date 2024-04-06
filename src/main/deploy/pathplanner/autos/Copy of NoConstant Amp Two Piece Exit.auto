@@ -70,7 +70,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Note Routine 50 Align"
+            "name": "Shoot Note Routine 45 Align"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AMP W1 Subwoofer Exit"
           }
         }
       ]
