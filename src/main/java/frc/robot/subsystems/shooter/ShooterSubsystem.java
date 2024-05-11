@@ -55,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * which includes 2 (angle and launch) Krakens, and two (low gear and high gear) Neo 550s.
      */
     public ShooterSubsystem() {
-        SmartDashboard.putNumber("Set Shooter Angle", 0);
+//        SmartDashboard.putNumber("Set Shooter Angle", 0);
         this.launchTalon = new TalonFX(Shooter.launchKrakenID);
         this.angleTalon = new TalonFX(Shooter.angleFalconID);
         this.lowGearNeo = new CANSparkMax(Shooter.neo550LowGearID, CANSparkLowLevel.MotorType.kBrushless);
