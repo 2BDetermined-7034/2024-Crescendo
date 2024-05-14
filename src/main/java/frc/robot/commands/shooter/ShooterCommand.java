@@ -61,7 +61,7 @@ public class ShooterCommand extends Command {
 //		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 //		SmartDashboard.putNumber("Shooter Distance", distance);
 //		shooter.setLaunchTalon(velocitySetpoint);
-		shooter.setLaunchTalon(25);
+		shooter.setLaunchTalon(20);
 		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 //		double degreeOutput = interpolation.get(distance);
 //		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
