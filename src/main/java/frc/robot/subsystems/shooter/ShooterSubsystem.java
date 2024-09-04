@@ -109,11 +109,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
         var launchMotorPID = new Slot0Configs();
-        launchMotorPID.kV = 0.12;
-        launchMotorPID.kP = 1;
-        launchMotorPID.kI = 0.00;
+        launchMotorPID.kV = 0.0;
+        launchMotorPID.kP = 0.3;
+        launchMotorPID.kI = 0.6;
         launchMotorPID.kD = 0.0;
-        launchMotorPID.kS = 0.24;
+        launchMotorPID.kS = 0.0;
         launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
         anglePositionController = new PositionVoltage(angleTalon.getPosition().getValue());
@@ -136,6 +136,7 @@ public class ShooterSubsystem extends SubsystemBase {
         highGearNeo.setInverted(true);
     }
 
+    @Override
     public void periodic() {
         // Will run the launch Kraken to coast out when given a stop command (vel = 0).
         // This prevents harshly braking the flywheels causing excess heat.
@@ -239,7 +240,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param degrees position in degrees
      */
     public void setAngleTalonPositionDegrees(double degrees) {
-        angleMotorSetpoint = angleDegreesToRotations(degrees);
+        angleMotorSetpoint = angleDegreesToRotations(MathUtil.clamp(degrees,-35.5 ,54.58));
     }
 
     /**
