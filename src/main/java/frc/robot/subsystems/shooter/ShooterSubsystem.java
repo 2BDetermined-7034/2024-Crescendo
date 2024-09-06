@@ -240,7 +240,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param degrees position in degrees
      */
     public void setAngleTalonPositionDegrees(double degrees) {
-        angleMotorSetpoint = angleDegreesToRotations(MathUtil.clamp(degrees,-35.5 ,54.58));
+        angleMotorSetpoint = angleDegreesToRotations(MathUtil.clamp(degrees, Shooter.angleFrontHardstop, Shooter.angleBackHardstop));
     }
 
     /**
@@ -283,9 +283,11 @@ public class ShooterSubsystem extends SubsystemBase {
         return withinShootingTolerances(angleSetpoint, Shooter.shooterVelSetpoint);
     }
 
-    public boolean withinShootingTolerances(double angleSetpoint, double velocitySetpoint){
+    public boolean withinShootingTolerances(double angleSetpoint, double velocitySetpoint) {
+        double anglePositionDegrees = getAnglePositionDegrees();
         return Math.abs(getLaunchMotorVelocity() - velocitySetpoint) < Constants.Shooter.shooterVelTolerance
-                && Math.abs(getAnglePositionDegrees() - angleSetpoint) < 0.5
+                && Math.abs(anglePositionDegrees - angleSetpoint) < 0.5
+                && anglePositionDegrees > Shooter.angleFrontHardstop
                 && Math.abs(getAngleAcceleration()) < 2
                 && Math.abs(getAngleVelocity()) < 2;
     }
