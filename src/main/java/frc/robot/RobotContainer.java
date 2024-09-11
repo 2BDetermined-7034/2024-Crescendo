@@ -112,16 +112,26 @@ public class RobotContainer {
         // left stick controls translation
         // right stick controls the desired angle NOT angular rotation
         Command driveFieldOrientedDirectAngle = swerve.driveCommand(
-                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
-                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
-                () -> -driverController.getRightX(),
-                () -> -driverController.getRightY());
+//                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
+//                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
+                () -> 0,
+                () -> 0,
+                () -> 0,
+                () -> 0
+//                () -> -driverController.getRightX(),
+//                () -> -driverController.getRightY()
+        );
 
         Command driveFieldOrientedTeleop = new TeleopDrive(swerve,
-                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
-                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
-                () -> -MathUtil.applyDeadband(driverController.getRightX(), 0.25),
-                () -> true);
+//                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
+//                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
+                () -> 0,
+                () -> 0,
+                () -> 0,
+                () -> true
+//                () -> -MathUtil.applyDeadband(driverController.getRightX(), 0.25),
+//                () -> true
+        );
 
         swerve.setDefaultCommand(driveFieldOrientedTeleop);
     }
