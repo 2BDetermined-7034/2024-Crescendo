@@ -22,7 +22,7 @@ public class ShooterCommand extends Command {
 		this.shooter = shooter;
 		this.swerveSubsystem = swerveSubsystem;
 		addRequirements(shooter);
-		SmartDashboard.putNumber("Set The Shooter Angle", Constants.Shooter.shooterVelSetpoint);
+		SmartDashboard.putNumber("Set The Shooter Angle", Constants.Shooter.angleBackHardstop);
 		SmartDashboard.putNumber("Set Shooter Velocity", 30);
 		SmartDashboard.putBoolean("Is Shooting", false);
 
@@ -68,7 +68,7 @@ public class ShooterCommand extends Command {
 //		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 //		shooter.setAngleTalonPositionDegrees(degreeOutput);
 //		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
-		shooter.setNeoSpeeds(0.5);
+		shooter.setNeoSpeeds(0.7);
 
 
 //		if(shooter.withinShootingTolerances(degreeOutput)) {
