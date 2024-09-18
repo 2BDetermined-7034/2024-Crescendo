@@ -30,9 +30,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private final PositionVoltage coarsePositionController;
     private final VelocityVoltage launchVelocityController;
     private final PositionVoltage backToHardstopController;
-
     private double shooterPercent;
 
+    private boolean reachedCoarseSetpoint = false;
 
     private final TrapezoidProfile angleProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(20, 40)
@@ -96,9 +96,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
         Slot2Configs slot2Configs = new Slot2Configs();
         slot2Configs.kS = 0.0;
-        slot2Configs.kP = 0.0;
-        slot2Configs.kI = 0.0;
-        slot2Configs.kD = 0.0;
+        slot2Configs.kP = 12.0;
+        slot2Configs.kI = 47.0;
+        slot2Configs.kD = 0.35;
+        slot2Configs.kV = 20.0;
 
         TalonFXConfiguration angleTalonConfig = new TalonFXConfiguration();
         angleTalonConfig.Feedback.SensorToMechanismRatio = 1d / Shooter.angleCancoderGearRatio;
@@ -131,8 +132,10 @@ public class ShooterSubsystem extends SubsystemBase {
         launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
         finePositionController = new PositionVoltage(angleTalon.getPosition().getValue());
+        finePositionController.withSlot(2);
 
         coarsePositionController = new PositionVoltage(angleTalon.getPosition().getValue());
+        coarsePositionController.withSlot(0);
 
         launchVelocityController = new VelocityVoltage(0);
         backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop / 360d, 0.0, false, 0.0, 1, false, false, false);
@@ -164,9 +167,19 @@ public class ShooterSubsystem extends SubsystemBase {
             launchTalon.setControl(new NeutralOut());
         }
 
-        if(angleMotorSetpoint == Shooter.angleBackHardstop / 360d) {
+        double coarseSetpoint = (angleRotationsToDegrees(angleMotorSetpoint) + Shooter.angleBackHardstop) * 0.5;
+
+        if (angleRotationsToDegrees(angleTalon.getPosition().getValue()) <= coarseSetpoint) {
+            reachedCoarseSetpoint = true;
+        }
+
+        SmartDashboard.putNumber("Shooter/Coarse setpoint", coarseSetpoint);
+
+        if (angleMotorSetpoint == Shooter.angleBackHardstop / 360d) {
             angleTalon.setControl(backToHardstopController);
-        } else if (angleTalon.getPosition().getValue() >= (angleMotorSetpoint + Shooter.angleBackHardstop) * 0.5) {
+            SmartDashboard.putBoolean("Shooter/Using Second PID", false);
+            reachedCoarseSetpoint = false;
+        } else if (reachedCoarseSetpoint) {
             angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
             finePositionController.Velocity = angleSetpoint.velocity;
             finePositionController.Position = angleMotorSetpoint;
