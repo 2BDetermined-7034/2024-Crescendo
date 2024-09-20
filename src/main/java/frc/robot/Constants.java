@@ -62,7 +62,7 @@ public final class Constants {
 
 	public static final class Vision {
 		public static final String intakeColorCam = "4kcam1";
-		public static final String shooterMonoCam = "MonoArducam1";
+		public static final String shooterMonoCam = "Arducam_OV9281_Krog";
 		public static final Transform3d shooterRobotToCamera = new Transform3d(new Translation3d(0.175, -0.175, 0.600), new Rotation3d(0,Math.toRadians(-23),Math.toRadians(180)));
 		public static final Transform3d lowerRobotToCamera = new Transform3d(new Translation3d(-0.152, 0, 0.267), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(180)));
 	}

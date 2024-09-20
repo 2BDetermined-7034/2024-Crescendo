@@ -355,7 +355,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     if(postVisionMeasurements) {
-//      processCamera(RobotContainer.photonvision);
+      processCamera(RobotContainer.photonvision);
     }
     swerveDrive.updateOdometry();
 
@@ -364,7 +364,6 @@ public class SwerveSubsystem extends SubsystemBase
             getPose().getY(),
             getPose().getRotation().getRadians()
     };
-    SmartDashboard.putNumberArray("Robot Pose2d", robotPoseArray);
     SmartDashboard.putNumber("Shooter Distance (In SwerveDrive)", Constants.aprilTagFieldLayout.getTagPose(4).get().toPose2d().minus(getPose()).getTranslation().getNorm());
   }
 
