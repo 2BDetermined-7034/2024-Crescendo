@@ -26,12 +26,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax lowGearNeo;
     private final CANSparkMax highGearNeo;
     private final CANcoder angleCANCoder;
-    private final PositionVoltage anglePositionController;
+    private final PositionVoltage positionController;
     private final VelocityVoltage launchVelocityController;
     private final PositionVoltage backToHardstopController;
-
     private double shooterPercent;
 
+    private boolean reachedCoarseSetpoint = false;
 
     private final TrapezoidProfile angleProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(20, 40)
@@ -73,10 +73,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // PID values when driving to an angle
 
+//        Slot0Configs slot0Configs = new Slot0Configs();
+//        slot0Configs.kS = 5; // add 0.24 V to overcome friction
+//        slot0Configs.kP = 25;
+//        slot0Configs.kI = 60;
+//        slot0Configs.kD = 0;
+
         Slot0Configs slot0Configs = new Slot0Configs();
-        slot0Configs.kS = 5; // add 0.24 V to overcome friction
-        slot0Configs.kP = 25;
-        slot0Configs.kI = 60;
+        slot0Configs.kS = 0; // add 0.24 V to overcome friction
+        slot0Configs.kP = 21;
+        slot0Configs.kI = 10;
         slot0Configs.kD = 0;
 
         // PID values when driving to the hardstop
@@ -87,6 +93,13 @@ public class ShooterSubsystem extends SubsystemBase {
         slot1Configs.kI = 0;
         slot1Configs.kD = 0;
 
+        Slot2Configs slot2Configs = new Slot2Configs();
+        slot2Configs.kS = 0.0;
+        slot2Configs.kP = 12.0;
+        slot2Configs.kI = 47.0;
+        slot2Configs.kD = 0.35;
+        slot2Configs.kV = 20.0;
+
         TalonFXConfiguration angleTalonConfig = new TalonFXConfiguration();
         angleTalonConfig.Feedback.SensorToMechanismRatio = 1d / Shooter.angleCancoderGearRatio;
         angleTalonConfig.Feedback.FeedbackRemoteSensorID = angleCANCoder.getDeviceID();
@@ -94,6 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
         angleTalonConfig.Feedback.RotorToSensorRatio = 1d / Shooter.angleRotorToSensorGearRatio;
         angleTalonConfig.Slot0 = slot0Configs;
         angleTalonConfig.Slot1 = slot1Configs;
+        angleTalonConfig.Slot2 = slot2Configs;
 
         angleTalon.getConfigurator().apply(angleTalonConfig, 0.050);
 
@@ -116,7 +130,8 @@ public class ShooterSubsystem extends SubsystemBase {
         launchMotorPID.kS = 0.0;
         launchTalon.getConfigurator().apply(launchMotorPID, 0.050);
 
-        anglePositionController = new PositionVoltage(angleTalon.getPosition().getValue());
+        positionController = new PositionVoltage(angleTalon.getPosition().getValue(), 0, false, -0.24, 0, true, false, false);
+        positionController.withSlot(0);
 
         launchVelocityController = new VelocityVoltage(0);
         backToHardstopController = new PositionVoltage(Shooter.angleBackHardstop / 360d, 0.0, false, 0.0, 1, false, false, false);
@@ -148,16 +163,15 @@ public class ShooterSubsystem extends SubsystemBase {
             launchTalon.setControl(new NeutralOut());
         }
 
-        if(angleMotorSetpoint == Shooter.angleBackHardstop / 360d){
+        if (angleMotorSetpoint == Shooter.angleBackHardstop / 360d) {
             angleTalon.setControl(backToHardstopController);
         } else {
             // periodic, update the profile setpoint for 20 ms loop time
             angleSetpoint = angleProfile.calculate(0.040, angleSetpoint, new TrapezoidProfile.State(angleMotorSetpoint, 0));
             // apply the setpoint to the control request
-            anglePositionController.Position = angleSetpoint.position;
-            anglePositionController.Velocity = angleSetpoint.velocity;
-            anglePositionController.Position = angleMotorSetpoint;
-            angleTalon.setControl(anglePositionController);
+            positionController.Velocity = angleSetpoint.velocity;
+            positionController.Position = angleMotorSetpoint;
+            angleTalon.setControl(positionController);
         }
 
         logging();
@@ -256,7 +270,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param speed percent speed of indexing neos
      */
     public void setNeoSpeeds(double speed) {
-        lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
+        //lowGearNeo.set(MathUtil.clamp(speed, -1, 1));
         highGearNeo.set(MathUtil.clamp(speed, -1, 1));
 
     }

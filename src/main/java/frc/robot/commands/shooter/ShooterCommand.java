@@ -22,7 +22,7 @@ public class ShooterCommand extends Command {
 		this.shooter = shooter;
 		this.swerveSubsystem = swerveSubsystem;
 		addRequirements(shooter);
-		SmartDashboard.putNumber("Set The Shooter Angle", Constants.Shooter.shooterVelSetpoint);
+		SmartDashboard.putNumber("Set The Shooter Angle", Constants.Shooter.angleBackHardstop);
 		SmartDashboard.putNumber("Set Shooter Velocity", 30);
 		SmartDashboard.putBoolean("Is Shooting", false);
 
@@ -60,7 +60,7 @@ public class ShooterCommand extends Command {
 //		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
 //		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
 //		SmartDashboard.putNumber("Shooter Distance", distance);
-		shooter.setLaunchTalon(velocitySetpoint);
+//		shooter.setLaunchTalon(velocitySetpoint);
 //		shooter.setLaunchTalon(25);
 		shooter.setAngleTalonPositionDegrees(SmartDashboard.getNumber("Set The Shooter Angle", 54.58));
 //		double degreeOutput = interpolation.get(distance);
@@ -68,7 +68,7 @@ public class ShooterCommand extends Command {
 //		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
 //		shooter.setAngleTalonPositionDegrees(degreeOutput);
 //		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
-		shooter.setNeoSpeeds(0.5);
+//		shooter.setNeoSpeeds(0.7);
 
 
 //		if(shooter.withinShootingTolerances(degreeOutput)) {

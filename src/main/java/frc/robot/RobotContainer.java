@@ -150,7 +150,7 @@ public class RobotContainer {
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
         new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
-        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 50));
+        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommand(shooterSubsystem, swerve));
 
         //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
         //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
@@ -164,8 +164,8 @@ public class RobotContainer {
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
         new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
         new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
-        new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
-        new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        //new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
+        //new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
         new Trigger(operatorController::getCreateButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(new TempShooterCommand(shooterSubsystem, -20));
 
