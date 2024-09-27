@@ -149,11 +149,11 @@ public class RobotContainer {
 //        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
         new Trigger(driverController::getCircleButton).toggleOnTrue(shooterCommand);
-        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
+//        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
         new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommand(shooterSubsystem, swerve));
 
-        //new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
-        //new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
+        new Trigger(driverController::getR1Button).whileTrue(climbUpCommand);
+        new Trigger(driverController::getL1Button).whileTrue(climbDownCommand);
         new Trigger(driverController::getSquareButton).whileTrue(sourceIntake);
 //        new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, 48));
 //        new Trigger(driverController::getCrossButton).onFalse(new InstantCommand(() -> intakeSubsystem.run(-0, -0)));
