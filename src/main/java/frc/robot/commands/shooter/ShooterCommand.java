@@ -55,28 +55,25 @@ public class ShooterCommand extends Command {
 
 	@Override
 	public void execute() {
-//		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
-		double velocitySetpoint = SmartDashboard.getNumber("Set Shooter Velocity", 25);
-//		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
-//		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
-//		SmartDashboard.putNumber("Shooter Distance", distance);
-//		shooter.setLaunchTalon(velocitySetpoint);
-//		shooter.setLaunchTalon(25);
-		shooter.setAngleTalonPositionDegrees(SmartDashboard.getNumber("Set The Shooter Angle", 54.58));
-//		double degreeOutput = interpolation.get(distance);
-//		double degreeOutput = SmartDashboard.getNumber("Set The Shooter Angle",  30);
-//		shooter.setAngleTalonPositionDegrees(Constants.Shooter.angleBackHardstop);
-//		shooter.setAngleTalonPositionDegrees(degreeOutput);
-//		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
-//		shooter.setNeoSpeeds(0.7);
+		double velocitySetpoint = Constants.Shooter.shooterVelSetpoint;
+//		double velocitySetpoint = SmartDashboard.getNumber("Set Shooter Velocity", 25);
+//		double angleSetpoint = SmartDashboard.getNumber("Set The Shooter Angle", 54.58);
+		int tagID = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 7 : 4;
+		double distance = Constants.aprilTagFieldLayout.getTags().get(tagID - 1).pose.toPose2d().minus(swerveSubsystem.getPose()).getTranslation().getNorm();
+		SmartDashboard.putNumber("Shooter Distance", distance);
+		double angleSetpoint = interpolation.get(distance);
 
+		SmartDashboard.putNumber("Rational Inter Output", interpolation.get(distance));
 
-//		if(shooter.withinShootingTolerances(degreeOutput)) {
-//			shooter.setNeoSpeeds(0.5);
-//			SmartDashboard.putBoolean("Is Shooting", true);
-//		} else {
-//			SmartDashboard.putBoolean("Is Shooting", false);
-//		}
+		shooter.setLaunchTalon(velocitySetpoint);
+		shooter.setAngleTalonPositionDegrees(angleSetpoint);
+
+		if(shooter.withinShootingTolerances(angleSetpoint, velocitySetpoint)) {
+			shooter.setNeoSpeeds(0.5);
+			SmartDashboard.putBoolean("Is Shooting", true);
+		} else {
+			SmartDashboard.putBoolean("Is Shooting", false);
+		}
 	}
 
 	@Override

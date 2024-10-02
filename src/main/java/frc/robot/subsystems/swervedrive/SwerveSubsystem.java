@@ -355,7 +355,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     if(postVisionMeasurements) {
-//      processCamera(RobotContainer.photonvision);
+      processCamera(RobotContainer.photonvision);
     }
     swerveDrive.updateOdometry();
 

@@ -50,7 +50,7 @@ public class RobotContainer {
     final PS5Controller operatorController = new PS5Controller(1);
     final PS5Controller driverController = new PS5Controller(0);
 
-//    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.lowerRobotToCamera);
+    public static final Photonvision photonvision = new Photonvision(Constants.Vision.shooterMonoCam, Constants.Vision.lowerRobotToCamera);
 
 
     public  final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -123,11 +123,11 @@ public class RobotContainer {
         );
 
         Command driveFieldOrientedTeleop = new TeleopDrive(swerve,
-//                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
-//                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
-                () -> 0,
-                () -> 0,
-                () -> 0,
+                () -> -MathUtil.applyDeadband(driverController.getLeftY(), Constants.DriverConstants.LEFT_Y_DEADBAND),
+                () -> -MathUtil.applyDeadband(driverController.getLeftX(), Constants.DriverConstants.LEFT_X_DEADBAND),
+//                () -> 0,
+//                () -> 0,
+                () -> MathUtil.applyDeadband(driverController.getRightX(), Constants.DriverConstants.RIGHT_X_DEADBAND),
                 () -> true
 //                () -> -MathUtil.applyDeadband(driverController.getRightX(), 0.25),
 //                () -> true
@@ -164,8 +164,8 @@ public class RobotContainer {
         new Trigger(operatorController::getTriangleButton).toggleOnTrue(ampCommand);
         new Trigger(operatorController::getL1Button).whileTrue(intakeCommand);
         new Trigger(operatorController::getR1Button).whileTrue(intakeCommand);
-        //new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
-        //new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
+        new Trigger(() -> operatorController.getL2Axis() > 0.5).whileTrue(new ClimbDownCommand(climbSubsystem));
+        new Trigger(() -> operatorController.getR2Axis() > 0.5).whileTrue(new ClimbUpCommand(climbSubsystem));
         new Trigger(operatorController::getCreateButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, -20));
         new Trigger(operatorController::getOptionsButton).toggleOnTrue(new TempShooterCommand(shooterSubsystem, -20));
 
