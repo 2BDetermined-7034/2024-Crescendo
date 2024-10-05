@@ -92,9 +92,7 @@ public class RobotContainer {
         autoChooser.addOption("Three piece mid W2,C2", autoFactory.getAutonomousCommand("Mid Three Piece W2,C2"));
         autoChooser.addOption("Three piece amp W1,C1", autoFactory.getAutonomousCommand("Amp Three Piece W1,C1"));
         autoChooser.addOption("Exit", autoFactory.getAutonomousCommand("Exit"));
-
-
-
+        autoChooser.addOption("THE \"WILSONVILLE\" AUTO MIDDLE (Wildcard)", autoFactory.getAutonomousCommand("WilsonVille2NoteMid"));
 
 
 

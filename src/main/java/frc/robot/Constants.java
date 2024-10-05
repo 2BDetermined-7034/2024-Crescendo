@@ -78,7 +78,7 @@ public final class Constants {
 		/**
 		 * Velocity Setpoint for the Shooter
 		 */
-		public static final double shooterVelSetpoint = 64;
+		public static final double shooterVelSetpoint = 70;
 		/**
 		 * Difference from setpoint at which indexing motor runs for shooterCommand
 		 */
@@ -108,7 +108,7 @@ public final class Constants {
 
 		public static final double hoistUpPosition = 0.0;
 		public static final double hoistDownPosition = 0.0;
-		public static final double currentLimit = 80;
+		public static final double currentLimit = 50; //was 80
 
 		public static final double kP = 0.1;
 		public static final double kI = 0;
