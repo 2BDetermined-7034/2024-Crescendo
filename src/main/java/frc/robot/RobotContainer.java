@@ -146,7 +146,7 @@ public class RobotContainer {
         new Trigger(driverController::getOptionsButton).onTrue(Commands.runOnce(swerve::zeroGyro));
 //        new Trigger(driverController::getTriangleButton).toggleOnTrue(intakeCommand);
         new Trigger(driverController::getTriangleButton).toggleOnTrue(new ShooterPodiumCommand(shooterSubsystem));
-        new Trigger(driverController::getCircleButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, Constants.Shooter.angleBackHardstop - 14));
+        new Trigger(driverController::getCircleButton).toggleOnTrue(new ShooterCommandToAngle(shooterSubsystem, Constants.Shooter.angleBackHardstop - 8));
 //        new Trigger(driverController::getL1Button).toggleOnTrue(new RotateToTag(swerve));
         new Trigger(driverController::getCrossButton).toggleOnTrue(new ShooterCommand(shooterSubsystem, swerve));
 
